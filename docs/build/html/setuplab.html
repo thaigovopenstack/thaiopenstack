@@ -155,6 +155,42 @@ $ cd lab
 $ vim vagrantfile
 </pre></div>
 </div>
+<div class="highlight-default"><div class="highlight"><pre><span></span># -*- mode: ruby -*-
+# vi: set ft=ruby :
+$script = &lt;&lt;SCRIPT
+yum update -y
+SCRIPT
+
+
+Vagrant.configure(2) do |config|
+  config.vm.define :client do |node|
+     node.vm.box = &quot;centos/7&quot;
+     node.vm.hostname = &quot;client.example.com&quot;
+     node.vm.provision :shell, :inline =&gt; &quot;echo root:linux  | chpasswd&quot;
+     node.vm.provision :shell, :inline =&gt; $script
+     node.vm.network :private_network, :ip =&gt; &quot;10.20.30.40&quot;
+     node.vm.provider :livirt do |domain|
+        domain.cpus = 2
+        domain.memory = 2048
+     end
+  end
+  config.vm.define :server do |node|
+     node.vm.box = &quot;centos/7&quot;
+     node.vm.hostname = &quot;server.example.com&quot;
+     node.vm.provision :shell, :inline =&gt; &quot;echo root:linux  | chpasswd&quot;
+     node.vm.provision :shell, :inline =&gt; $script
+     node.vm.network :private_network, :ip =&gt; &quot;10.20.30.41&quot;
+     node.vm.provider :livirt do |domain|
+        domain.cpus = 2
+        domain.memory = 2048
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+     end
+  end
+end
+</pre></div>
+</div>
 <p>ใช้คำสั่ง vagrant up</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ vagrant up --provider libvirt
 $ vagrant status
