@@ -33,7 +33,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/> 
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="Understand systemd" href="systemd.html"/>
+        <link rel="prev" title="Welcome to Sipa Linux Admin Class’s documentation!" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -82,7 +84,8 @@
           
             
             
-                <ul>
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Setup Vagrant</a></li>
 <li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
 <li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
@@ -150,6 +153,42 @@
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ mkdir  lab
 $ cd lab
 $ vim vagrantfile
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span># -*- mode: ruby -*-
+# vi: set ft=ruby :
+$script = &lt;&lt;SCRIPT
+yum update -y
+SCRIPT
+
+
+Vagrant.configure(2) do |config|
+  config.vm.define :client do |node|
+     node.vm.box = &quot;centos/7&quot;
+     node.vm.hostname = &quot;client.example.com&quot;
+     node.vm.provision :shell, :inline =&gt; &quot;echo root:linux  | chpasswd&quot;
+     node.vm.provision :shell, :inline =&gt; $script
+     node.vm.network :private_network, :ip =&gt; &quot;10.20.30.40&quot;
+     node.vm.provider :livirt do |domain|
+        domain.cpus = 2
+        domain.memory = 2048
+     end
+  end
+  config.vm.define :server do |node|
+     node.vm.box = &quot;centos/7&quot;
+     node.vm.hostname = &quot;server.example.com&quot;
+     node.vm.provision :shell, :inline =&gt; &quot;echo root:linux  | chpasswd&quot;
+     node.vm.provision :shell, :inline =&gt; $script
+     node.vm.network :private_network, :ip =&gt; &quot;10.20.30.41&quot;
+     node.vm.provider :livirt do |domain|
+        domain.cpus = 2
+        domain.memory = 2048
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+     end
+  end
+end
 </pre></div>
 </div>
 <p>ใช้คำสั่ง vagrant up</p>
@@ -309,6 +348,15 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="systemd.html" class="btn btn-neutral float-right" title="Understand systemd" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to Sipa Linux Admin Class’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
