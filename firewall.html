@@ -1,0 +1,471 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Understand New Linux Firewall &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="SSH Server On CentOS7" href="sshd.html"/>
+        <link rel="prev" title="Configure IP address" href="configip.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Understand New Linux Firewall</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#new-firewalld">New firewalld</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-command">Basic Command</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#firewall-cmd">firewall-cmd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ip-forward">ip forward</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#zone-management">Zone Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#select-zone-for-interface">Select Zone for interface</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#permanent-change">permanent change</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-service-to-zone">Add Service to Zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#remove-service-to-zone">Remove Service to Zone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-management">Port Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#range-port-management">Range Port Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-new-zone">Create New Zone</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Understand New Linux Firewall</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/firewall.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="understand-new-linux-firewall">
+<h1>Understand New Linux Firewall<a class="headerlink" href="#understand-new-linux-firewall" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="new-firewalld">
+<h2>New firewalld<a class="headerlink" href="#new-firewalld" title="Permalink to this headline">¶</a></h2>
+<p>คำสั่ง firewalld เป็นคำสั่งใหม่เพื่อเข้ามาบริหารจัดการ firewall ใน userland และมาแทนคำสั่ง iptables เมื่อใช่คำสั่ง firewalld ไม่จำเป็นต้องการการ restart service หรือ load firewall rule แต่อย่างใด</p>
+<img alt="_images/firewall_stack.png" src="_images/firewall_stack.png" />
+<div class="section" id="basic-command">
+<h3>Basic Command<a class="headerlink" href="#basic-command" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="firewall-cmd">
+<h4>firewall-cmd<a class="headerlink" href="#firewall-cmd" title="Permalink to this headline">¶</a></h4>
+<p>ตรวจสอบสถานะการทำงาน</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span># systemctl status firewalld
+(result)
+● firewalld.service - firewalld - dynamic firewall daemon
+   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2016-07-03 19:53:55 ICT; 2h 15min ago
+ Main PID: 858 (firewalld)
+        Tasks: 2 (limit: 512)
+   CGroup: /system.slice/firewalld.service
+               └─858 /usr/bin/python3 -Es /usr/sbin/firewalld --nofork --nopid
+
+Jul 03 19:53:47 localhost.localdomain systemd[1]: Starting firewalld - dynamic firewall daemon...
+Jul 03 19:53:55 localhost.localdomain systemd[1]: Started firewalld - dynamic firewall daemon.
+Jul 03 19:54:05 localhost.localdomain /firewalld[858]: WARNING: FedoraServer: INVALID_SERVICE: cockpit
+
+
+# firewall-cmd --state
+running
+</pre></div>
+</div>
+</div>
+<div class="section" id="ip-forward">
+<h4>ip forward<a class="headerlink" href="#ip-forward" title="Permalink to this headline">¶</a></h4>
+<p>หากมีจำนวน interface card มากกว่า 1 และต้องการตั้งค่า ip forwarding สามารถทำได้ดังนี้</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># vim /etc/sysctl.conf</span>
+<span class="p">(</span><span class="n">เพิ่มบรรทัดต่่อท้าย</span><span class="p">)</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">ip_forward</span><span class="o">=</span><span class="mi">1</span>
+
+<span class="c1"># sysctl -p</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="zone-management">
+<h3>Zone Management<a class="headerlink" href="#zone-management" title="Permalink to this headline">¶</a></h3>
+<p>การจะการ firewall มีแนวคิดการแบ่งส่วนออกเป็น zone โดยเชื่อมต่ออยู่กับ network interface เพื่อกำหนดให้แต่ละ package ที่เข้ามานั้นเข้าไปยัง Zone</p>
+<p>แสดงค่า default zone และ activezone</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --get-default-zone</span>
+<span class="n">FedoraWorkstation</span>
+
+<span class="c1"># firewall-cmd --get-active-zones</span>
+<span class="n">FedoraWorkstation</span>
+  <span class="n">interfaces</span><span class="p">:</span> <span class="n">enp3s0</span> <span class="n">wlp2s0</span>
+</pre></div>
+</div>
+<p>เรียกดู Zone ทั้งหมด</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --get-zones</span>
+<span class="n">FedoraServer</span> <span class="n">FedoraWorkstation</span> <span class="n">block</span> <span class="n">dmz</span> <span class="n">drop</span> <span class="n">external</span> <span class="n">home</span> <span class="n">internal</span> <span class="n">public</span> <span class="n">trusted</span> <span class="n">work</span>
+</pre></div>
+</div>
+<p>เรียกดูว่า interface อยู่กับ Zone ไหน</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --get-zone-of-interface enp3s0</span>
+<span class="n">FedoraWorkstation</span>
+</pre></div>
+</div>
+<div class="section" id="select-zone-for-interface">
+<h4>Select Zone for interface<a class="headerlink" href="#select-zone-for-interface" title="Permalink to this headline">¶</a></h4>
+<p>เปลี่ยน ให้ enp3s0 ไปอยู่ใน zone work ในระหว่าง session โดยการใช้ parameter <code class="docutils literal"><span class="pre">--zone=</span></code> และ <code class="docutils literal"><span class="pre">--change-interface=</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --zone=work --change-interface=enp3s0</span>
+<span class="n">success</span>
+
+<span class="c1"># firewall-cmd --get-active-zones</span>
+<span class="n">work</span>
+  <span class="n">interfaces</span><span class="p">:</span> <span class="n">enp3s0</span>
+<span class="n">FedoraWorkstation</span>
+  <span class="n">interfaces</span><span class="p">:</span> <span class="n">wlp2s0</span>
+</pre></div>
+</div>
+<p>หากมีการ restart session ของ  firewall ก็จะกลับคือ default</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#systemctl restart firewalld.service</span>
+<span class="c1"># firewall-cmd --get-active-zones</span>
+<span class="n">FedoraWorkstation</span>
+  <span class="n">interfaces</span><span class="p">:</span> <span class="n">enp3s0</span> <span class="n">wlp2s0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="permanent-change">
+<h4>permanent change<a class="headerlink" href="#permanent-change" title="Permalink to this headline">¶</a></h4>
+<p>โดยการเปลี่ยนค่าในไฟล์ ifcfg-enp3s0 โดยการเพิ่ม config <code class="docutils literal"><span class="pre">ZONE=work</span></code> แต่การแก้ไขไฟล์จะใช้ nmcli command</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># nmcli connection modify enp3s0 connection.zone work</span>
+<span class="c1"># cat /etc/sysconfig/network-scripts/</span>
+<span class="n">HWADDR</span><span class="o">=</span><span class="mi">54</span><span class="p">:</span><span class="n">EE</span><span class="p">:</span><span class="mi">75</span><span class="p">:</span><span class="mi">8</span><span class="n">A</span><span class="p">:</span><span class="mi">86</span><span class="p">:</span><span class="mi">09</span>
+<span class="n">TYPE</span><span class="o">=</span><span class="n">Ethernet</span>
+<span class="n">BOOTPROTO</span><span class="o">=</span><span class="n">none</span>
+<span class="n">DEFROUTE</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">IPV4_FAILURE_FATAL</span><span class="o">=</span><span class="n">no</span>
+<span class="n">IPV6INIT</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">IPV6_AUTOCONF</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">IPV6_DEFROUTE</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">IPV6_FAILURE_FATAL</span><span class="o">=</span><span class="n">no</span>
+<span class="n">IPV6_ADDR_GEN_MODE</span><span class="o">=</span><span class="n">stable</span><span class="o">-</span><span class="n">privacy</span>
+<span class="n">NAME</span><span class="o">=</span><span class="n">enp3s0</span>
+<span class="n">UUID</span><span class="o">=</span><span class="mi">86</span><span class="n">ad9274</span><span class="o">-</span><span class="mi">8</span><span class="n">e34</span><span class="o">-</span><span class="mi">3085</span><span class="o">-</span><span class="n">bd6b</span><span class="o">-</span><span class="mi">6</span><span class="n">b67a1024ff7</span>
+<span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">AUTOCONNECT_PRIORITY</span><span class="o">=-</span><span class="mi">999</span>
+<span class="n">ZONE</span><span class="o">=</span><span class="n">work</span>
+<span class="n">IPADDR</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.69</span>
+<span class="n">PREFIX</span><span class="o">=</span><span class="mi">24</span>
+<span class="n">GATEWAY</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span>
+<span class="n">IPV6_PEERDNS</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">IPV6_PEERROUTES</span><span class="o">=</span><span class="n">yes</span>
+
+<span class="c1"># systemctl restart NetworkManager.service</span>
+<span class="c1"># systemctl restart firewalld.service</span>
+</pre></div>
+</div>
+<p>ตรวจสอบผล</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --get-zone-of-interface enp3s0</span>
+<span class="n">work</span>
+
+<span class="c1"># firewall-cmd --get-active-zones</span>
+<span class="n">work</span>
+  <span class="n">interfaces</span><span class="p">:</span> <span class="n">enp3s0</span>
+<span class="n">FedoraWorkstation</span>
+  <span class="n">interfaces</span><span class="p">:</span> <span class="n">wlp2s0</span>
+</pre></div>
+</div>
+<p>เปลี่ยนค่า default zone ให้เป็น work</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --set-default-zone=work</span>
+<span class="n">success</span>
+<span class="c1"># firewall-cmd --get-active-zones</span>
+<span class="n">work</span>
+  <span class="n">interfaces</span><span class="p">:</span> <span class="n">enp3s0</span> <span class="n">wlp2s0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-service-to-zone">
+<h4>Add Service to Zone<a class="headerlink" href="#add-service-to-zone" title="Permalink to this headline">¶</a></h4>
+<p>เพิ่ม service ใน zone ด้วย parameter <code class="docutils literal"><span class="pre">--add-service=</span></code> สามารถกำหนดให้แก่ default zone หรือ zone ที่ต้องการด้วย <code class="docutils literal"><span class="pre">--zone=</span></code> การเปลี่ยนแปลงที่เกิดขึ้นจะเกิดขึ้นภายใต้ session เราสามารถกำหนดแบบถาวรได้ ด้วยการเพิ่ม parameter <code class="docutils literal"><span class="pre">--permanent</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --zone=work --add-service=http --permanent</span>
+<span class="c1"># firewall-cmd --reload</span>
+<span class="n">success</span>
+<span class="c1"># firewall-cmd --zone=work --list-services</span>
+<span class="n">dhcpv6</span><span class="o">-</span><span class="n">client</span> <span class="n">http</span> <span class="n">mdns</span> <span class="n">ssh</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">หาก ไม่ใช้ &#8211;permanent ก็ไม่ต้อง &#8211;reload</p>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --zone=internal --add-service={http,https,dns}</span>
+<span class="n">success</span>
+<span class="c1"># firewall-cmd --list-services</span>
+<span class="n">dhcpv6</span><span class="o">-</span><span class="n">client</span> <span class="n">http</span> <span class="n">mdns</span> <span class="n">ssh</span>
+<span class="c1"># firewall-cmd --zone=internal  --list-services</span>
+<span class="n">dhcpv6</span><span class="o">-</span><span class="n">client</span> <span class="n">dns</span> <span class="n">http</span> <span class="n">https</span> <span class="n">mdns</span> <span class="n">samba</span><span class="o">-</span><span class="n">client</span> <span class="n">ssh</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@localhost</span> <span class="o">~</span><span class="p">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="remove-service-to-zone">
+<h4>Remove Service to Zone<a class="headerlink" href="#remove-service-to-zone" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --zone=work --remove-service=http --permanent</span>
+<span class="c1"># firewall-cmd --reload</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="port-management">
+<h4>Port Management<a class="headerlink" href="#port-management" title="Permalink to this headline">¶</a></h4>
+<p>อนุญาตการใช้งาน port 443/tcp แบบชั่วคราวให้แก่  internal zone</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --zone=internal --add-port=443/tcp</span>
+<span class="n">success</span>
+<span class="c1"># firewall-cmd --zone=internal --list-ports</span>
+<span class="mi">443</span><span class="o">/</span><span class="n">tcp</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="range-port-management">
+<h4>Range Port Management<a class="headerlink" href="#range-port-management" title="Permalink to this headline">¶</a></h4>
+<p>กำหนดช่วงของ port โดยการใช้ <code class="docutils literal"><span class="pre">-</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --zone=public --add-port=4990-4999/udp</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-new-zone">
+<h4>Create New Zone<a class="headerlink" href="#create-new-zone" title="Permalink to this headline">¶</a></h4>
+<p>เมื่อต้องการเพิ่ม zone สามารถทำได้ด้วยการใช้ parameter <code class="docutils literal"><span class="pre">--new-zone=</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --permanent --new-zone=publicweb</span>
+<span class="n">success</span>
+<span class="c1"># firewall-cmd --permanent --new-zone=privateDNS</span>
+<span class="n">success</span>
+<span class="c1"># firewall-cmd --permanent --get-zones</span>
+<span class="c1"># firewall-cmd --permanent --get-zones</span>
+<span class="n">FedoraServer</span> <span class="n">FedoraWorkstation</span> <span class="n">block</span> <span class="n">dmz</span> <span class="n">drop</span> <span class="n">external</span> <span class="n">home</span> <span class="n">internal</span> <span class="n">privateDNS</span> <span class="n">public</span> <span class="n">publicweb</span> <span class="n">trusted</span> <span class="n">work</span>
+<span class="c1"># firewall-cmd --reload</span>
+<span class="n">success</span>
+</pre></div>
+</div>
+<p>เพิ่ม service ให้กับ zone publicweb ใหม่</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --zone=publicweb --add-service=ssh</span>
+<span class="c1"># firewall-cmd --zone=publicweb --add-service=http</span>
+<span class="c1"># firewall-cmd --zone=publicweb --add-service=https</span>
+<span class="c1"># firewall-cmd --zone=publicweb --list-all</span>
+<span class="n">publicweb</span>
+  <span class="n">interfaces</span><span class="p">:</span>
+  <span class="n">sources</span><span class="p">:</span>
+  <span class="n">services</span><span class="p">:</span> <span class="n">http</span> <span class="n">https</span> <span class="n">ssh</span>
+  <span class="n">ports</span><span class="p">:</span>
+  <span class="n">protocols</span><span class="p">:</span>
+  <span class="n">masquerade</span><span class="p">:</span> <span class="n">no</span>
+  <span class="n">forward</span><span class="o">-</span><span class="n">ports</span><span class="p">:</span>
+  <span class="n">icmp</span><span class="o">-</span><span class="n">blocks</span><span class="p">:</span>
+  <span class="n">rich</span> <span class="n">rules</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>เพิ่ม service ให้กับ zone publicdns ใหม่</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># firewall-cmd --zone=privateDNS --add-service=dns</span>
+<span class="c1"># firewall-cmd --zone=privateDNS --list-all</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>privateDNS</dt>
+<dd>interfaces:
+sources:
+services: dns
+ports:
+protocols:
+masquerade: no
+forward-ports:
+icmp-blocks:
+rich rules:</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sshd.html" class="btn btn-neutral float-right" title="SSH Server On CentOS7" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="configip.html" class="btn btn-neutral" title="Configure IP address" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

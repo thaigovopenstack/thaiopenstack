@@ -1,0 +1,819 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Lab Environment &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="Install keystone" href="keystone.html"/>
+        <link rel="prev" title="Openstack intro Mitaka Document" href="openstack-intro.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Lab Environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#automate-setup">Automate setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-lab">Test Lab</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#security">Security</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#script-generate-script">script generate script</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ntp-network-time-protocol">NTP Network Time Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#on-controller-node">On Controller node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#on-other-node">On other node</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#openstack-packages">OpenStack packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mysql-on-controller">Mysql on Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-mariadb-on-controller">install mariadb on controller</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#no-sql-server">No SQL Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#message-queue">Message queue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#memcached">Memcached</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-user-in-data">Create User in Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reset-password-mariadb">Reset Password Mariadb</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step1">Step1</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Lab Environment</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/environment.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lab-environment">
+<h1>Lab Environment<a class="headerlink" href="#lab-environment" title="Permalink to this headline">¶</a></h1>
+<p>การสร้าง lab environment จะสร้าง โครงสร้าง ของระบบ ด้านล่าง โดยการใช้งาน Vagrant เป็นเครื่องมือสำหรับสร้าง</p>
+<img alt="_images/installguidearch-neutron-networks.png" src="_images/installguidearch-neutron-networks.png" />
+<p>ตัวอย่าง file vagrant สำหรับการสร้าง infrastructure</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -x- mode: ruby -x-</span>
+<span class="c1"># vi: set ft=ruby :</span>
+
+<span class="n">boxes</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;controller&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.11&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;controller.example.com&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;network&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.21&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.21&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;network.example.com&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;compute1&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.31&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.31&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">data_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.31&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;compute1.example.com&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;compute2&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.32&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">tunnel_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.1.32&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">data_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.32&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;compute2.example.com&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;block1&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.41&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">data_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.41&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;block1.example.com&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="p">:</span><span class="n">name</span> <span class="o">=&gt;</span> <span class="s2">&quot;object1&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">mgmt_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.51&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">data_ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.2.51&quot;</span><span class="p">,</span>
+        <span class="p">:</span><span class="n">hostname</span> <span class="o">=&gt;</span> <span class="s2">&quot;object1.example.com&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+
+<span class="p">]</span>
+
+
+<span class="n">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="n">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">boxes</span><span class="o">.</span><span class="n">each</span> <span class="n">do</span> <span class="o">|</span><span class="n">opts</span><span class="o">|</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="n">opts</span><span class="p">[:</span><span class="n">name</span><span class="p">]</span> <span class="n">do</span> <span class="o">|</span><span class="n">box</span><span class="o">|</span>
+      <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;centos/7&quot;</span>
+      <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span>
+      <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provision</span> <span class="p">:</span><span class="n">shell</span><span class="p">,</span> <span class="p">:</span><span class="n">inline</span> <span class="o">=&gt;</span> <span class="s2">&quot;echo root:password  | chpasswd&quot;</span>
+      <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">mgmt_ip</span><span class="p">]</span>
+
+      <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;network&#39;</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">mgmt_ip</span><span class="p">]</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">tunnel_ip</span><span class="p">]</span>
+      <span class="n">end</span>
+
+      <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;compute1&#39;</span>  <span class="o">||</span>  <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;compute2&#39;</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">mgmt_ip</span><span class="p">]</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">tunnel_ip</span><span class="p">]</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">data_ip</span><span class="p">]</span>
+      <span class="n">end</span>
+
+      <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;block1&#39;</span> <span class="o">||</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;object1&#39;</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">mgmt_ip</span><span class="p">]</span>
+         <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="n">opts</span><span class="p">[:</span><span class="n">data_ip</span><span class="p">]</span>
+      <span class="n">end</span>
+
+      <span class="n">box</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">lv</span><span class="o">|</span>
+        <span class="n">lv</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+        <span class="n">lv</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+        <span class="n">lv</span><span class="o">.</span><span class="n">storage_pool_name</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span>
+        <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;controller&#39;</span>  
+          <span class="n">lv</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;30G&#39;</span><span class="p">,</span> <span class="p">:</span><span class="nb">type</span> <span class="o">=&gt;</span> <span class="s1">&#39;raw&#39;</span>
+        <span class="n">end</span>
+        <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;compute1&#39;</span>  <span class="o">||</span>  <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;compute2&#39;</span> 
+          <span class="n">lv</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">4096</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">end</span>
+        <span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;network&#39;</span>  
+          <span class="n">lv</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">end</span>
+	<span class="k">if</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;block1&#39;</span> <span class="o">||</span> <span class="n">opts</span><span class="p">[:</span><span class="n">hostname</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;object1&#39;</span>
+	  <span class="n">lv</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">1</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+          <span class="n">lv</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+        <span class="n">end</span>
+         
+      <span class="n">end</span>
+    <span class="n">end</span>
+  <span class="n">end</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+<div class="section" id="automate-setup">
+<h2>Automate setup<a class="headerlink" href="#automate-setup" title="Permalink to this headline">¶</a></h2>
+<p>Download complete file <a class="reference download internal" href="_downloads/Vagrantfile-lab1" download=""><code class="xref download docutils literal"><span class="pre">Vagrantfile-lab1</span></code></a></p>
+</div>
+<div class="section" id="test-lab">
+<h2>Test Lab<a class="headerlink" href="#test-lab" title="Permalink to this headline">¶</a></h2>
+<p>ต่อไปเป็นการทดสอบการใช้งาน Vagrantfile ให้สร้าง โครงสร้าง ด้านบน ส่วนการติดตั้งเป็นการติดตั้งแบบ manual</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>mkdir openstack2
+vagrant plugin install vagrant-scp
+vagrant plugin install vagrant-libvirt
+sudo systemctl start firewalld
+
+wget https://thaiopen.github.io/SipaLinuxCourse/_downloads/Vagrantfile-lab1
+
+mv Vagrantfile-lab1 Vagrantfile
+vagrant up
+
+cat &lt;&lt; HOST  &gt; hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+10.0.0.11  controller.example.com  controller
+10.0.0.21  network.example.com  network
+10.0.0.31  compute1.example.com compute1
+10.0.0.32  compute2.example.com  compute2
+10.0.0.41  block1.example.com  block1
+10.0.0.51  object1.example.com  object1
+HOST
+
+cat &lt;&lt; TEST &gt; isconnect.sh
+#!/bin/bash
+ping -c 2 controller
+ping -c 2 network
+ping -c 2 compute1
+ping -c 2 compute2
+ping -c 2 block1
+ping -c 2 object1
+TEST
+
+node=&quot;controller network compute1 compute2 block1 object1&quot;
+echo $node
+
+//transfer file to vagrant
+for n in $node; do vagrant scp hosts $n:/home/vagrant/;done
+for n in $node; do vagrant scp isconnect.sh $n:/home/vagrant/;done
+
+//test connectivity
+for n in $node; do vagrant ssh $n -c &quot;sudo mv /home/vagrant/hosts /etc/hosts&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;bash /home/vagrant/isconnect.sh&quot;; done
+
+// set time zone
+for n in $node; do vagrant ssh $n -c &quot;sudo timedatectl set-timezone Asia/Bangkok&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo timedatectl&quot;; done
+
+//start network, stop NetworkManager
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl start network&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl enable network&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl disable NetworkManager&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl stop NetworkManager&quot;; done
+</pre></div>
+</div>
+</div>
+<div class="section" id="security">
+<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
+<p>แต่ละ service ของ openstack จะมีสร้างฐานข้อมูลของตนเอง ดังนั้นจะมีการสร้างสร้าง password &lt;SERVICE&gt;_DBNAME และมี password สำหรับใช้ authentication กับ keystone &lt;SERVICE&gt;_PASS โดย การสร้างด้วยคำสั่ง <code class="docutils literal"><span class="pre">openssl</span> <span class="pre">rand</span> <span class="pre">-hex</span> <span class="pre">10</span></code> เพื่อความสะดวกในการติดตั้ง ทำให้มีการสร้าง passwordlist ใช้สำหรับ database และ ใช้สำหรับ keystone</p>
+<table border="1" class="docutils" id="id1">
+<caption><span class="caption-text"><strong>Passwords</strong></span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Password name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Database password (no variable used)</td>
+<td>Root password for the database</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ADMIN_PASS</span></code></td>
+<td>Password of user <code class="docutils literal"><span class="pre">admin</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">CEILOMETER_DBPASS</span></code></td>
+<td>Database password for the Telemetry service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">CEILOMETER_PASS</span></code></td>
+<td>Password of Telemetry service user <code class="docutils literal"><span class="pre">ceilometer</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">CINDER_DBPASS</span></code></td>
+<td>Database password for the Block Storage service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">CINDER_PASS</span></code></td>
+<td>Password of Block Storage service user <code class="docutils literal"><span class="pre">cinder</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">DASH_DBPASS</span></code></td>
+<td>Database password for the dashboard</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">DEMO_PASS</span></code></td>
+<td>Password of user <code class="docutils literal"><span class="pre">demo</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">GLANCE_DBPASS</span></code></td>
+<td>Database password for Image service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">GLANCE_PASS</span></code></td>
+<td>Password of Image service user <code class="docutils literal"><span class="pre">glance</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">HEAT_DBPASS</span></code></td>
+<td>Database password for the Orchestration service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">HEAT_DOMAIN_PASS</span></code></td>
+<td>Password of Orchestration domain</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">HEAT_PASS</span></code></td>
+<td>Password of Orchestration service user <code class="docutils literal"><span class="pre">heat</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">KEYSTONE_DBPASS</span></code></td>
+<td>Database password of Identity service</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">NEUTRON_DBPASS</span></code></td>
+<td>Database password for the Networking service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">NEUTRON_PASS</span></code></td>
+<td>Password of Networking service user <code class="docutils literal"><span class="pre">neutron</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">NOVA_DBPASS</span></code></td>
+<td>Database password for Compute service</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">NOVA_PASS</span></code></td>
+<td>Password of Compute service user <code class="docutils literal"><span class="pre">nova</span></code></td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">RABBIT_PASS</span></code></td>
+<td>Password of user guest of RabbitMQ</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">SWIFT_PASS</span></code></td>
+<td>Password of Object Storage service user <code class="docutils literal"><span class="pre">swift</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="script-generate-script">
+<h3>script generate script<a class="headerlink" href="#script-generate-script" title="Permalink to this headline">¶</a></h3>
+<p>ในการสร้าง password จะใช้ script ชื่อ gen_pass.sh ด้านล่าง</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/sh
+#
+# Populate openstack database password
+#
+
+# Mainly inspired by
+# sawangpong muadphet &lt;sawangpong@itbakery.net&gt;
+#
+
+file=&quot;passwordlist&quot;
+if [ -f passwordlist ]; then
+  echo &quot;Sorry, file exist&quot;
+  exit 1;
+fi
+
+SERVICES=(
+        DB_PASS
+        ADMIN_TOKEN
+        ADMIN_PASS
+        CEILOMETER_DBPASS
+        CEILOMETER_PASS
+        CINDER_DBPASS
+        CINDER_PASS
+        DASH_DBPASS
+        DEMO_PASS
+        GLANCE_DBPASS
+        GLANCE_PASS
+        HEAT_DBPASS
+        HEAT_DOMAIN_PASS
+        HEAT_PASS
+        KEYSTONE_DBPASS
+        NEUTRON_DBPASS
+        NEUTRON_PASS
+        NOVA_DBPASS
+        NOVA_PASS
+        RABBIT_PASS
+        SWIFT_PASS
+        AODH_DBPASS
+        METADATA_SECRET
+	      MANILA_DBPASS
+	      MANILA_PASS
+        TROVE_DBPASS
+        TROVE_PASS
+)
+
+for i in ${SERVICES[@]}; do
+        echo &quot;export ${i}=$(openssl rand -hex 10)&quot; &gt;&gt; passwordlist
+done
+exit 0
+</pre></div>
+</div>
+<p>ทดสอบ โดย Download complete file <a class="reference download internal" href="_downloads/gen_pass.sh" download=""><code class="xref download docutils literal"><span class="pre">gen_pass.sh</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">thaiopen</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">SipaLinuxCourse</span><span class="o">/</span><span class="n">_downloads</span><span class="o">/</span><span class="n">gen_pass</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">bash</span> <span class="n">gen_pass</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">cat</span> <span class="n">passwordlist</span>
+
+<span class="o">//</span> <span class="n">copy</span> <span class="n">file</span> <span class="n">to</span> <span class="n">controller</span> <span class="n">node</span> <span class="n">at</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span>
+<span class="n">vagrant</span> <span class="n">scp</span> <span class="n">passwordlist</span> <span class="n">controller</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">vagrant</span>
+<span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;sudo mv /home/vagrant/passwordlist /root&quot;</span>
+<span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+
+<span class="o">//</span><span class="n">put</span> <span class="n">password</span> <span class="n">to</span> <span class="n">shell</span> <span class="n">environment</span> <span class="n">การใช้งานโดยการนำค่าตัวแปรใส่ไว้ใน</span> <span class="n">shell</span> <span class="n">environment</span>
+<span class="n">source</span> <span class="n">passwordlist</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="ntp-network-time-protocol">
+<h2>NTP Network Time Protocol<a class="headerlink" href="#ntp-network-time-protocol" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="on-controller-node">
+<h3>On Controller node<a class="headerlink" href="#on-controller-node" title="Permalink to this headline">¶</a></h3>
+<p>ติดตั้ง package ที่ controller และโหนดอื่น แต่มีรายละเอียดของ <code class="docutils literal"><span class="pre">/etc/chrony.conf</span></code> โดยให้เครื่อง controller node
+ชี้ตรงไปยัง ntp server ส่วนเครื่องอื่นให้ชี้มาที่เครื่อง controller ติดตั้ง package ชื่อว่า chrony เพื่อต้องการ  sync เวลาให้กับทุกๆโหนด
+โดยสามารถที่จะเข้าไปยัง เครื่อง controller ได้จากเครื่อง host โดยการใช้คำสั่ง <code class="docutils literal"><span class="pre">vagrant</span> <span class="pre">ssh</span> <span class="pre">controller</span></code>
+โดยผ่านทาง secure shell ได้โดยตรง</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>for n in $node; do vagrant ssh $n -c &quot;sudo yum install chrony -y&quot;; done
+vagrant ssh controller
+sudo su -
+vi /etc/chrony.conf
+</pre></div>
+</div>
+<p>เพิ่ม รายชื่อ ของ ntp server</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#line3-6</span>
+<span class="n">server</span> <span class="mf">0.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">1.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">2.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">3.</span><span class="n">centos</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+
+ <span class="c1">#เปลี่ยนเป็็น</span>
+
+<span class="n">server</span> <span class="mf">1.</span><span class="n">th</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">0.</span><span class="n">asia</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+<span class="n">server</span> <span class="mf">2.</span><span class="n">asia</span><span class="o">.</span><span class="n">pool</span><span class="o">.</span><span class="n">ntp</span><span class="o">.</span><span class="n">org</span> <span class="n">iburst</span>
+
+ <span class="c1">#อนุญาติให้ client เข้ามา sync</span>
+<span class="c1">#line21</span>
+<span class="n">allow</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">24</span>
+
+ <span class="c1">#ให้ restart service chrony.conf</span>
+
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">chronyd</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">chronyd</span><span class="o">.</span><span class="n">service</span>
+<span class="n">chronyc</span> <span class="n">sources</span>
+<span class="n">chronyc</span> <span class="n">tracking</span>
+
+<span class="n">exit</span>
+<span class="n">exit</span>
+ <span class="c1">#กลับออกไป ที่ host</span>
+</pre></div>
+</div>
+<img alt="_images/environment001.png" src="_images/environment001.png" />
+</div>
+<div class="section" id="on-other-node">
+<h3>On other node<a class="headerlink" href="#on-other-node" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span>node=&quot;network compute1 compute2 block1 object1&quot;
+echo $node
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl start chronyd; sudo systemctl enable chronyd&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo sed -i.bak &#39;3,6d&#39; /etc/chrony.conf&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo sed -i.bak &#39;3i server 10.0.0.11 iburst&#39; /etc/chrony.conf&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo systemctl restart chronyd&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo chronyc tracking&quot;; done
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="openstack-packages">
+<h2>OpenStack packages<a class="headerlink" href="#openstack-packages" title="Permalink to this headline">¶</a></h2>
+<p>แต่ละ distribution ก็มี packages สำหรรับการติดตั้ง openstack การติดตั้งควรติดตั้ง package จาก repo ที่ล่าสุด และต้อง update ให้เรียบร้อย
+* Centos 7 มี extra repo เพื่อติดต้ง openstack สามารถติดตั้ง โดย  <code class="docutils literal"><span class="pre">yum</span> <span class="pre">install</span> <span class="pre">centos-release-openstack-mitaka</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>node=&quot;controller network compute1 compute2 block1 object1&quot;
+for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y centos-release-openstack-mitaka&quot;; done
+for n in $node; do vagrant ssh $n -c &quot;sudo yum upgrade -y&quot;; done
+
+for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y python-openstackclient &quot;; done
+
+//automatically manage security policies for OpenStack services
+for n in $node; do vagrant ssh $n -c &quot;sudo yum install -y openstack-selinux&quot;; done
+</pre></div>
+</div>
+</div>
+<div class="section" id="mysql-on-controller">
+<h2>Mysql on Controller<a class="headerlink" href="#mysql-on-controller" title="Permalink to this headline">¶</a></h2>
+<p>เกือบทุก openstack service มีการใช้งาน sql database เพิ่อเก็บข้อมูล โดยทั่วไป database จะถูกติดตั้ง บน controller node
+การติดตั้ง database จะขึ้นกับแต่ละ distro สามารถเลือกติดตั้งได้ทั้ง  Mariadb(Mysql) หรือ PostgresSQL</p>
+<div class="section" id="install-mariadb-on-controller">
+<h3>install mariadb on controller<a class="headerlink" href="#install-mariadb-on-controller" title="Permalink to this headline">¶</a></h3>
+<p>#. install package</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">mariadb</span> <span class="n">mariadb</span><span class="o">-</span><span class="n">server</span> <span class="n">python2</span><span class="o">-</span><span class="n">PyMySQL</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">openstack</span><span class="o">-</span><span class="n">utils</span>
+<span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">wget</span>
+</pre></div>
+</div>
+<p>#. create and edit /etc/my.cnf.d/openstack.cnf</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mv</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">my</span><span class="o">.</span><span class="n">cnf</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">mariadb</span><span class="o">-</span><span class="n">server</span><span class="o">.</span><span class="n">cnf</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">my</span><span class="o">.</span><span class="n">cnf</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">openstack</span><span class="o">.</span><span class="n">cnf</span>
+
+<span class="p">[</span><span class="n">mysqld</span><span class="p">]</span>
+<span class="o">...</span>
+
+<span class="n">bind</span><span class="o">-</span><span class="n">address</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span>
+<span class="n">default</span><span class="o">-</span><span class="n">storage</span><span class="o">-</span><span class="n">engine</span> <span class="o">=</span> <span class="n">innodb</span>
+<span class="n">innodb_file_per_table</span>
+<span class="n">max_connections</span> <span class="o">=</span> <span class="mi">4096</span>
+<span class="n">collation</span><span class="o">-</span><span class="n">server</span> <span class="o">=</span> <span class="n">utf8_general_ci</span>
+<span class="n">character</span><span class="o">-</span><span class="nb">set</span><span class="o">-</span><span class="n">server</span> <span class="o">=</span> <span class="n">utf8</span>
+</pre></div>
+</div>
+<p>#. Finalize install</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>systemctl enable mariadb.service
+systemctl start mariadb.service
+
+//don&#39;t forget อย่าลืม
+source passwordlist
+
+//test ทดสอบค่า
+echo $DB_PASS
+b2d1a3116eb60718f3c4
+
+//set root password ตั้งค่า password
+
+mysql_secure_installation
+
+--or--
+
+mysql -u root &lt;&lt;-EOF
+UPDATE mysql.user SET Password=PASSWORD(&#39;$DB_PASS&#39;) WHERE User=&#39;root&#39;;
+DELETE FROM mysql.user WHERE User=&#39;root&#39; AND Host NOT IN (&#39;localhost&#39;, &#39;127.0.0.1&#39;, &#39;::1&#39;);
+DELETE FROM mysql.user WHERE User=&#39;&#39;;
+DELETE FROM mysql.db WHERE Db=&#39;test&#39; OR Db=&#39;test\_%&#39;;
+FLUSH PRIVILEGES;
+EOF
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="no-sql-server">
+<h2>No SQL Server<a class="headerlink" href="#no-sql-server" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">mongodb</span><span class="o">-</span><span class="n">server</span> <span class="n">mongodb</span>
+
+<span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">mongod</span><span class="o">.</span><span class="n">conf</span>
+
+<span class="mi">6</span> <span class="n">bind_ip</span> <span class="o">=</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span>
+<span class="mi">113</span> <span class="n">smallfiles</span> <span class="o">=</span> <span class="n">true</span>
+
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">mongod</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">mongod</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="message-queue">
+<h2>Message queue<a class="headerlink" href="#message-queue" title="Permalink to this headline">¶</a></h2>
+<p>ในการdeploy ต้องดูขนาดของ journalfile ด้วย</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>yum install rabbitmq-server
+systemctl enable rabbitmq-server.service
+systemctl start rabbitmq-server.service
+
+//source passwordlist to shell
+
+echo $RABBIT_PASS
+rabbitmqctl add_user openstack $RABBIT_PASS
+
+rabbitmqctl set_permissions openstack &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;
+(result)
+Setting permissions for user &quot;openstack&quot; in vhost &quot;/&quot; ...
+</pre></div>
+</div>
+</div>
+<div class="section" id="memcached">
+<h2>Memcached<a class="headerlink" href="#memcached" title="Permalink to this headline">¶</a></h2>
+<p>ในการ  deploy จริงต้องทำ security เพิ่ม</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">memcached</span> <span class="n">python</span><span class="o">-</span><span class="n">memcached</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">memcached</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">memcached</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-user-in-data">
+<h2>Create User in Data<a class="headerlink" href="#create-user-in-data" title="Permalink to this headline">¶</a></h2>
+<p>user ที่จะต้องสร้าง ใน openstack</p>
+<img alt="_images/databaseopenstack.png" src="_images/databaseopenstack.png" />
+<p>Download complete file <a class="reference download internal" href="_downloads/gen_database.sh" download=""><code class="xref download docutils literal"><span class="pre">gen_database.sh</span></code></a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">how</span> <span class="n">to</span> <span class="n">use</span> <span class="n">file</span> <span class="n">gen_database</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">thaiopen</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">SipaLinuxCourse</span><span class="o">/</span><span class="n">_downloads</span><span class="o">/</span><span class="n">gen_database</span><span class="o">.</span><span class="n">sh</span>
+
+<span class="o">//</span><span class="n">check</span> <span class="n">file</span> <span class="n">passwordlist</span>
+<span class="n">ls</span> <span class="o">-</span><span class="n">l</span> <span class="n">passwordlist</span>
+</pre></div>
+</div>
+<p>undo ลบ database และ ลบ user ที่สร้างขึ้นจากคำสั่งด้านบน</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>source passwordlist
+//show database
+mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
+dbs=&quot;keystone glance nova_api nova neutron cinder manila heat aodh trove&quot;
+for d in $dbs; do  mysql -uroot -p$DB_PASS -e &quot;DROP DATABASE $d&quot; ; done
+mysql -uroot -p$DB_PASS -e &quot;show databases;&quot;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
++--------------------+
+
+//show user
+mysql -uroot -p$DB_PASS -e &quot;SELECT User,host from mysql.user;&quot;
+
+services=&quot;keystone glance nova neutron cinder manila heat aodh trove&quot;
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;%&#39;&quot; ; done
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;localhost&#39;&quot; ; done
+for s in $services; do  mysql -uroot -p$DB_PASS -e &quot;DROP USER  &#39;$s&#39;@&#39;controller.example.com&#39;&quot; ; done
+</pre></div>
+</div>
+</div>
+<div class="section" id="reset-password-mariadb">
+<h2>Reset Password Mariadb<a class="headerlink" href="#reset-password-mariadb" title="Permalink to this headline">¶</a></h2>
+<p>ในบางครั้งอาจมีความจำเป็น ที่จะต้องเปลี่ยน root password  สามารถทำได้ดังนี้</p>
+<div class="section" id="step1">
+<h3>Step1<a class="headerlink" href="#step1" title="Permalink to this headline">¶</a></h3>
+<p>หยุดการทำงานของ mariadb</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
+<span class="n">sudo</span> <span class="n">systemctl</span> <span class="n">stop</span> <span class="n">mariadb</span>
+</pre></div>
+</div>
+<p>Step2
+สั่งคำสั่ง start mysql โดยไม่ผ่าน grant-tables เพื่อให้สามารถใช้งาน database โดย root แบบไม่ต้องใช้ password</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span> <span class="o">&amp;</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">3430</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1"># 160712 13:12:02 mysqld_safe Logging to &#39;/var/log/mariadb/mariadb.log&#39;.</span>
+<span class="mi">160712</span> <span class="mi">13</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mi">02</span> <span class="n">mysqld_safe</span> <span class="n">Starting</span> <span class="n">mysqld</span> <span class="n">daemon</span> <span class="k">with</span> <span class="n">databases</span> <span class="kn">from</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span>
+</pre></div>
+</div>
+<p>Step3</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mysql</span> <span class="o">-</span><span class="n">u</span> <span class="n">root</span>
+</pre></div>
+</div>
+<p>Step4
+เปลี่ยน password</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">MariaDB</span> <span class="p">[(</span><span class="n">none</span><span class="p">)]</span><span class="o">&gt;</span> <span class="n">use</span> <span class="n">mysql</span><span class="p">;</span>
+<span class="n">MariaDB</span> <span class="p">[</span><span class="n">mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="n">UPDATE</span> <span class="n">user</span> <span class="n">SET</span> <span class="n">password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="p">(</span><span class="s2">&quot;new_password&quot;</span><span class="p">)</span> <span class="n">WHERE</span> <span class="n">User</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">;</span>
+<span class="n">MariaDB</span> <span class="p">[</span><span class="n">mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="n">FLUSH</span> <span class="n">PRIVILEGES</span><span class="p">;</span>
+<span class="n">MariaDB</span> <span class="p">[</span><span class="n">mysql</span><span class="p">]</span><span class="o">&gt;</span> <span class="n">quit</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Step5
+หยุดการทำงาน โดยการตรวจสอบ process id (pid)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
+<span class="n">root</span>      <span class="mi">3430</span>  <span class="mi">3360</span>  <span class="mi">0</span> <span class="mi">13</span><span class="p">:</span><span class="mi">12</span> <span class="n">pts</span><span class="o">/</span><span class="mi">0</span>    <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span>
+<span class="n">mysql</span>     <span class="mi">3538</span>  <span class="mi">3430</span>  <span class="mi">0</span> <span class="mi">13</span><span class="p">:</span><span class="mi">12</span> <span class="n">pts</span><span class="o">/</span><span class="mi">0</span>    <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">libexec</span><span class="o">/</span><span class="n">mysqld</span> <span class="o">--</span><span class="n">basedir</span><span class="o">=/</span><span class="n">usr</span>
+
+<span class="o">//</span><span class="n">kill</span> <span class="n">ทั้ง</span> <span class="n">สอง</span> <span class="n">process</span> <span class="n">เครืองของท่านอาจมีหมายเลขไม่ตรง</span>
+<span class="n">kill</span> <span class="o">-</span><span class="mi">9</span> <span class="mi">3430</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span>  <span class="n">Killed</span>                  <span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span>
+
+<span class="n">kill</span> <span class="o">-</span><span class="mi">9</span> <span class="mi">3538</span>
+
+<span class="o">//</span><span class="n">verify</span>
+<span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">mysql</span>
+<span class="n">root</span>      <span class="mi">3678</span>  <span class="mi">3360</span>  <span class="mi">0</span> <span class="mi">13</span><span class="p">:</span><span class="mi">16</span> <span class="n">pts</span><span class="o">/</span><span class="mi">0</span>    <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="n">grep</span> <span class="o">--</span><span class="n">color</span><span class="o">=</span><span class="n">auto</span> <span class="n">mysql</span>
+</pre></div>
+</div>
+<p>Step6
+เริ่มต้นการทำงานใหม่ พร้อมกับ passwordใหม่</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">mariadb</span>
+<span class="n">mysql</span> <span class="o">-</span><span class="n">u</span> <span class="n">root</span> <span class="o">-</span><span class="n">p</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="keystone.html" class="btn btn-neutral float-right" title="Install keystone" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="openstack-intro.html" class="btn btn-neutral" title="Openstack intro Mitaka Document" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
