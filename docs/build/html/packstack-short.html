@@ -150,8 +150,69 @@
             
   <div class="section" id="openstack-cloud">
 <h1>Openstack Cloud<a class="headerlink" href="#openstack-cloud" title="Permalink to this headline">¶</a></h1>
-<p>Vagrantfile:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">literalinclude</span><span class="p">::</span> <span class="n">lab2_vagrantfile</span>
+<p>Vagrantfile</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span># -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$master_script = &lt;&lt;SCRIPT
+set -ex
+date &gt; /etc/vagrant_box_build_time
+echo &quot;root:linux&quot; | chpasswd
+cat &lt;&lt; HOST &gt;&gt; /etc/hosts
+10.10.10.10  controller.example.com controller
+10.10.10.11  compute.example.com compute
+HOST
+echo &quot;nameserver 8.8.8.8&quot; &gt; /etc/resolv.conf
+sed -i &quot;s/SELINUX=enforcing/SELINUX=disabled/g&quot; /etc/selinux/config
+setenforce 0
+echo &quot;vagrant ALL=(root) NOPASSWD:ALL&quot; &gt;&gt; /etc/sudoers.d/vagrant
+chmod 0440 /etc/sudoers.d/vagrant
+sed -i.orgi &quot;s/PasswordAuthentication no/PasswordAuthentication yes/g&quot;    /etc/ssh/sshd_config
+systemctl restart sshd
+
+systemctl stop firewalld
+systemctl disable NetworkManager
+systemctl stop NetworkManager
+systemctl enable network
+systemctl start network
+
+#yum install -y centos-release-openstack-mitaka
+yum install -y centos-release-openstack-newton
+yum update -y
+yum install -y openstack-packstack
+SCRIPT
+
+Vagrant.configure(2) do |config|
+  config.vm.box = &quot;centos/7&quot;
+  config.vm.define :controller do |node|
+      node.vm.hostname = &quot;controller.example.com&quot;
+      node.vm.provider :libvirt do |libvirt|
+        libvirt.uri = &#39;qemu+unix:///system&#39;
+        libvirt.cpus = 8
+        libvirt.memory = 8192
+        libvirt.nested = true
+        libvirt.storage :file, :size =&gt; &#39;10G&#39;
+        libvirt.storage :file, :size =&gt; &#39;10G&#39;
+      end
+      #eth1 network
+      node.vm.network :private_network, ip: &quot;10.10.10.10&quot;
+      node.vm.network :private_network, ip: &quot;10.10.20.10&quot;
+      node.vm.provision :shell, :inline =&gt; $master_script
+  end
+  config.vm.define :compute do |node|
+      node.vm.hostname = &quot;compute.example.com&quot;
+      node.vm.provider :libvirt do |libvirt|
+        libvirt.uri = &#39;qemu+unix:///system&#39;
+        libvirt.cpus = 8
+        libvirt.memory = 8192
+        libvirt.nested = true
+      end
+      #eth1 network
+      node.vm.network :private_network, ip: &quot;10.10.10.11&quot;
+      node.vm.network :private_network, ip: &quot;10.10.20.11&quot;
+      node.vm.provision :shell, :inline =&gt; $master_script
+  end
+end
 </pre></div>
 </div>
 <p>::

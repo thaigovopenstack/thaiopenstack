@@ -2,7 +2,7 @@
 Openstack Cloud
 ***************
 
-Vagrantfile::
+Vagrantfile
 
 .. literalinclude:: lab2_vagrantfile
 
