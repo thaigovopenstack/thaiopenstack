@@ -283,40 +283,19 @@ end
 <span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">passwd</span><span class="o">=</span><span class="n">linux</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>::</dt>
-<dd><p class="first">...
-Applying 10.10.10.10_controller.pp
-10.10.10.10_controller.pp:                           [ DONE ]
-Applying 10.10.10.10_network.pp
-10.10.10.10_network.pp:                              [ DONE ]
-Applying 10.10.10.11_compute.pp
-10.10.10.11_compute.pp:                              [ DONE ]
-Applying Puppet manifests                            [ DONE ]
-Finalizing                                           [ DONE ]</p>
-<blockquote>
-<div><a href="#id1"><span class="problematic" id="id2">**</span></a>** Installation completed successfully <strong>**</strong></div></blockquote>
-<dl class="docutils">
-<dt>Additional information:</dt>
-<dd><ul class="first last simple">
-<li>A new answerfile was created in: /root/packstack-answers-20161012-011347.txt</li>
-<li>Time synchronization installation was skipped. Please note that unsynchronized time on server instances might be problem for some OpenStack components.</li>
-<li>File /root/keystonerc_admin has been created on OpenStack client host 10.10.10.10. To use the command line tools you need to source the file.</li>
-<li>To access the OpenStack Dashboard browse to <a class="reference external" href="http://10.10.10.10/dashboard">http://10.10.10.10/dashboard</a> .</li>
-</ul>
-</dd>
-<dt>Please, find your login credentials stored in the keystonerc_admin in your home directory.</dt>
-<dd><ul class="first last simple">
-<li>Because of the kernel update the host 10.10.10.11 requires reboot.</li>
-<li>Because of the kernel update the host 10.10.10.10 requires reboot.</li>
-<li>The installation log file is available at: /var/tmp/packstack/20161012-011346-Rr34Lj/openstack-setup.log</li>
-<li>The generated manifests are available at: /var/tmp/packstack/20161012-011346-Rr34Lj/manifests</li>
-</ul>
-</dd>
-</dl>
-<p class="last">[<a class="reference external" href="mailto:root&#37;&#52;&#48;controller">root<span>&#64;</span>controller</a> ~]#</p>
-</dd>
-</dl>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Additional</span> <span class="n">information</span><span class="p">:</span>
+ <span class="o">*</span> <span class="n">A</span> <span class="n">new</span> <span class="n">answerfile</span> <span class="n">was</span> <span class="n">created</span> <span class="ow">in</span><span class="p">:</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">packstack</span><span class="o">-</span><span class="n">answers</span><span class="o">-</span><span class="mi">20161012</span><span class="o">-</span><span class="mf">011347.</span><span class="n">txt</span>
+ <span class="o">*</span> <span class="n">Time</span> <span class="n">synchronization</span> <span class="n">installation</span> <span class="n">was</span> <span class="n">skipped</span><span class="o">.</span> <span class="n">Please</span> <span class="n">note</span> <span class="n">that</span> <span class="n">unsynchronized</span> <span class="n">time</span> <span class="n">on</span> <span class="n">server</span> <span class="n">instances</span> <span class="n">might</span> <span class="n">be</span> <span class="n">problem</span> <span class="k">for</span> <span class="n">some</span> <span class="n">OpenStack</span> <span class="n">components</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">File</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">keystonerc_admin</span> <span class="n">has</span> <span class="n">been</span> <span class="n">created</span> <span class="n">on</span> <span class="n">OpenStack</span> <span class="n">client</span> <span class="n">host</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="o">.</span> <span class="n">To</span> <span class="n">use</span> <span class="n">the</span> <span class="n">command</span> <span class="n">line</span> <span class="n">tools</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">source</span> <span class="n">the</span> <span class="n">file</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">To</span> <span class="n">access</span> <span class="n">the</span> <span class="n">OpenStack</span> <span class="n">Dashboard</span> <span class="n">browse</span> <span class="n">to</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="o">/</span><span class="n">dashboard</span> <span class="o">.</span>
+<span class="n">Please</span><span class="p">,</span> <span class="n">find</span> <span class="n">your</span> <span class="n">login</span> <span class="n">credentials</span> <span class="n">stored</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">keystonerc_admin</span> <span class="ow">in</span> <span class="n">your</span> <span class="n">home</span> <span class="n">directory</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">Because</span> <span class="n">of</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">update</span> <span class="n">the</span> <span class="n">host</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span> <span class="n">requires</span> <span class="n">reboot</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">Because</span> <span class="n">of</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">update</span> <span class="n">the</span> <span class="n">host</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span> <span class="n">requires</span> <span class="n">reboot</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">The</span> <span class="n">installation</span> <span class="n">log</span> <span class="n">file</span> <span class="ow">is</span> <span class="n">available</span> <span class="n">at</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">packstack</span><span class="o">/</span><span class="mi">20161012</span><span class="o">-</span><span class="mi">011346</span><span class="o">-</span><span class="n">Rr34Lj</span><span class="o">/</span><span class="n">openstack</span><span class="o">-</span><span class="n">setup</span><span class="o">.</span><span class="n">log</span>
+ <span class="o">*</span> <span class="n">The</span> <span class="n">generated</span> <span class="n">manifests</span> <span class="n">are</span> <span class="n">available</span> <span class="n">at</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">packstack</span><span class="o">/</span><span class="mi">20161012</span><span class="o">-</span><span class="mi">011346</span><span class="o">-</span><span class="n">Rr34Lj</span><span class="o">/</span><span class="n">manifests</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1">#</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfile</p>

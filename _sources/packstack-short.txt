@@ -80,17 +80,6 @@ Terminal1::
 
 
 ::
-    ...
-    Applying 10.10.10.10_controller.pp
-    10.10.10.10_controller.pp:                           [ DONE ]
-    Applying 10.10.10.10_network.pp
-    10.10.10.10_network.pp:                              [ DONE ]
-    Applying 10.10.10.11_compute.pp
-    10.10.10.11_compute.pp:                              [ DONE ]
-    Applying Puppet manifests                            [ DONE ]
-    Finalizing                                           [ DONE ]
-
-     **** Installation completed successfully ******
 
     Additional information:
      * A new answerfile was created in: /root/packstack-answers-20161012-011347.txt
@@ -112,7 +101,7 @@ Terminal1::
         [root@controller ~]# ls
         packstack-answers-20161012-011347.txt
         [root@controller ~]# packstack --answer-file=packstack-answers-20161012-011347.txt
-        
+
 เครื่อง host
 
 Terminal2::
