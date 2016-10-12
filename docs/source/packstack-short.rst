@@ -2,14 +2,17 @@
 Openstack Cloud
 ***************
 
+::
+
+    mkdir lab2
+    cd lab2
+    vi Vagrantfile
+
+
 Vagrantfile
 
 .. literalinclude:: lab2_vagrantfile
 
-::
-mkdir lab2
-cd lab2
-vi Vagrantfile
 
 Terminal1::
 
