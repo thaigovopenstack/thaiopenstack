@@ -78,6 +78,41 @@ Terminal1::
     --cinder-volumes-create=n \
     --keystone-admin-passwd=linux
 
+
+::
+    ...
+    Applying 10.10.10.10_controller.pp
+    10.10.10.10_controller.pp:                           [ DONE ]
+    Applying 10.10.10.10_network.pp
+    10.10.10.10_network.pp:                              [ DONE ]
+    Applying 10.10.10.11_compute.pp
+    10.10.10.11_compute.pp:                              [ DONE ]
+    Applying Puppet manifests                            [ DONE ]
+    Finalizing                                           [ DONE ]
+
+     **** Installation completed successfully ******
+
+    Additional information:
+     * A new answerfile was created in: /root/packstack-answers-20161012-011347.txt
+     * Time synchronization installation was skipped. Please note that unsynchronized time on server instances might be problem for some OpenStack components.
+     * File /root/keystonerc_admin has been created on OpenStack client host 10.10.10.10. To use the command line tools you need to source the file.
+     * To access the OpenStack Dashboard browse to http://10.10.10.10/dashboard .
+    Please, find your login credentials stored in the keystonerc_admin in your home directory.
+     * Because of the kernel update the host 10.10.10.11 requires reboot.
+     * Because of the kernel update the host 10.10.10.10 requires reboot.
+     * The installation log file is available at: /var/tmp/packstack/20161012-011346-Rr34Lj/openstack-setup.log
+     * The generated manifests are available at: /var/tmp/packstack/20161012-011346-Rr34Lj/manifests
+    [root@controller ~]#
+
+.. note::  หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfile
+ที่สร้างขึ้น
+
+    ::
+
+        [root@controller ~]# ls
+        packstack-answers-20161012-011347.txt
+        [root@controller ~]# packstack --answer-file=packstack-answers-20161012-011347.txt
+        
 เครื่อง host
 
 Terminal2::

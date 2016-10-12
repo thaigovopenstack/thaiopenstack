@@ -283,6 +283,52 @@ end
 <span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">passwd</span><span class="o">=</span><span class="n">linux</span>
 </pre></div>
 </div>
+<dl class="docutils">
+<dt>::</dt>
+<dd><p class="first">...
+Applying 10.10.10.10_controller.pp
+10.10.10.10_controller.pp:                           [ DONE ]
+Applying 10.10.10.10_network.pp
+10.10.10.10_network.pp:                              [ DONE ]
+Applying 10.10.10.11_compute.pp
+10.10.10.11_compute.pp:                              [ DONE ]
+Applying Puppet manifests                            [ DONE ]
+Finalizing                                           [ DONE ]</p>
+<blockquote>
+<div><a href="#id1"><span class="problematic" id="id2">**</span></a>** Installation completed successfully <strong>**</strong></div></blockquote>
+<dl class="docutils">
+<dt>Additional information:</dt>
+<dd><ul class="first last simple">
+<li>A new answerfile was created in: /root/packstack-answers-20161012-011347.txt</li>
+<li>Time synchronization installation was skipped. Please note that unsynchronized time on server instances might be problem for some OpenStack components.</li>
+<li>File /root/keystonerc_admin has been created on OpenStack client host 10.10.10.10. To use the command line tools you need to source the file.</li>
+<li>To access the OpenStack Dashboard browse to <a class="reference external" href="http://10.10.10.10/dashboard">http://10.10.10.10/dashboard</a> .</li>
+</ul>
+</dd>
+<dt>Please, find your login credentials stored in the keystonerc_admin in your home directory.</dt>
+<dd><ul class="first last simple">
+<li>Because of the kernel update the host 10.10.10.11 requires reboot.</li>
+<li>Because of the kernel update the host 10.10.10.10 requires reboot.</li>
+<li>The installation log file is available at: /var/tmp/packstack/20161012-011346-Rr34Lj/openstack-setup.log</li>
+<li>The generated manifests are available at: /var/tmp/packstack/20161012-011346-Rr34Lj/manifests</li>
+</ul>
+</dd>
+</dl>
+<p class="last">[<a class="reference external" href="mailto:root&#37;&#52;&#48;controller">root<span>&#64;</span>controller</a> ~]#</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfile</p>
+</div>
+<p>ที่สร้างขึ้น</p>
+<blockquote>
+<div><div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ls</span>
+<span class="n">packstack</span><span class="o">-</span><span class="n">answers</span><span class="o">-</span><span class="mi">20161012</span><span class="o">-</span><span class="mf">011347.</span><span class="n">txt</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1"># packstack --answer-file=packstack-answers-20161012-011347.txt</span>
+</pre></div>
+</div>
+</div></blockquote>
 <p>เครื่อง host</p>
 <p>Terminal2:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">install</span> <span class="n">openstack</span> <span class="n">client</span>
