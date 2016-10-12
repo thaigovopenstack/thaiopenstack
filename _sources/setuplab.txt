@@ -43,7 +43,7 @@ Terminal2::
 
     PasswordAuthentication yes
 
-    [root@server ~]# systemctl restart sshd
+    [root@server ~]# systemctl restart sshdf
 
 
 Terminal1::
@@ -144,6 +144,8 @@ Terminal1::
     server 0.asia.pool.ntp.org iburst
     server 2.asia.pool.ntp.org iburst
 
+    allow 10.20.30.0/24
+
     $ sudo systemctl restart chronyd
     $ chronyc source
 
@@ -160,7 +162,7 @@ Terminal1::
     vi  /etc/chrony.conf
     //เปลี่ยนแปลง time server ให้ชื้ไปยัง server
     server 10.20.30.41 iburst
-    allow 10.20.30.0/24
+
 
     sudo systemctl restart chronyd
     $ chronyc sources
