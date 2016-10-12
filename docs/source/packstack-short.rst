@@ -16,7 +16,15 @@ Vagrantfile
 
 Terminal1::
 
+    vagrant up --provider libvirt
+
     vagrant status
+    Current machine states:
+
+    controller                running (libvirt)
+    compute                   running (libvirt)
+
+
     vagrant ssh controller
     sudo su -
     ssh-keygen -t rsa -b 4096 -C "openstack"
