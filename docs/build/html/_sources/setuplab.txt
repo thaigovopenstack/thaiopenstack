@@ -138,12 +138,13 @@ Terminal1::
 ตั้งค่า Timeserver (Terminal 2 )::
 
     $ sudo yum install chrony -y
-    $ vi  /etc/chrony.conf
+    $ sudo vi  /etc/chrony.conf
     //เปลี่ยนแปลง time server
     server 1.th.pool.ntp.org iburst
     server 0.asia.pool.ntp.org iburst
     server 2.asia.pool.ntp.org iburst
-
+    
+    //อนุญาติให้เครื่องในวง 10.20.30.0/24 สามารถ syncได้
     allow 10.20.30.0/24
 
     $ sudo systemctl restart chronyd
