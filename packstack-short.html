@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Openstack Cloud &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="Openstack with Packstack" href="packstack.html"/>
+        <link rel="prev" title="Network Virtualization Device" href="virtualdev.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setuplab.html">Setup Vagrant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Openstack Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Openstack Cloud</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/packstack-short.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="openstack-cloud">
+<h1>Openstack Cloud<a class="headerlink" href="#openstack-cloud" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">lab2</span>
+<span class="n">cd</span> <span class="n">lab2</span>
+<span class="n">vi</span> <span class="n">Vagrantfile</span>
+</pre></div>
+</div>
+<p>Vagrantfile</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span># -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$master_script = &lt;&lt;SCRIPT
+set -ex
+date &gt; /etc/vagrant_box_build_time
+echo &quot;root:linux&quot; | chpasswd
+cat &lt;&lt; HOST &gt;&gt; /etc/hosts
+10.10.10.10  controller.example.com controller
+10.10.10.11  compute.example.com compute
+HOST
+echo &quot;nameserver 8.8.8.8&quot; &gt; /etc/resolv.conf
+sed -i &quot;s/SELINUX=enforcing/SELINUX=disabled/g&quot; /etc/selinux/config
+setenforce 0
+echo &quot;vagrant ALL=(root) NOPASSWD:ALL&quot; &gt;&gt; /etc/sudoers.d/vagrant
+chmod 0440 /etc/sudoers.d/vagrant
+sed -i.orgi &quot;s/PasswordAuthentication no/PasswordAuthentication yes/g&quot;    /etc/ssh/sshd_config
+systemctl restart sshd
+
+systemctl stop firewalld
+systemctl disable NetworkManager
+systemctl stop NetworkManager
+systemctl enable network
+systemctl start network
+
+#yum install -y centos-release-openstack-mitaka
+yum install -y centos-release-openstack-newton
+yum update -y
+yum install -y openstack-packstack
+SCRIPT
+
+Vagrant.configure(2) do |config|
+  config.vm.box = &quot;centos/7&quot;
+  config.vm.define :controller do |node|
+      node.vm.hostname = &quot;controller.example.com&quot;
+      node.vm.provider :libvirt do |libvirt|
+        libvirt.uri = &#39;qemu+unix:///system&#39;
+        libvirt.cpus = 8
+        libvirt.memory = 8192
+        libvirt.nested = true
+        libvirt.storage :file, :size =&gt; &#39;10G&#39;
+        libvirt.storage :file, :size =&gt; &#39;10G&#39;
+      end
+      #eth1 network
+      node.vm.network :private_network, ip: &quot;10.10.10.10&quot;
+      node.vm.network :private_network, ip: &quot;10.10.20.10&quot;
+      node.vm.provision :shell, :inline =&gt; $master_script
+  end
+  config.vm.define :compute do |node|
+      node.vm.hostname = &quot;compute.example.com&quot;
+      node.vm.provider :libvirt do |libvirt|
+        libvirt.uri = &#39;qemu+unix:///system&#39;
+        libvirt.cpus = 8
+        libvirt.memory = 8192
+        libvirt.nested = true
+      end
+      #eth1 network
+      node.vm.network :private_network, ip: &quot;10.10.10.11&quot;
+      node.vm.network :private_network, ip: &quot;10.10.20.11&quot;
+      node.vm.provision :shell, :inline =&gt; $master_script
+  end
+end
+</pre></div>
+</div>
+<p>Terminal1:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">up</span> <span class="o">--</span><span class="n">provider</span> <span class="n">libvirt</span>
+
+<span class="n">vagrant</span> <span class="n">status</span>
+<span class="n">Current</span> <span class="n">machine</span> <span class="n">states</span><span class="p">:</span>
+
+<span class="n">controller</span>                <span class="n">running</span> <span class="p">(</span><span class="n">libvirt</span><span class="p">)</span>
+<span class="n">compute</span>                   <span class="n">running</span> <span class="p">(</span><span class="n">libvirt</span><span class="p">)</span>
+
+
+<span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">b</span> <span class="mi">4096</span> <span class="o">-</span><span class="n">C</span> <span class="s2">&quot;openstack&quot;</span>
+<span class="n">ssh</span><span class="o">-</span><span class="n">copy</span><span class="o">-</span><span class="nb">id</span> <span class="n">compute</span>
+<span class="n">ssh</span><span class="o">-</span><span class="n">copy</span><span class="o">-</span><span class="nb">id</span> <span class="n">controller</span>
+
+<span class="o">//</span><span class="n">Test</span> <span class="n">ssh</span>
+<span class="n">ssh</span> <span class="n">compute</span>
+<span class="n">exit</span>
+<span class="n">ssh</span> <span class="n">controller</span>
+<span class="n">exit</span>
+</pre></div>
+</div>
+<p>Terminal1:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">prepare</span> <span class="n">disk</span> <span class="k">for</span> <span class="n">volume</span> <span class="n">group</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">fdisk</span> <span class="o">-</span><span class="n">l</span>
+
+<span class="n">fdisk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
+<span class="n">n</span>
+<span class="n">p</span>
+<span class="mi">1</span>
+<span class="n">enter</span>
+<span class="n">enter</span>
+<span class="n">w</span>
+
+<span class="n">partprobe</span>
+
+<span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
+<span class="n">vgcreate</span> <span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
+</pre></div>
+</div>
+<p>เครื่อง controller</p>
+<p>Terminal1:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">run</span> <span class="n">packstck</span>
+<span class="o">//</span><span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="n">CONTROLLER_ADDRESS</span><span class="p">,</span><span class="n">COMPUTE_ADDRESSES</span>
+
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">,</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span> \
+<span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
+<span class="o">--</span><span class="n">provision</span><span class="o">-</span><span class="n">demo</span><span class="o">=</span><span class="n">n</span> \
+<span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ovs</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">mappings</span><span class="o">=</span><span class="n">extnet</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">,</span><span class="n">physnet1</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ovs</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">interfaces</span><span class="o">=</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">:</span><span class="n">eth0</span><span class="p">,</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span><span class="p">:</span><span class="n">eth2</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ml2</span><span class="o">-</span><span class="nb">type</span><span class="o">-</span><span class="n">drivers</span><span class="o">=</span><span class="n">vxlan</span><span class="p">,</span><span class="n">flat</span><span class="p">,</span><span class="n">local</span><span class="p">,</span><span class="n">vlan</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ml2</span><span class="o">-</span><span class="n">vlan</span><span class="o">-</span><span class="n">ranges</span><span class="o">=</span><span class="n">physnet1</span><span class="p">:</span><span class="mi">1000</span><span class="p">:</span><span class="mi">2000</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">heat</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">heat</span><span class="o">-</span><span class="n">cfn</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">sahara</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">trove</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">lbaas</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
+<span class="o">--</span><span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span><span class="o">-</span><span class="n">create</span><span class="o">=</span><span class="n">n</span> \
+<span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">passwd</span><span class="o">=</span><span class="n">linux</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Applying</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="n">_controller</span><span class="o">.</span><span class="n">pp</span>
+<span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="n">_controller</span><span class="o">.</span><span class="n">pp</span><span class="p">:</span>                           <span class="p">[</span> <span class="n">DONE</span> <span class="p">]</span>
+<span class="n">Applying</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="n">_network</span><span class="o">.</span><span class="n">pp</span>
+<span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="n">_network</span><span class="o">.</span><span class="n">pp</span><span class="p">:</span>                              <span class="p">[</span> <span class="n">DONE</span> <span class="p">]</span>
+<span class="n">Applying</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span><span class="n">_compute</span><span class="o">.</span><span class="n">pp</span>
+<span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span><span class="n">_compute</span><span class="o">.</span><span class="n">pp</span><span class="p">:</span>                              <span class="p">[</span> <span class="n">DONE</span> <span class="p">]</span>
+<span class="n">Applying</span> <span class="n">Puppet</span> <span class="n">manifests</span>                            <span class="p">[</span> <span class="n">DONE</span> <span class="p">]</span>
+<span class="n">Finalizing</span>                                           <span class="p">[</span> <span class="n">DONE</span> <span class="p">]</span>
+
+<span class="n">Additional</span> <span class="n">information</span><span class="p">:</span>
+ <span class="o">*</span> <span class="n">A</span> <span class="n">new</span> <span class="n">answerfile</span> <span class="n">was</span> <span class="n">created</span> <span class="ow">in</span><span class="p">:</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">packstack</span><span class="o">-</span><span class="n">answers</span><span class="o">-</span><span class="mi">20161012</span><span class="o">-</span><span class="mf">011347.</span><span class="n">txt</span>
+ <span class="o">*</span> <span class="n">Time</span> <span class="n">synchronization</span> <span class="n">installation</span> <span class="n">was</span> <span class="n">skipped</span><span class="o">.</span> <span class="n">Please</span> <span class="n">note</span> <span class="n">that</span> <span class="n">unsynchronized</span> <span class="n">time</span> <span class="n">on</span> <span class="n">server</span> <span class="n">instances</span> <span class="n">might</span> <span class="n">be</span> <span class="n">problem</span> <span class="k">for</span> <span class="n">some</span> <span class="n">OpenStack</span> <span class="n">components</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">File</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">keystonerc_admin</span> <span class="n">has</span> <span class="n">been</span> <span class="n">created</span> <span class="n">on</span> <span class="n">OpenStack</span> <span class="n">client</span> <span class="n">host</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="o">.</span> <span class="n">To</span> <span class="n">use</span> <span class="n">the</span> <span class="n">command</span> <span class="n">line</span> <span class="n">tools</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">source</span> <span class="n">the</span> <span class="n">file</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">To</span> <span class="n">access</span> <span class="n">the</span> <span class="n">OpenStack</span> <span class="n">Dashboard</span> <span class="n">browse</span> <span class="n">to</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="o">/</span><span class="n">dashboard</span> <span class="o">.</span>
+<span class="n">Please</span><span class="p">,</span> <span class="n">find</span> <span class="n">your</span> <span class="n">login</span> <span class="n">credentials</span> <span class="n">stored</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">keystonerc_admin</span> <span class="ow">in</span> <span class="n">your</span> <span class="n">home</span> <span class="n">directory</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">Because</span> <span class="n">of</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">update</span> <span class="n">the</span> <span class="n">host</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span> <span class="n">requires</span> <span class="n">reboot</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">Because</span> <span class="n">of</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">update</span> <span class="n">the</span> <span class="n">host</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span> <span class="n">requires</span> <span class="n">reboot</span><span class="o">.</span>
+ <span class="o">*</span> <span class="n">The</span> <span class="n">installation</span> <span class="n">log</span> <span class="n">file</span> <span class="ow">is</span> <span class="n">available</span> <span class="n">at</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">packstack</span><span class="o">/</span><span class="mi">20161012</span><span class="o">-</span><span class="mi">011346</span><span class="o">-</span><span class="n">Rr34Lj</span><span class="o">/</span><span class="n">openstack</span><span class="o">-</span><span class="n">setup</span><span class="o">.</span><span class="n">log</span>
+ <span class="o">*</span> <span class="n">The</span> <span class="n">generated</span> <span class="n">manifests</span> <span class="n">are</span> <span class="n">available</span> <span class="n">at</span><span class="p">:</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">packstack</span><span class="o">/</span><span class="mi">20161012</span><span class="o">-</span><span class="mi">011346</span><span class="o">-</span><span class="n">Rr34Lj</span><span class="o">/</span><span class="n">manifests</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1">#</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfil ที่สร้างขึ้น</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ls</span>
+<span class="n">packstack</span><span class="o">-</span><span class="n">answers</span><span class="o">-</span><span class="mi">20161012</span><span class="o">-</span><span class="mf">011347.</span><span class="n">txt</span>
+<span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1"># packstack --answer-file=packstack-answers-20161012-011347.txt</span>
+</pre></div>
+</div>
+</div>
+<p>เครื่อง host</p>
+<p>Terminal2:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">install</span> <span class="n">openstack</span> <span class="n">client</span>
+<span class="c1">## Install openstack client [on host]</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="p">{</span><span class="n">openstack</span><span class="p">,</span><span class="n">keystone</span><span class="p">,</span><span class="n">nova</span><span class="p">,</span><span class="n">neutron</span><span class="p">,</span><span class="n">glance</span><span class="p">,</span><span class="n">cinder</span><span class="p">,</span>\
+<span class="n">swift</span><span class="p">,</span><span class="n">heat</span><span class="p">,</span><span class="n">ceilometer</span><span class="p">}</span><span class="n">client</span>
+<span class="c1">## create working folder</span>
+<span class="n">cd</span> <span class="o">~</span> <span class="o">&amp;&amp;</span> <span class="n">mkdir</span> <span class="n">openstackrc</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="n">openstackrc</span>
+
+<span class="c1">##create file ชื่อ admin_rc_v2 (เป็นชื่ออะไรก็ได)</span>
+<span class="n">cat</span> <span class="o">&lt;&lt;</span> <span class="n">RC</span> <span class="o">&gt;</span> <span class="n">admin_rc_v2</span>
+<span class="n">unset</span> <span class="n">OS_SERVICE_TOKEN</span>
+<span class="n">export</span> <span class="n">OS_USERNAME</span><span class="o">=</span><span class="n">admin</span>
+<span class="n">export</span> <span class="n">OS_PASSWORD</span><span class="o">=</span><span class="n">linux</span>
+<span class="n">export</span> <span class="n">OS_AUTH_URL</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">v2</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s1">&#39;[\u@\h \W(keystone_admin)]\$ &#39;</span>
+<span class="n">export</span> <span class="n">OS_TENANT_NAME</span><span class="o">=</span><span class="n">admin</span>
+<span class="n">export</span> <span class="n">OS_REGION_NAME</span><span class="o">=</span><span class="n">RegionOne</span>
+<span class="n">RC</span>
+<span class="c1">## Test</span>
+<span class="n">source</span> <span class="n">admin_rc_v2</span>
+<span class="n">openstack</span> <span class="n">user</span> <span class="nb">list</span>
+
+<span class="o">+----------------------------------+------------+</span>
+<span class="o">|</span> <span class="n">ID</span>                               <span class="o">|</span> <span class="n">Name</span>       <span class="o">|</span>
+<span class="o">+----------------------------------+------------+</span>
+<span class="o">|</span> <span class="mi">5</span><span class="n">c08e42a280445e283a71d6e01735811</span> <span class="o">|</span> <span class="n">admin</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="mi">08</span><span class="n">bc39d8bfaf40e5903dd96a0641ee9d</span> <span class="o">|</span> <span class="n">neutron</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="n">a7dfe90d96e345268d303f95cab83ef2</span> <span class="o">|</span> <span class="n">heat</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="n">ab12686ca4b14868956d310f1aca1af8</span> <span class="o">|</span> <span class="n">gnocchi</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="mi">38</span><span class="n">be373dfe674e089e02c88be07f92a2</span> <span class="o">|</span> <span class="n">aodh</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="mi">036</span><span class="n">d2e3e3ed940dd84b0575d838621bc</span> <span class="o">|</span> <span class="n">nova</span>       <span class="o">|</span>
+<span class="o">|</span> <span class="mi">302</span><span class="n">bbb18eeab418f83288690521dd1bf</span> <span class="o">|</span> <span class="n">glance</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">eb387675e73441a497f4549d59fa02f4</span> <span class="o">|</span> <span class="n">trove</span>      <span class="o">|</span>
+<span class="o">|</span> <span class="mi">14</span><span class="n">c2a2c213d64be499315b8897585924</span> <span class="o">|</span> <span class="n">sahara</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="n">e44524eff3da4c57a8283caead1c63ea</span> <span class="o">|</span> <span class="n">ceilometer</span> <span class="o">|</span>
+<span class="o">|</span> <span class="mi">830</span><span class="n">c925ee56045df8c7a226612f66d26</span> <span class="o">|</span> <span class="n">cinder</span>     <span class="o">|</span>
+<span class="o">|</span> <span class="mi">96</span><span class="n">f580c5af874165a54f28d71f3641ca</span> <span class="o">|</span> <span class="n">heat</span><span class="o">-</span><span class="n">cfn</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="mi">355</span><span class="n">e46c0f63b499aa2b7eb14f698f97e</span> <span class="o">|</span> <span class="n">swift</span>      <span class="o">|</span>
+<span class="o">+----------------------------------+------------+</span>
+</pre></div>
+</div>
+<p>เครื่อง host</p>
+<p>Terminal2:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ cd ~/openstackrc
+$ wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
+$ openstack image create &quot;cirros&quot; \
+--file cirros-0.3.4-x86_64-disk.img \
+--disk-format qcow2 --container-format bare \
+--public
+
+ผลลัพท์ที่ได้
++------------------+------------------------------------------------------+
+| Field            | Value                                                |
++------------------+------------------------------------------------------+
+| checksum         | ee1eca47dc88f4879d8a229cc70a07c6                     |
+| container_format | bare                                                 |
+| created_at       | 2016-10-12T05:25:56Z                                 |
+| disk_format      | qcow2                                                |
+| file             | /v2/images/eb971176-4804-4fc2-8266-a90b1341b8a6/file |
+| id               | eb971176-4804-4fc2-8266-a90b1341b8a6                 |
+| min_disk         | 0                                                    |
+| min_ram          | 0                                                    |
+| name             | cirros                                               |
+| owner            | 686e1f1af2ce4333931bd178c12c22c3                     |
+| protected        | False                                                |
+| schema           | /v2/schemas/image                                    |
+| size             | 13287936                                             |
+| status           | active                                               |
+| tags             |                                                      |
+| updated_at       | 2016-10-12T05:25:56Z                                 |
+| virtual_size     | None                                                 |
+| visibility       | public                                               |
++------------------+------------------------------------------------------+
+
+แสดง รายการ image
+$ openstack image list
++--------------------------------------+--------+--------+
+| ID                                   | Name   | Status |
++--------------------------------------+--------+--------+
+| eb971176-4804-4fc2-8266-a90b1341b8a6 | cirros | active |
++--------------------------------------+--------+--------+
+</pre></div>
+</div>
+<p>์*Network Architecture&#8221;</p>
+<p>..image:: images/Neutron_architecture.png</p>
+<p>สร้าง flat network ชื่อ extnet  [เนื่องจาก &#8211;os-neutron-ovs-bridge-mappings=extnet:br-ex]</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ neutron net-create external_network --provider:network_type flat --provider:physical_network extnet  --router:external
+Created a new network:
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | True                                 |
+| availability_zone_hints   |                                      |
+| availability_zones        |                                      |
+| created_at                | 2016-10-12T05:33:58Z                 |
+| description               |                                      |
+| id                        | b44cddbc-e544-434b-a96c-0ab95e741b29 |
+| ipv4_address_scope        |                                      |
+| ipv6_address_scope        |                                      |
+| is_default                | False                                |
+| mtu                       | 1500                                 |
+| name                      | external_network                     |
+| project_id                | 686e1f1af2ce4333931bd178c12c22c3     |
+| provider:network_type     | flat                                 |
+| provider:physical_network | extnet                               |
+| provider:segmentation_id  |                                      |
+| revision_number           | 2                                    |
+| router:external           | True                                 |
+| shared                    | False                                |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tags                      |                                      |
+| tenant_id                 | 686e1f1af2ce4333931bd178c12c22c3     |
+| updated_at                | 2016-10-12T05:33:58Z                 |
++---------------------------+--------------------------------------+
+
+
+$ neutron subnet-create --name public_subnet --enable_dhcp=False --allocation-pool=start=192.168.121.100,end=192.168.121.200 \
+</pre></div>
+</div>
+<p>&#8211;gateway=192.168.121.1 external_network 192.168.121.0/24</p>
+<blockquote>
+<div>Created a new subnet:
++&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;+
+| Field             | Value                                                  |
++&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;+
+| allocation_pools  | {&#8220;start&#8221;: &#8220;192.168.121.100&#8221;, &#8220;end&#8221;: &#8220;192.168.121.200&#8221;} |
+| cidr              | 192.168.121.0/24                                       |
+| created_at        | 2016-10-12T05:37:09Z                                   |
+| description       |                                                        |
+| dns_nameservers   |                                                        |
+| enable_dhcp       | False                                                  |
+| gateway_ip        | 192.168.121.1                                          |
+| host_routes       |                                                        |
+| id                | a34c2cde-e5ec-42b5-8de4-232b425fb861                   |
+| ip_version        | 4                                                      |
+| ipv6_address_mode |                                                        |
+| ipv6_ra_mode      |                                                        |
+| name              | public_subnet                                          |
+| network_id        | b44cddbc-e544-434b-a96c-0ab95e741b29                   |
+| project_id        | 686e1f1af2ce4333931bd178c12c22c3                       |
+| revision_number   | 2                                                      |
+| service_types     |                                                        |
+| subnetpool_id     |                                                        |
+| tenant_id         | 686e1f1af2ce4333931bd178c12c22c3                       |
+| updated_at        | 2016-10-12T05:37:09Z                                   |
++&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;-+&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;+</div></blockquote>
+<p>สร้าง router และผู้กับ exteranl_network ทีสร้างไว้ก่อนแล้ว</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ neutron router-create router1
+Created a new router:
++-------------------------+--------------------------------------+
+| Field                   | Value                                |
++-------------------------+--------------------------------------+
+| admin_state_up          | True                                 |
+| availability_zone_hints |                                      |
+| availability_zones      |                                      |
+| created_at              | 2016-10-12T05:37:58Z                 |
+| description             |                                      |
+| distributed             | False                                |
+| external_gateway_info   |                                      |
+| flavor_id               |                                      |
+| ha                      | False                                |
+| id                      | 61268195-4e9f-452a-bd1c-eb570d8177c1 |
+| name                    | router1                              |
+| project_id              | 686e1f1af2ce4333931bd178c12c22c3     |
+| revision_number         | 2                                    |
+| routes                  |                                      |
+| status                  | ACTIVE                               |
+| tenant_id               | 686e1f1af2ce4333931bd178c12c22c3     |
+| updated_at              | 2016-10-12T05:37:58Z                 |
++-------------------------+--------------------------------------+
+
+$ neutron router-gateway-set router1 external_network
+Set gateway for router router1
+</pre></div>
+</div>
+<p>สร้าง private network และผูก interface กับ router1</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ neutron net-create private_network
+Created a new network:
++---------------------------+--------------------------------------+
+| Field                     | Value                                |
++---------------------------+--------------------------------------+
+| admin_state_up            | True                                 |
+| availability_zone_hints   |                                      |
+| availability_zones        |                                      |
+| created_at                | 2016-10-12T05:41:12Z                 |
+| description               |                                      |
+| id                        | edaa3879-691e-4cef-89a4-eba6f866129e |
+| ipv4_address_scope        |                                      |
+| ipv6_address_scope        |                                      |
+| mtu                       | 1450                                 |
+| name                      | private_network                      |
+| project_id                | 686e1f1af2ce4333931bd178c12c22c3     |
+| provider:network_type     | vxlan                                |
+| provider:physical_network |                                      |
+| provider:segmentation_id  | 85                                   |
+| revision_number           | 2                                    |
+| router:external           | False                                |
+| shared                    | False                                |
+| status                    | ACTIVE                               |
+| subnets                   |                                      |
+| tags                      |                                      |
+| tenant_id                 | 686e1f1af2ce4333931bd178c12c22c3     |
+| updated_at                | 2016-10-12T05:41:12Z                 |
++---------------------------+--------------------------------------+
+
+$ neutron subnet-create --name private_subnet private_network 192.168.100.0/24
+
+Created a new subnet:
++-------------------+------------------------------------------------------+
+| Field             | Value                                                |
++-------------------+------------------------------------------------------+
+| allocation_pools  | {&quot;start&quot;: &quot;192.168.100.2&quot;, &quot;end&quot;: &quot;192.168.100.254&quot;} |
+| cidr              | 192.168.100.0/24                                     |
+| created_at        | 2016-10-12T05:41:36Z                                 |
+| description       |                                                      |
+| dns_nameservers   |                                                      |
+| enable_dhcp       | True                                                 |
+| gateway_ip        | 192.168.100.1                                        |
+| host_routes       |                                                      |
+| id                | fe006934-5bdc-4643-aba7-4e4e59a587a6                 |
+| ip_version        | 4                                                    |
+| ipv6_address_mode |                                                      |
+| ipv6_ra_mode      |                                                      |
+| name              | private_subnet                                       |
+| network_id        | edaa3879-691e-4cef-89a4-eba6f866129e                 |
+| project_id        | 686e1f1af2ce4333931bd178c12c22c3                     |
+| revision_number   | 2                                                    |
+| service_types     |                                                      |
+| subnetpool_id     |                                                      |
+| tenant_id         | 686e1f1af2ce4333931bd178c12c22c3                     |
+| updated_at        | 2016-10-12T05:41:36Z                                 |
++-------------------+------------------------------------------------------+
+
+$ neutron router-interface-add router1 private_subnet
+(ผลที่ได้ทำให้ external และ private subnet เชื่อมหากัน)
+Added interface b187790c-0192-4819-8881-c82553260485 to router router1.
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="packstack.html" class="btn btn-neutral float-right" title="Openstack with Packstack" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="virtualdev.html" class="btn btn-neutral" title="Network Virtualization Device" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
