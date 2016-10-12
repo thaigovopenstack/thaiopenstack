@@ -170,7 +170,7 @@ Vagrant.configure(2) do |config|
      node.vm.provision :shell, :inline =&gt; &quot;echo root:linux  | chpasswd&quot;
      node.vm.provision :shell, :inline =&gt; $script
      node.vm.network :private_network, :ip =&gt; &quot;10.20.30.40&quot;
-     node.vm.provider :livirt do |domain|
+     node.vm.provider :libvirt do |domain|
         domain.cpus = 2
         domain.memory = 2048
      end
@@ -181,7 +181,7 @@ Vagrant.configure(2) do |config|
      node.vm.provision :shell, :inline =&gt; &quot;echo root:linux  | chpasswd&quot;
      node.vm.provision :shell, :inline =&gt; $script
      node.vm.network :private_network, :ip =&gt; &quot;10.20.30.41&quot;
-     node.vm.provider :livirt do |domain|
+     node.vm.provider :libvirt do |domain|
         domain.cpus = 2
         domain.memory = 2048
         domain.storage :file, :size =&gt; &#39;20G&#39;
@@ -221,7 +221,7 @@ Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
 
 PasswordAuthentication yes
 
-[root@server ~]# systemctl restart ssh
+[root@server ~]# systemctl restart sshd
 </pre></div>
 </div>
 <p>Terminal1:</p>
