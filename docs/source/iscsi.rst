@@ -41,8 +41,8 @@ step 1 Prepare
 
      Press 'p' to print partition tables again
 
-    Press 'w' to save and exit 
-    
+    Press 'w' to save and exit
+
 .. note:: ทำซ้ำ กับ ``/dev/vdc``  ``/dev/vdd``  หลังจากทำเสร็จแล้วให้สั่งคำสั่ง ``partprobe`` เพื่อบอกให้ kernel รับทราบการเปลี่ยนแปลงของ partition::
 
 	partprobe
@@ -57,19 +57,19 @@ step 2 Prepare
 
 	vgcreate iscsi_vg  /dev/vdb1  /dev/vdc1 /dev/vdd1
 	lvcreate -l 100%FREE -n iscsi_lv  iscsi_vg
-    
+
     vgs
     (result)
-  	VG         #PV #LV #SN Attr   VSize  VFree  
+  	VG         #PV #LV #SN Attr   VSize  VFree
   	VolGroup00   1   2   0 wz--n- 39.50g 320.00m
-  	iscsi_vg     3   1   0 wz--n- 59.99g      0 
+  	iscsi_vg     3   1   0 wz--n- 59.99g      0
 
     lvs
     (result)
   	LV       VG         Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert
-  	LogVol00 VolGroup00 -wi-ao---- 37.69g                                                    
-  	LogVol01 VolGroup00 -wi-ao----  1.50g                                                    
-  	iscsi_lv iscsi_vg   -wi-a----- 59.99g   
+  	LogVol00 VolGroup00 -wi-ao---- 37.69g
+  	LogVol01 VolGroup00 -wi-ao----  1.50g
+  	iscsi_lv iscsi_vg   -wi-a----- 59.99g
 
 Install ISCSI server
 ********************
@@ -78,14 +78,14 @@ Install
 การใช้งานจะมี 2 ฝั่ง คือ server เป็นผู้ให้บริการ storage และ ฝั่ง client โดยที่ฝั่ง server ดำเนินการดังต่อไปนี้
 ::
 
-	yum install -y targetcli 
+	yum install -y targetcli
 	targetcli
 	Warning: Could not load preferences file /root/.targetcli/prefs.bin.
 	targetcli shell version 2.1.fb41
 	Copyright 2011-2013 by Datera, Inc and others.
 	For help on commands, type 'help'.
 
-	/> 
+	/>
 	(หลังจาก run คำสั่งแล้วจะได้ prompt )
 
 * step1 create backstores  (target)
@@ -113,7 +113,7 @@ method2 แบบขั้นตอนเดียว
 ::
 
 	/> backstores/fileio create sharedata /opt/sharedata.img 1G
-	
+
 
 * step2 สร้าง iSCSI qualified name (IQN) ชื่อ iqn.2016-07.com.example.server1 ตามด้วย target name ``t1`` (เป็นชื่ออะไรก็ได้)
 ::
@@ -142,9 +142,9 @@ method2 แบบขั้นตอนเดียว
 
 ::
 
-/iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/fileio/sharedata 
+/iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/fileio/sharedata
 
-/iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/block/server1.disk1 
+/iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/block/server1.disk1
 Created LUN 1.
 
 .. image:: images/iscsi004.png
@@ -187,7 +187,7 @@ Created LUN 1.
 	yum install -y net-tools
 
 	# netstat -ant | grep 3260
-	tcp        0      0 0.0.0.0:3260            0.0.0.0:*               LISTEN 
+	tcp        0      0 0.0.0.0:3260            0.0.0.0:*               LISTEN
 
     firewall-cmd --permanent --add-port=3260/tcp
     firewall-cmd --reload
@@ -247,7 +247,7 @@ use disk
 	mkfs.ext4 /dev/sda
 
 	blkid | grep "/dev/sda"
-	/dev/sda: UUID="e45f36b4-f65b-4e8b-85df-be51024193fe" TYPE="ext4" 
+	/dev/sda: UUID="e45f36b4-f65b-4e8b-85df-be51024193fe" TYPE="ext4"
 
 	mkdir /iscsi_sda
 	vi /etc/fstab
@@ -266,7 +266,7 @@ use disk
 	mkfs.ext4 /dev/sdb
 	blkid | grep "/dev/sdb"
 
-	/dev/sdb: UUID="24fd379c-7045-4670-9574-1c797def1cda" TYPE="ext4" 
+	/dev/sdb: UUID="24fd379c-7045-4670-9574-1c797def1cda" TYPE="ext4"
 
 	mkdir /iscsi_sdb
 	vi /etc/fstab
@@ -275,5 +275,3 @@ use disk
 
 	mount -a
 	mount a
-
-
