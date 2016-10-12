@@ -1,0 +1,62 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$master_script = <<SCRIPT
+set -ex
+date > /etc/vagrant_box_build_time
+echo "root:linux" | chpasswd
+cat << HOST >> /etc/hosts
+10.10.10.10  controller.example.com controller
+10.10.10.11  compute.example.com compute
+HOST
+echo "nameserver 8.8.8.8" > /etc/resolv.conf
+sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
+setenforce 0
+echo "vagrant ALL=(root) NOPASSWD:ALL" >> /etc/sudoers.d/vagrant
+chmod 0440 /etc/sudoers.d/vagrant
+sed -i.orgi "s/PasswordAuthentication no/PasswordAuthentication yes/g"    /etc/ssh/sshd_config
+systemctl restart sshd
+
+systemctl stop firewalld
+systemctl disable NetworkManager
+systemctl stop NetworkManager
+systemctl enable network
+systemctl start network
+
+#yum install -y centos-release-openstack-mitaka
+yum install -y centos-release-openstack-newton
+yum update -y
+yum install -y openstack-packstack
+SCRIPT
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "centos/7"
+  config.vm.define :controller do |node|
+      node.vm.hostname = "controller.example.com"
+      node.vm.provider :libvirt do |libvirt|
+        libvirt.uri = 'qemu+unix:///system'
+        libvirt.cpus = 8
+        libvirt.memory = 8192
+        libvirt.nested = true
+        libvirt.storage :file, :size => '10G'
+        libvirt.storage :file, :size => '10G'
+      end
+      #eth1 network
+      node.vm.network :private_network, ip: "10.10.10.10"
+      node.vm.network :private_network, ip: "10.10.20.10"
+      node.vm.provision :shell, :inline => $master_script
+  end
+  config.vm.define :compute do |node|
+      node.vm.hostname = "compute.example.com"
+      node.vm.provider :libvirt do |libvirt|
+        libvirt.uri = 'qemu+unix:///system'
+        libvirt.cpus = 8
+        libvirt.memory = 8192
+        libvirt.nested = true
+      end
+      #eth1 network
+      node.vm.network :private_network, ip: "10.10.10.11"
+      node.vm.network :private_network, ip: "10.10.20.11"
+      node.vm.provision :shell, :inline => $master_script
+  end
+end

@@ -1,12 +1,12 @@
-========================
+************************
 Openstack with Packstack
-========================
+************************
 
 packstack
 =========
 
 vagrant
--------
+*******
 สร้าง directory ชื่อ openstack และภายในมี Vagrantfile ดังนี้
 ::
 
@@ -38,7 +38,7 @@ vagrant
 		      domain.volume_cache = 'none'
 		      domain.storage :file, :size => '20G'
 		    end
-            node.vm.provision "shell", inline: $script 
+            node.vm.provision "shell", inline: $script
 	  end
 	  config.vm.define :compute do |node|
 		    node.vm.network :private_network, :ip => "10.0.0.11"
@@ -52,7 +52,7 @@ vagrant
 		      domain.nested = true
 		      domain.volume_cache = 'none'
 		    end
-            node.vm.provision "shell", inline: $script 
+            node.vm.provision "shell", inline: $script
 	  end
 	end
 
@@ -77,23 +77,23 @@ Disk prepare for cinder
     pvcreate /dev/vdb
     vgcreate cinder-volumes /dev/vdb
     packstack --gen-answer-file  answerfile001.txt
-  
+
     sed -i.orig s/192.168.121.158/10.0.0.10/g  answerfile001.txt
     sed -i s/CONFIG_HEAT_INSTALL=n/CONFIG_HEAT_INSTALL=y/g answerfile001.txt
-    
+
 	--ตัวอย่าง--
     grep -n ADMIN_PW  answerfile001.txt
     vim  answerfile001.txt +(line no)
-    
+
     CONFIG_KEYSTONE_ADMIN_PW=passwd
     CONFIG_LBAAS_INSTALL=y
     CONFIG_NEUTRON_METERING_AGENT_INSTALL=y
     CONFIG_NEUTRON_FWAAS=y
-    
+
     CONFIG_NEUTRON_ML2_TYPE_DRIVERS=vlan
     CONFIG_NEUTRON_ML2_TENANT_NETWORK_TYPES=vlan
     CONFIG_NEUTRON_ML2_VLAN_RANGES=physnet1:1:1000
-   
+
     CONFIG_NEUTRON_OVS_BRIDGE_MAPPINGS=physnet1:br-eth2
     CONFIG_NEUTRON_OVS_BRIDGE_IFACES=br-eth2:eth2
 
@@ -111,7 +111,7 @@ Run
 
 
 .. image:: images/openstack-two-machine-two-nic.png
-    
+
 
 ผลการ Run
 
@@ -170,16 +170,16 @@ restart::
 	(eth1 no ip)
 	3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast master ovs-system state UP qlen 1000
 		link/ether 52:54:00:95:c4:b4 brd ff:ff:ff:ff:ff:ff
-		inet6 fe80::5054:ff:fe95:c4b4/64 scope link 
+		inet6 fe80::5054:ff:fe95:c4b4/64 scope link
 		   valid_lft forever preferred_lft forever
 
 	ip a s br-ex
 	(br-ex have ip)
-	12: br-ex: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN 
+	12: br-ex: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN
 		link/ether ce:d5:be:2d:03:40 brd ff:ff:ff:ff:ff:ff
 		inet 10.0.0.10/24 brd 10.0.0.255 scope global br-ex
 		   valid_lft forever preferred_lft forever
-		inet6 fe80::ccd5:beff:fe2d:340/64 scope link 
+		inet6 fe80::ccd5:beff:fe2d:340/64 scope link
 		   valid_lft forever preferred_lft forever
 
 sethostname::
@@ -192,7 +192,7 @@ upload image
 ------------
 (packstack จะสร้าง ไฟล์ keystonerc_admin ใช้สำหรับการ login ทาง commandline)
 ::
-    
+
 	source keystonerc_admin
     curl http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img | glance \
          image-create --name='cirros image' --visibility=public --container-format=bare --disk-format=qcow2
@@ -222,4 +222,3 @@ upload image
 centos7 image::
 
 	curl http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1606.qcow2 | glance image-create --name='centos7 image' --visibility=public --container-format=bare --disk-format=qcow2
-
