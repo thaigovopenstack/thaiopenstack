@@ -118,7 +118,7 @@ Terminal2::
       ## Install openstack client [on host]
       sudo dnf install python-{openstack,keystone,nova,neutron,glance,cinder,\
       swift,heat,ceilometer}client
-      ## create folder
+      ## create working folder
       cd ~ && mkdir openstackrc && cd openstackrc
 
       ##create file ชื่อ admin_rc_v2 (เป็นชื่ออะไรก็ได)
@@ -134,3 +134,227 @@ Terminal2::
       ## Test
       source admin_rc_v2
       openstack user list
+
+      +----------------------------------+------------+
+      | ID                               | Name       |
+      +----------------------------------+------------+
+      | 5c08e42a280445e283a71d6e01735811 | admin      |
+      | 08bc39d8bfaf40e5903dd96a0641ee9d | neutron    |
+      | a7dfe90d96e345268d303f95cab83ef2 | heat       |
+      | ab12686ca4b14868956d310f1aca1af8 | gnocchi    |
+      | 38be373dfe674e089e02c88be07f92a2 | aodh       |
+      | 036d2e3e3ed940dd84b0575d838621bc | nova       |
+      | 302bbb18eeab418f83288690521dd1bf | glance     |
+      | eb387675e73441a497f4549d59fa02f4 | trove      |
+      | 14c2a2c213d64be499315b8897585924 | sahara     |
+      | e44524eff3da4c57a8283caead1c63ea | ceilometer |
+      | 830c925ee56045df8c7a226612f66d26 | cinder     |
+      | 96f580c5af874165a54f28d71f3641ca | heat-cfn   |
+      | 355e46c0f63b499aa2b7eb14f698f97e | swift      |
+      +----------------------------------+------------+
+
+
+เครื่อง host
+
+Terminal2::
+
+      $ cd ~/openstackrc
+      $ wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img
+      $ openstack image create "cirros" \
+      --file cirros-0.3.4-x86_64-disk.img \
+      --disk-format qcow2 --container-format bare \
+      --public
+
+      ผลลัพท์ที่ได้
+      +------------------+------------------------------------------------------+
+      | Field            | Value                                                |
+      +------------------+------------------------------------------------------+
+      | checksum         | ee1eca47dc88f4879d8a229cc70a07c6                     |
+      | container_format | bare                                                 |
+      | created_at       | 2016-10-12T05:25:56Z                                 |
+      | disk_format      | qcow2                                                |
+      | file             | /v2/images/eb971176-4804-4fc2-8266-a90b1341b8a6/file |
+      | id               | eb971176-4804-4fc2-8266-a90b1341b8a6                 |
+      | min_disk         | 0                                                    |
+      | min_ram          | 0                                                    |
+      | name             | cirros                                               |
+      | owner            | 686e1f1af2ce4333931bd178c12c22c3                     |
+      | protected        | False                                                |
+      | schema           | /v2/schemas/image                                    |
+      | size             | 13287936                                             |
+      | status           | active                                               |
+      | tags             |                                                      |
+      | updated_at       | 2016-10-12T05:25:56Z                                 |
+      | virtual_size     | None                                                 |
+      | visibility       | public                                               |
+      +------------------+------------------------------------------------------+
+
+      แสดง รายการ image
+      $ openstack image list
+      +--------------------------------------+--------+--------+
+      | ID                                   | Name   | Status |
+      +--------------------------------------+--------+--------+
+      | eb971176-4804-4fc2-8266-a90b1341b8a6 | cirros | active |
+      +--------------------------------------+--------+--------+
+
+
+์*Network Architecture"
+
+..image:: images/Neutron_architecture.png
+
+สร้าง flat network ชื่อ extnet  [เนื่องจาก --os-neutron-ovs-bridge-mappings=extnet:br-ex]
+::
+
+      $ neutron net-create external_network --provider:network_type flat --provider:physical_network extnet  --router:external
+      Created a new network:
+      +---------------------------+--------------------------------------+
+      | Field                     | Value                                |
+      +---------------------------+--------------------------------------+
+      | admin_state_up            | True                                 |
+      | availability_zone_hints   |                                      |
+      | availability_zones        |                                      |
+      | created_at                | 2016-10-12T05:33:58Z                 |
+      | description               |                                      |
+      | id                        | b44cddbc-e544-434b-a96c-0ab95e741b29 |
+      | ipv4_address_scope        |                                      |
+      | ipv6_address_scope        |                                      |
+      | is_default                | False                                |
+      | mtu                       | 1500                                 |
+      | name                      | external_network                     |
+      | project_id                | 686e1f1af2ce4333931bd178c12c22c3     |
+      | provider:network_type     | flat                                 |
+      | provider:physical_network | extnet                               |
+      | provider:segmentation_id  |                                      |
+      | revision_number           | 2                                    |
+      | router:external           | True                                 |
+      | shared                    | False                                |
+      | status                    | ACTIVE                               |
+      | subnets                   |                                      |
+      | tags                      |                                      |
+      | tenant_id                 | 686e1f1af2ce4333931bd178c12c22c3     |
+      | updated_at                | 2016-10-12T05:33:58Z                 |
+      +---------------------------+--------------------------------------+
+
+
+      $ neutron subnet-create --name public_subnet --enable_dhcp=False --allocation-pool=start=192.168.121.100,end=192.168.121.200 \
+--gateway=192.168.121.1 external_network 192.168.121.0/24
+
+      Created a new subnet:
+      +-------------------+--------------------------------------------------------+
+      | Field             | Value                                                  |
+      +-------------------+--------------------------------------------------------+
+      | allocation_pools  | {"start": "192.168.121.100", "end": "192.168.121.200"} |
+      | cidr              | 192.168.121.0/24                                       |
+      | created_at        | 2016-10-12T05:37:09Z                                   |
+      | description       |                                                        |
+      | dns_nameservers   |                                                        |
+      | enable_dhcp       | False                                                  |
+      | gateway_ip        | 192.168.121.1                                          |
+      | host_routes       |                                                        |
+      | id                | a34c2cde-e5ec-42b5-8de4-232b425fb861                   |
+      | ip_version        | 4                                                      |
+      | ipv6_address_mode |                                                        |
+      | ipv6_ra_mode      |                                                        |
+      | name              | public_subnet                                          |
+      | network_id        | b44cddbc-e544-434b-a96c-0ab95e741b29                   |
+      | project_id        | 686e1f1af2ce4333931bd178c12c22c3                       |
+      | revision_number   | 2                                                      |
+      | service_types     |                                                        |
+      | subnetpool_id     |                                                        |
+      | tenant_id         | 686e1f1af2ce4333931bd178c12c22c3                       |
+      | updated_at        | 2016-10-12T05:37:09Z                                   |
+      +-------------------+--------------------------------------------------------+
+
+สร้าง router และผู้กับ exteranl_network ทีสร้างไว้ก่อนแล้ว
+::
+
+      $ neutron router-create router1
+      Created a new router:
+      +-------------------------+--------------------------------------+
+      | Field                   | Value                                |
+      +-------------------------+--------------------------------------+
+      | admin_state_up          | True                                 |
+      | availability_zone_hints |                                      |
+      | availability_zones      |                                      |
+      | created_at              | 2016-10-12T05:37:58Z                 |
+      | description             |                                      |
+      | distributed             | False                                |
+      | external_gateway_info   |                                      |
+      | flavor_id               |                                      |
+      | ha                      | False                                |
+      | id                      | 61268195-4e9f-452a-bd1c-eb570d8177c1 |
+      | name                    | router1                              |
+      | project_id              | 686e1f1af2ce4333931bd178c12c22c3     |
+      | revision_number         | 2                                    |
+      | routes                  |                                      |
+      | status                  | ACTIVE                               |
+      | tenant_id               | 686e1f1af2ce4333931bd178c12c22c3     |
+      | updated_at              | 2016-10-12T05:37:58Z                 |
+      +-------------------------+--------------------------------------+
+
+      $ neutron router-gateway-set router1 external_network
+      Set gateway for router router1
+
+สร้าง private network และผูก interface กับ router1
+::
+
+      $ neutron net-create private_network
+      Created a new network:
+      +---------------------------+--------------------------------------+
+      | Field                     | Value                                |
+      +---------------------------+--------------------------------------+
+      | admin_state_up            | True                                 |
+      | availability_zone_hints   |                                      |
+      | availability_zones        |                                      |
+      | created_at                | 2016-10-12T05:41:12Z                 |
+      | description               |                                      |
+      | id                        | edaa3879-691e-4cef-89a4-eba6f866129e |
+      | ipv4_address_scope        |                                      |
+      | ipv6_address_scope        |                                      |
+      | mtu                       | 1450                                 |
+      | name                      | private_network                      |
+      | project_id                | 686e1f1af2ce4333931bd178c12c22c3     |
+      | provider:network_type     | vxlan                                |
+      | provider:physical_network |                                      |
+      | provider:segmentation_id  | 85                                   |
+      | revision_number           | 2                                    |
+      | router:external           | False                                |
+      | shared                    | False                                |
+      | status                    | ACTIVE                               |
+      | subnets                   |                                      |
+      | tags                      |                                      |
+      | tenant_id                 | 686e1f1af2ce4333931bd178c12c22c3     |
+      | updated_at                | 2016-10-12T05:41:12Z                 |
+      +---------------------------+--------------------------------------+
+
+      $ neutron subnet-create --name private_subnet private_network 192.168.100.0/24
+
+      Created a new subnet:
+      +-------------------+------------------------------------------------------+
+      | Field             | Value                                                |
+      +-------------------+------------------------------------------------------+
+      | allocation_pools  | {"start": "192.168.100.2", "end": "192.168.100.254"} |
+      | cidr              | 192.168.100.0/24                                     |
+      | created_at        | 2016-10-12T05:41:36Z                                 |
+      | description       |                                                      |
+      | dns_nameservers   |                                                      |
+      | enable_dhcp       | True                                                 |
+      | gateway_ip        | 192.168.100.1                                        |
+      | host_routes       |                                                      |
+      | id                | fe006934-5bdc-4643-aba7-4e4e59a587a6                 |
+      | ip_version        | 4                                                    |
+      | ipv6_address_mode |                                                      |
+      | ipv6_ra_mode      |                                                      |
+      | name              | private_subnet                                       |
+      | network_id        | edaa3879-691e-4cef-89a4-eba6f866129e                 |
+      | project_id        | 686e1f1af2ce4333931bd178c12c22c3                     |
+      | revision_number   | 2                                                    |
+      | service_types     |                                                      |
+      | subnetpool_id     |                                                      |
+      | tenant_id         | 686e1f1af2ce4333931bd178c12c22c3                     |
+      | updated_at        | 2016-10-12T05:41:36Z                                 |
+      +-------------------+------------------------------------------------------+
+
+      $ neutron router-interface-add router1 private_subnet
+      (ผลที่ได้ทำให้ external และ private subnet เชื่อมหากัน)
+      Added interface b187790c-0192-4819-8881-c82553260485 to router router1.
