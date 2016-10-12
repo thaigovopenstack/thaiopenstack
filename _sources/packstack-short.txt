@@ -33,6 +33,8 @@ Terminal1::
 
     //prepare disk for volume group
     sudo su -
+    fdisk -l
+
     fdisk /dev/vdb
     n
     p
@@ -46,11 +48,14 @@ Terminal1::
     pvcreate /dev/vdb1
     vgcreate cinder-volumes /dev/vdb1
 
+เครื่อง controller
+
 Terminal1::
 
     //run packstck
     //packstack --install-hosts=CONTROLLER_ADDRESS,COMPUTE_ADDRESSES
 
+    sudo su -
     packstack --install-hosts=10.10.10.10,10.10.10.11 \
     --nagios-install=n \
     --provision-demo=n \
@@ -65,7 +70,9 @@ Terminal1::
     --cinder-volumes-create=n \
     --keystone-admin-passwd=linux
 
-  Terminal2::
+เครื่อง host
+
+Terminal2::
 
       //install openstack client
       ## Install openstack client [on host]
