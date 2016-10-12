@@ -238,6 +238,8 @@ end
 <p>Terminal1:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">prepare</span> <span class="n">disk</span> <span class="k">for</span> <span class="n">volume</span> <span class="n">group</span>
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">fdisk</span> <span class="o">-</span><span class="n">l</span>
+
 <span class="n">fdisk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
 <span class="n">n</span>
 <span class="n">p</span>
@@ -252,46 +254,49 @@ end
 <span class="n">vgcreate</span> <span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
 </pre></div>
 </div>
+<p>เครื่อง controller</p>
 <p>Terminal1:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>  <span class="o">//</span><span class="n">run</span> <span class="n">packstck</span>
-  <span class="o">//</span><span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="n">CONTROLLER_ADDRESS</span><span class="p">,</span><span class="n">COMPUTE_ADDRESSES</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">run</span> <span class="n">packstck</span>
+<span class="o">//</span><span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="n">CONTROLLER_ADDRESS</span><span class="p">,</span><span class="n">COMPUTE_ADDRESSES</span>
 
-  <span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">,</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span> \
-  <span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
-  <span class="o">--</span><span class="n">provision</span><span class="o">-</span><span class="n">demo</span><span class="o">=</span><span class="n">n</span> \
-  <span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
-  <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ovs</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">mappings</span><span class="o">=</span><span class="n">extnet</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">,</span><span class="n">physnet1</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span> \
-  <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ovs</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">interfaces</span><span class="o">=</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">:</span><span class="n">eth0</span><span class="p">,</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span><span class="p">:</span><span class="n">eth2</span> \
-  <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ml2</span><span class="o">-</span><span class="nb">type</span><span class="o">-</span><span class="n">drivers</span><span class="o">=</span><span class="n">vxlan</span><span class="p">,</span><span class="n">flat</span><span class="p">,</span><span class="n">local</span><span class="p">,</span><span class="n">vlan</span> \
-  <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ml2</span><span class="o">-</span><span class="n">vlan</span><span class="o">-</span><span class="n">ranges</span><span class="o">=</span><span class="n">physnet1</span><span class="p">:</span><span class="mi">1000</span><span class="p">:</span><span class="mi">2000</span> \
-  <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">heat</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">heat</span><span class="o">-</span><span class="n">cfn</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
-  <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">sahara</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">trove</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
-  <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">lbaas</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
-  <span class="o">--</span><span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span><span class="o">-</span><span class="n">create</span><span class="o">=</span><span class="n">n</span> \
-  <span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">passwd</span><span class="o">=</span><span class="n">linux</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">,</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span> \
+<span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
+<span class="o">--</span><span class="n">provision</span><span class="o">-</span><span class="n">demo</span><span class="o">=</span><span class="n">n</span> \
+<span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ovs</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">mappings</span><span class="o">=</span><span class="n">extnet</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">,</span><span class="n">physnet1</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ovs</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">interfaces</span><span class="o">=</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">:</span><span class="n">eth0</span><span class="p">,</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span><span class="p">:</span><span class="n">eth2</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ml2</span><span class="o">-</span><span class="nb">type</span><span class="o">-</span><span class="n">drivers</span><span class="o">=</span><span class="n">vxlan</span><span class="p">,</span><span class="n">flat</span><span class="p">,</span><span class="n">local</span><span class="p">,</span><span class="n">vlan</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ml2</span><span class="o">-</span><span class="n">vlan</span><span class="o">-</span><span class="n">ranges</span><span class="o">=</span><span class="n">physnet1</span><span class="p">:</span><span class="mi">1000</span><span class="p">:</span><span class="mi">2000</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">heat</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">heat</span><span class="o">-</span><span class="n">cfn</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">sahara</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">trove</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
+<span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">lbaas</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">y</span> \
+<span class="o">--</span><span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span><span class="o">-</span><span class="n">create</span><span class="o">=</span><span class="n">n</span> \
+<span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">passwd</span><span class="o">=</span><span class="n">linux</span>
+</pre></div>
+</div>
+<p>เครื่อง host</p>
+<p>Terminal2:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">install</span> <span class="n">openstack</span> <span class="n">client</span>
+<span class="c1">## Install openstack client [on host]</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="p">{</span><span class="n">openstack</span><span class="p">,</span><span class="n">keystone</span><span class="p">,</span><span class="n">nova</span><span class="p">,</span><span class="n">neutron</span><span class="p">,</span><span class="n">glance</span><span class="p">,</span><span class="n">cinder</span><span class="p">,</span>\
+<span class="n">swift</span><span class="p">,</span><span class="n">heat</span><span class="p">,</span><span class="n">ceilometer</span><span class="p">}</span><span class="n">client</span>
+<span class="c1">## create folder</span>
+<span class="n">cd</span> <span class="o">~</span> <span class="o">&amp;&amp;</span> <span class="n">mkdir</span> <span class="n">openstackrc</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="n">openstackrc</span>
 
-<span class="n">Terminal2</span><span class="p">::</span>
-
-    <span class="o">//</span><span class="n">install</span> <span class="n">openstack</span> <span class="n">client</span>
-    <span class="c1">## Install openstack client [on host]</span>
-    <span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="p">{</span><span class="n">openstack</span><span class="p">,</span><span class="n">keystone</span><span class="p">,</span><span class="n">nova</span><span class="p">,</span><span class="n">neutron</span><span class="p">,</span><span class="n">glance</span><span class="p">,</span><span class="n">cinder</span><span class="p">,</span>\
-    <span class="n">swift</span><span class="p">,</span><span class="n">heat</span><span class="p">,</span><span class="n">ceilometer</span><span class="p">}</span><span class="n">client</span>
-    <span class="c1">## create folder</span>
-    <span class="n">cd</span> <span class="o">~</span> <span class="o">&amp;&amp;</span> <span class="n">mkdir</span> <span class="n">openstackrc</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="n">openstackrc</span>
-
-    <span class="c1">##create file ชื่อ admin_rc_v2 (เป็นชื่ออะไรก็ได)</span>
-    <span class="n">cat</span> <span class="o">&lt;&lt;</span> <span class="n">RC</span> <span class="o">&gt;</span> <span class="n">admin_rc_v2</span>
-    <span class="n">unset</span> <span class="n">OS_SERVICE_TOKEN</span>
-    <span class="n">export</span> <span class="n">OS_USERNAME</span><span class="o">=</span><span class="n">admin</span>
-    <span class="n">export</span> <span class="n">OS_PASSWORD</span><span class="o">=</span><span class="n">linux</span>
-    <span class="n">export</span> <span class="n">OS_AUTH_URL</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">v2</span><span class="o">.</span><span class="mi">0</span>
-    <span class="n">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s1">&#39;[\u@\h \W(keystone_admin)]\$ &#39;</span>
-    <span class="n">export</span> <span class="n">OS_TENANT_NAME</span><span class="o">=</span><span class="n">admin</span>
-    <span class="n">export</span> <span class="n">OS_REGION_NAME</span><span class="o">=</span><span class="n">RegionOne</span>
-    <span class="n">RC</span>
-    <span class="c1">## Test</span>
-    <span class="n">source</span> <span class="n">admin_rc_v2</span>
-    <span class="n">openstack</span> <span class="n">user</span> <span class="nb">list</span>
+<span class="c1">##create file ชื่อ admin_rc_v2 (เป็นชื่ออะไรก็ได)</span>
+<span class="n">cat</span> <span class="o">&lt;&lt;</span> <span class="n">RC</span> <span class="o">&gt;</span> <span class="n">admin_rc_v2</span>
+<span class="n">unset</span> <span class="n">OS_SERVICE_TOKEN</span>
+<span class="n">export</span> <span class="n">OS_USERNAME</span><span class="o">=</span><span class="n">admin</span>
+<span class="n">export</span> <span class="n">OS_PASSWORD</span><span class="o">=</span><span class="n">linux</span>
+<span class="n">export</span> <span class="n">OS_AUTH_URL</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">v2</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s1">&#39;[\u@\h \W(keystone_admin)]\$ &#39;</span>
+<span class="n">export</span> <span class="n">OS_TENANT_NAME</span><span class="o">=</span><span class="n">admin</span>
+<span class="n">export</span> <span class="n">OS_REGION_NAME</span><span class="o">=</span><span class="n">RegionOne</span>
+<span class="n">RC</span>
+<span class="c1">## Test</span>
+<span class="n">source</span> <span class="n">admin_rc_v2</span>
+<span class="n">openstack</span> <span class="n">user</span> <span class="nb">list</span>
 </pre></div>
 </div>
 </div>
