@@ -81,6 +81,15 @@ Terminal1::
 
 ::
 
+    Applying 10.10.10.10_controller.pp
+    10.10.10.10_controller.pp:                           [ DONE ]
+    Applying 10.10.10.10_network.pp
+    10.10.10.10_network.pp:                              [ DONE ]
+    Applying 10.10.10.11_compute.pp
+    10.10.10.11_compute.pp:                              [ DONE ]
+    Applying Puppet manifests                            [ DONE ]
+    Finalizing                                           [ DONE ]
+
     Additional information:
      * A new answerfile was created in: /root/packstack-answers-20161012-011347.txt
      * Time synchronization installation was skipped. Please note that unsynchronized time on server instances might be problem for some OpenStack components.
@@ -93,8 +102,7 @@ Terminal1::
      * The generated manifests are available at: /var/tmp/packstack/20161012-011346-Rr34Lj/manifests
     [root@controller ~]#
 
-.. note::  หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfile
-ที่สร้างขึ้น
+.. note::  หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfil ที่สร้างขึ้น
 
     ::
 
