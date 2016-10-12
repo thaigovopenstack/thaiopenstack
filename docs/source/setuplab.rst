@@ -131,10 +131,10 @@ Terminal1::
 
 ตั้งค่า network service::
 
-    systemctl start network
-    systemctl enable network
-    systemctl disable NetworkManager
-    systemctl stop NetworkManager
+    sudo systemctl start network
+    sudo systemctl enable network
+    sudo systemctl disable NetworkManager
+    sudo systemctl stop NetworkManager
 
 ตั้งค่า Timeserver (Terminal 2 )::
 
