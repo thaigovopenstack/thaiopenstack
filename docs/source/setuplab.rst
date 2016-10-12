@@ -43,7 +43,7 @@ Terminal2::
 
     PasswordAuthentication yes
 
-    [root@server ~]# systemctl restart ssh
+    [root@server ~]# systemctl restart sshd
 
 
 Terminal1::
