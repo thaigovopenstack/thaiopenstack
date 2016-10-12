@@ -198,7 +198,7 @@ Terminal2::
       +--------------------------------------+--------+--------+
 
 
-์Network Architecture
+Network Architecture
 ********************
 
 .. image:: images/Neutron_architecture.png
@@ -359,3 +359,15 @@ Terminal2::
       $ neutron router-interface-add router1 private_subnet
       (ผลที่ได้ทำให้ external และ private subnet เชื่อมหากัน)
       Added interface b187790c-0192-4819-8881-c82553260485 to router router1.
+
+ผลที่ได้
+
+.. image:: images/result_net.png
+
+หากเกิด Basic Error ดังรูปแก้โดย restart httpd
+
+.. image::  images/error1.png
+
+::
+
+      systemctl restart httpd

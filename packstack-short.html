@@ -100,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Openstack Cloud</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#network-architecture">์Network Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#network-architecture">Network Architecture</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
@@ -402,7 +402,7 @@ $ openstack image list
 </pre></div>
 </div>
 <div class="section" id="network-architecture">
-<h2>์Network Architecture<a class="headerlink" href="#network-architecture" title="Permalink to this headline">¶</a></h2>
+<h2>Network Architecture<a class="headerlink" href="#network-architecture" title="Permalink to this headline">¶</a></h2>
 <img alt="_images/Neutron_architecture.png" src="_images/Neutron_architecture.png" />
 <p>สร้าง flat network ชื่อ extnet  [เนื่องจาก &#8211;os-neutron-ovs-bridge-mappings=extnet:br-ex]</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ neutron net-create external_network --provider:network_type flat --provider:physical_network extnet  --router:external
@@ -556,6 +556,13 @@ Created a new subnet:
 $ neutron router-interface-add router1 private_subnet
 (ผลที่ได้ทำให้ external และ private subnet เชื่อมหากัน)
 Added interface b187790c-0192-4819-8881-c82553260485 to router router1.
+</pre></div>
+</div>
+<p>ผลที่ได้</p>
+<img alt="_images/result_net.png" src="_images/result_net.png" />
+<p>หากเกิด Basic Error ดังรูปแก้โดย restart httpd</p>
+<img alt="_images/error1.png" src="_images/error1.png" />
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">restart</span> <span class="n">httpd</span>
 </pre></div>
 </div>
 </div>
