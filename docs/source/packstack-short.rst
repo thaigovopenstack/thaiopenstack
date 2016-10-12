@@ -238,7 +238,7 @@ Network Architecture
 
 
       $ neutron subnet-create --name public_subnet --enable_dhcp=False --allocation-pool=start=192.168.121.100,end=192.168.121.200 \
---gateway=192.168.121.1 external_network 192.168.121.0/24
+      --gateway=192.168.121.1 external_network 192.168.121.0/24
 
       Created a new subnet:
       +-------------------+--------------------------------------------------------+
