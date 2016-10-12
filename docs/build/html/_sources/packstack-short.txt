@@ -198,7 +198,8 @@ Terminal2::
       +--------------------------------------+--------+--------+
 
 
-์*Network Architecture"
+์Network Architecture
+********************
 
 ..image:: images/Neutron_architecture.png
 
