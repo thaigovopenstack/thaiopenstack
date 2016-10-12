@@ -201,7 +201,7 @@ Terminal2::
 ์Network Architecture
 ********************
 
-..image:: images/Neutron_architecture.png
+.. image:: images/Neutron_architecture.png
 
 สร้าง flat network ชื่อ extnet  [เนื่องจาก --os-neutron-ovs-bridge-mappings=extnet:br-ex]
 ::
