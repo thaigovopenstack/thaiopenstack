@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setup Vagrant &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="Understand systemd" href="systemd.html"/>
+        <link rel="prev" title="Welcome to Sipa Linux Admin Class’s documentation!" href="index.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Setup Vagrant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Setup Vagrant</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/setuplab.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="setup-vagrant">
+<h1>Setup Vagrant<a class="headerlink" href="#setup-vagrant" title="Permalink to this headline">¶</a></h1>
+<p>การทดสอบการสร้าง virtual machine ด้วย vagrant</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ mkdir  lab
+$ cd lab
+$ vim vagrantfile
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span># -*- mode: ruby -*-
+# vi: set ft=ruby :
+$script = &lt;&lt;SCRIPT
+yum update -y
+SCRIPT
+
+
+Vagrant.configure(2) do |config|
+  config.vm.define :client do |node|
+     node.vm.box = &quot;centos/7&quot;
+     node.vm.hostname = &quot;client.example.com&quot;
+     node.vm.provision :shell, :inline =&gt; &quot;echo root:linux  | chpasswd&quot;
+     node.vm.provision :shell, :inline =&gt; $script
+     node.vm.network :private_network, :ip =&gt; &quot;10.20.30.40&quot;
+     node.vm.provider :livirt do |domain|
+        domain.cpus = 2
+        domain.memory = 2048
+     end
+  end
+  config.vm.define :server do |node|
+     node.vm.box = &quot;centos/7&quot;
+     node.vm.hostname = &quot;server.example.com&quot;
+     node.vm.provision :shell, :inline =&gt; &quot;echo root:linux  | chpasswd&quot;
+     node.vm.provision :shell, :inline =&gt; $script
+     node.vm.network :private_network, :ip =&gt; &quot;10.20.30.41&quot;
+     node.vm.provider :livirt do |domain|
+        domain.cpus = 2
+        domain.memory = 2048
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+        domain.storage :file, :size =&gt; &#39;20G&#39;
+     end
+  end
+end
+</pre></div>
+</div>
+<p>ใช้คำสั่ง vagrant up</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ vagrant up --provider libvirt
+$ vagrant status
+Current machine states:
+
+client                    running (libvirt)
+server                    running (libvirt)
+</pre></div>
+</div>
+<p>การเข้าไปยัง vm  ให้ใช้ vagrant ssh โดยให้เปิด terminal 2 terminal</p>
+<p>Terminal1:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>vagrant ssh client
+
+[vagrant@client ~]$ ssh vagrant@10.20.30.41
+The authenticity of host &#39;10.20.30.41 (10.20.30.41)&#39; can&#39;t be established.
+ECDSA key fingerprint is 5a:f0:f3:a2:a8:a9:de:d9:2b:89:4b:5b:f6:f4:9e:51.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &#39;10.20.30.41&#39; (ECDSA) to the list of known hosts.
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+</pre></div>
+</div>
+<p>Terminal2:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>vagrant ssh server
+
+[vagrant@server ~]$ sudo su -
+[root@server ~]# vi /etc/ssh/sshd_config +79
+
+PasswordAuthentication yes
+
+[root@server ~]# systemctl restart ssh
+</pre></div>
+</div>
+<p>Terminal1:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>vagrant ssh client
+
+[vagrant@client ~]$ ssh vagrant@10.20.30.41
+vagrant@10.20.30.41&#39;s password:
+Last login: Tue Oct 11 13:38:00 2016 from 10.20.30.40
+[vagrant@server ~]$ hostname
+server.example.com
+</pre></div>
+</div>
+<p>ตั้งค่า ให้กับ /etc/hosts โดยให้ทำทั้ง 2 เครื่อง</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo su -
+
+HOST=$(cat &lt;&lt; HOST
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+10.20.30.40 client.example.com  client
+10.20.30.41 server.example.com  server
+HOST
+)
+
+echo &quot;$HOST&quot; &gt; /etc/hosts
+cat /etc/hosts
+</pre></div>
+</div>
+<p>ทำการทดสอบ ping</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ping</span>  <span class="n">server</span> <span class="o">-</span><span class="n">c</span> <span class="mi">4</span>
+<span class="n">ping</span>  <span class="n">client</span> <span class="o">-</span><span class="n">c</span> <span class="mi">4</span>
+</pre></div>
+</div>
+<p>สร้าง rsa key บนเครื่อง client แล้วส่งไปที่ เครื่องserver ด้วยคำสั่ง</p>
+<p>Terminal1:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[vagrant@client ~]$ ssh-keygen -t rsa -b 4096 -C &quot;Client&quot;
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/vagrant/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/vagrant/.ssh/id_rsa.
+Your public key has been saved in /home/vagrant/.ssh/id_rsa.pub.
+The key fingerprint is:
+a8:13:11:42:3a:d3:70:b8:5a:66:a9:09:3b:75:64:b5 Client
+The key&#39;s randomart image is:
++--[ RSA 4096]----+
+|.o+ ...          |
+|.= .o. .         |
+|+..+. E          |
+|oo* .. .         |
+|oO .. . S        |
+|*    o           |
+| .  o            |
+|     .           |
+|                 |
++-----------------+
+</pre></div>
+</div>
+<p>ทำการ copy key ไปยังเครื่อง server</p>
+<p>Terminal1:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[vagrant@client ~]$ ssh-copy-id server
+The authenticity of host &#39;server (10.20.30.41)&#39; can&#39;t be established.
+ECDSA key fingerprint is 5a:f0:f3:a2:a8:a9:de:d9:2b:89:4b:5b:f6:f4:9e:51.
+Are you sure you want to continue connecting (yes/no)? yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+vagrant@server&#39;s password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   &quot;ssh &#39;server&#39;&quot;
+and check to make sure that only the key(s) you wanted were added.
+</pre></div>
+</div>
+<p>ทดสอบ ssh ไปยัง server:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[vagrant@client ~]$ ssh server
+Last login: Tue Oct 11 14:49:04 2016 from 10.20.30.40
+[vagrant@server ~]$ hostname
+server.example.com
+</pre></div>
+</div>
+<p>ตั้งค่า network service:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">network</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">network</span>
+<span class="n">systemctl</span> <span class="n">disable</span> <span class="n">NetworkManager</span>
+<span class="n">systemctl</span> <span class="n">stop</span> <span class="n">NetworkManager</span>
+</pre></div>
+</div>
+<p>ตั้งค่า Timeserver (Terminal 2 ):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo yum install chrony -y
+$ vi  /etc/chrony.conf
+//เปลี่ยนแปลง time server
+server 1.th.pool.ntp.org iburst
+server 0.asia.pool.ntp.org iburst
+server 2.asia.pool.ntp.org iburst
+
+$ sudo systemctl restart chronyd
+$ chronyc source
+
+210 Number of sources = 3
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^- ntp02.cpe.rmutt.ac.th         2   6     7     1    -16ms[  -11ms] +/-  225ms
+^* time1.isu.net.sa              1   6     7     0  +5882us[  +11ms] +/-  140ms
+^+ 202-65-114-202.jogja.citr     2   6     7     1    -13ms[-7965us] +/-   93ms
+</pre></div>
+</div>
+<p>ตั้งค่า Timeserver (Terminal 1 ):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo yum install chrony -y
+vi  /etc/chrony.conf
+//เปลี่ยนแปลง time server ให้ชื้ไปยัง server
+server 10.20.30.41 iburst
+allow 10.20.30.0/24
+
+sudo systemctl restart chronyd
+$ chronyc sources
+210 Number of sources = 1
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^? 10.20.30.41                   3   6     1     1  +6209us[+6209us] +/-   84ms
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="systemd.html" class="btn btn-neutral float-right" title="Understand systemd" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to Sipa Linux Admin Class’s documentation!" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
