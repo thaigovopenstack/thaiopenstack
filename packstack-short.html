@@ -221,7 +221,15 @@ end
 </pre></div>
 </div>
 <p>Terminal1:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">status</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">up</span> <span class="o">--</span><span class="n">provider</span> <span class="n">libvirt</span>
+
+<span class="n">vagrant</span> <span class="n">status</span>
+<span class="n">Current</span> <span class="n">machine</span> <span class="n">states</span><span class="p">:</span>
+
+<span class="n">controller</span>                <span class="n">running</span> <span class="p">(</span><span class="n">libvirt</span><span class="p">)</span>
+<span class="n">compute</span>                   <span class="n">running</span> <span class="p">(</span><span class="n">libvirt</span><span class="p">)</span>
+
+
 <span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
 <span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">b</span> <span class="mi">4096</span> <span class="o">-</span><span class="n">C</span> <span class="s2">&quot;openstack&quot;</span>
