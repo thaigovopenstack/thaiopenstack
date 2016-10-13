@@ -56,7 +56,47 @@ Terminal1::
     pvcreate /dev/vdb1
     vgcreate cinder-volumes /dev/vdb1
 
-เครื่อง controller
+
+    ตั้งค่า Timeserver (Terminal 2 )::
+
+        $ sudo yum install chrony -y
+        $ sudo vi  /etc/chrony.conf
+        //เปลี่ยนแปลง time server
+        server 1.th.pool.ntp.org iburst
+        server 0.asia.pool.ntp.org iburst
+        server 2.asia.pool.ntp.org iburst
+
+        //อนุญาติให้เครื่องในวง 10.20.30.0/24 สามารถ syncได้
+        allow 10.20.30.0/24
+
+        $ sudo systemctl restart chronyd
+        $ chronyc source
+
+        210 Number of sources = 3
+        MS Name/IP address         Stratum Poll Reach LastRx Last sample
+        ===============================================================================
+        ^- ntp02.cpe.rmutt.ac.th         2   6     7     1    -16ms[  -11ms] +/-  225ms
+        ^* time1.isu.net.sa              1   6     7     0  +5882us[  +11ms] +/-  140ms
+        ^+ 202-65-114-202.jogja.citr     2   6     7     1    -13ms[-7965us] +/-   93ms
+
+    ตั้งค่า Timeserver (Terminal 1 )::
+
+        sudo yum install chrony -y
+        vi  /etc/chrony.conf
+        //เปลี่ยนแปลง time server ให้ชื้ไปยัง server
+        server 10.20.30.41 iburst
+
+
+        sudo systemctl restart chronyd
+        $ chronyc sources
+        210 Number of sources = 1
+        MS Name/IP address         Stratum Poll Reach LastRx Last sample
+        ===============================================================================
+        ^? 10.20.30.41                   3   6     1     1  +6209us[+6209us] +/-   84ms
+
+เครื่อง controller ให้ run คำสั่ง packstack พร้อมกับ option เพื่อ ติดตั้ง openstack โดยคำสั่ง
+packstack จะรับค่าoption และนำไปสร้าง file template ที่มีตัวแปรที่กำหนด หลังจากนั้นจะส่งต่อให้
+puppet นำไปสร้างเป็น puppet module เพื่อติดตั้ง openstack ต่อไป
 
 Terminal1::
 
@@ -91,7 +131,7 @@ Terminal1::
     Finalizing                                           [ DONE ]
 
     Additional information:
-     * A new answerfile was created in: /root/packstack-answers-20161012-011347.txt
+     * A new answerfile was created in: /root/packstack-answers-20161012-141203.txt
      * Time synchronization installation was skipped. Please note that unsynchronized time on server instances might be problem for some OpenStack components.
      * File /root/keystonerc_admin has been created on OpenStack client host 10.10.10.10. To use the command line tools you need to source the file.
      * To access the OpenStack Dashboard browse to http://10.10.10.10/dashboard .
@@ -102,7 +142,14 @@ Terminal1::
      * The generated manifests are available at: /var/tmp/packstack/20161012-011346-Rr34Lj/manifests
     [root@controller ~]#
 
-.. note::  หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfil ที่สร้างขึ้น
+.. note:: เมื่อติดตั้ง ประสบความสำเร็จ packstack จะรายงายผลออกมาที่สำคัญได้แก่
+
+    ::
+
+        * ชื่อของ answerfile ที่ใช้สำหรับการแก้ไขต่อไปในอนาคต /root/packstack-answers-20161012-141203.txt
+        * ip address สำหรับการเข้าใช้งาน
+
+.. warning::  หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfil ที่สร้างขึ้น
 
     ::
 
@@ -110,19 +157,21 @@ Terminal1::
         packstack-answers-20161012-011347.txt
         [root@controller ~]# packstack --answer-file=packstack-answers-20161012-011347.txt
 
-เครื่อง host
+เครื่อง host จะทำการติดตั้ง openstack client  เพื่อเข้าไปใช้งาน
 
 Terminal2::
 
       //install openstack client
       ## Install openstack client [on host]
-      sudo dnf install python-{openstack,keystone,nova,neutron,glance,cinder,\
+      $ sudo dnf install python-{openstack,keystone,nova,neutron,glance,cinder,\
       swift,heat,ceilometer}client
+
       ## create working folder
-      cd ~ && mkdir openstackrc && cd openstackrc
+
+      $ cd ~ && mkdir openstackrc && cd openstackrc
 
       ##create file ชื่อ admin_rc_v2 (เป็นชื่ออะไรก็ได)
-      cat << RC > admin_rc_v2
+      $ cat << RC > admin_rc_v2
       unset OS_SERVICE_TOKEN
       export OS_USERNAME=admin
       export OS_PASSWORD=linux
@@ -131,9 +180,9 @@ Terminal2::
       export OS_TENANT_NAME=admin
       export OS_REGION_NAME=RegionOne
       RC
-      ## Test
-      source admin_rc_v2
-      openstack user list
+      ## Test เรียกดู user
+      $ source admin_rc_v2
+      $ openstack user list
 
       +----------------------------------+------------+
       | ID                               | Name       |
@@ -152,6 +201,26 @@ Terminal2::
       | 96f580c5af874165a54f28d71f3641ca | heat-cfn   |
       | 355e46c0f63b499aa2b7eb14f698f97e | swift      |
       +----------------------------------+------------+
+
+      $ openstack project list
+      +----------------------------------+----------+
+      | ID                               | Name     |
+      +----------------------------------+----------+
+      | 297c9df6fa3c469cbb587248cf59cb4e | admin    |
+      | 34c47a8e222543918153a2ed348f419d | services |
+      +----------------------------------+----------+
+
+      $ openstack role list
+      +----------------------------------+------------------+
+      | ID                               | Name             |
+      +----------------------------------+------------------+
+      | 3db26d6d909848aa8aefd886d9aa8f2a | SwiftOperator    |
+      | 84bb64935d284a248791c4a3bac183ff | heat_stack_user  |
+      | 88c6a2e7af25486487e61153554fde71 | admin            |
+      | 9fe2ff9ee4384b1894a90878d3e92bab | _member_         |
+      | b10f0d654b5c4d22bc2818c0c9d1012c | ResellerAdmin    |
+      | d609a95d200f46bca2d893b421f12cff | heat_stack_owner |
+      +----------------------------------+------------------+
 
 
 เครื่อง host
@@ -201,7 +270,90 @@ Terminal2::
 Network Architecture
 ********************
 
-.. image:: images/Neutron_architecture.png
+.. image:: images/ovs-neutron-1024x515.gif
+
+Openvswitch device
+******************
+Terminal 1 บนเครื่อง controller ตรวจสอบ ด้วยคำสั่ง `ovs-vscht show`
+::
+
+      # ovs-vsctl show
+      6a15cbb5-18ef-4e40-8a6a-339dc0fccb7b
+          Manager "ptcp:6640:127.0.0.1"
+              is_connected: true
+          Bridge br-tun
+              Controller "tcp:127.0.0.1:6633"
+                  is_connected: true
+              fail_mode: secure
+              Port patch-int
+                  Interface patch-int
+                      type: patch
+                      options: {peer=patch-tun}
+              Port br-tun
+                  Interface br-tun
+                      type: internal
+              Port "vxlan-0a0a0a0b"
+                  Interface "vxlan-0a0a0a0b"
+                      type: vxlan
+                      options: {df_default="true", in_key=flow, local_ip="10.10.10.10", out_key=flow, remote_ip="10.10.10.11"}
+          Bridge br-int
+              Controller "tcp:127.0.0.1:6633"
+                  is_connected: true
+              fail_mode: secure
+              Port "int-br-eth2"
+                  Interface "int-br-eth2"
+                      type: patch
+                      options: {peer="phy-br-eth2"}
+              Port int-br-ex
+                  Interface int-br-ex
+                      type: patch
+                      options: {peer=phy-br-ex}
+              Port patch-tun
+                  Interface patch-tun
+                      type: patch
+                      options: {peer=patch-int}
+              Port br-int
+                  Interface br-int
+                      type: internal
+          Bridge br-ex
+              Controller "tcp:127.0.0.1:6633"
+                  is_connected: true
+              fail_mode: secure
+              Port "eth0"
+                  Interface "eth0"
+              Port phy-br-ex
+                  Interface phy-br-ex
+                      type: patch
+                      options: {peer=int-br-ex}
+              Port br-ex
+                  Interface br-ex
+                      type: internal
+          Bridge "br-eth2"
+              Controller "tcp:127.0.0.1:6633"
+                  is_connected: true
+              fail_mode: secure
+              Port "eth2"
+                  Interface "eth2"
+              Port "br-eth2"
+                  Interface "br-eth2"
+                      type: internal
+              Port "phy-br-eth2"
+                  Interface "phy-br-eth2"
+                      type: patch
+                      options: {peer="int-br-eth2"}
+          ovs_version: "2.5.0"
+
+ภาพแสดง อุปกรณ์ ที่เป็น virtual devices ที่สร้างโดย openstack
+Compute node
+
+.. image:: images/under-the-hood-scenario-1-ovs-compute.png
+
+Controller/Network node
+
+.. image:: images/under-the-hood-scenario-1-ovs-network.png
+
+สร้าง virtual network
+********************
 
 สร้าง flat network ชื่อ extnet  [เนื่องจาก --os-neutron-ovs-bridge-mappings=extnet:br-ex]
 ::
