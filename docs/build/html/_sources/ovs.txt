@@ -77,18 +77,18 @@ create bridge
 หลังจากนั้นให้ แก้ config
 ::
 
-		cd /etc/sysconfig/network-scripts
-		cp ifcfg-enp3s0  /root
-		cp ifcfg-enp3s0  ifcfg-ovsbr0
+	cd /etc/sysconfig/network-scripts
+	cp ifcfg-enp3s0  /root
+	cp ifcfg-enp3s0  ifcfg-ovsbr0
 
 edit network config
 ::
 
-	# cd /etc/sysconfig/network-scripts
-  # vim ifcfg-enp3s0
+	cd /etc/sysconfig/network-scripts
+    vim ifcfg-enp3s0
 
 	DEVICE=enp3s0
-  NAME=enp3s0
+    NAME=enp3s0
 	HWADDR=54:ee:75:8a:86:09
 	ONBOOT=yes
 	DEVICETYPE=ovs
@@ -128,7 +128,7 @@ edit network config
 ยกเลิกการทำงาน NetworkManager
 ::
 
-  rm -rf /etc/resolv.conf
+    rm -rf /etc/resolv.conf
 	systemctl stop NetworkManager
 	systemctl disable NetworkManager
 
