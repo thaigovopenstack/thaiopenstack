@@ -58,11 +58,12 @@ Config Team
 ***********
 On Server1::
 
-	# yum install -y teamd
+  sudo su -
+	yum install -y teamd
 
-    //check kernel
-    # modprobe team
-	# modinfo team
+  //check kernel
+  modprobe team
+	modinfo team
 
 	filename:       /lib/modules/3.10.0-327.18.2.el7.x86_64/kernel/drivers/net/team/team.ko
 	alias:          rtnl-link-team
@@ -82,13 +83,13 @@ config
 ------
 ::
 
-    //remove config
+    //remove config เดิมของ eth0 , eth1
 
-    # cd /etc/sysconfig/network-scripts/
-    # rm -rf ifcfg-eth1
-    # rm -rf ifcfg-eth2
+    cd /etc/sysconfig/network-scripts/
+    rm -rf ifcfg-eth1
+    rm -rf ifcfg-eth2
 
-    # nmcli con show
+    nmcli con show
     NAME          UUID                                  TYPE            DEVICE
     eth1          8a71d519-dd24-4fa3-bec2-61f0278d667b  802-3-ethernet  eth1
     eth2          7856b66e-bcd9-45f6-8917-40f7e7eb4c27  802-3-ethernet  eth2
@@ -96,24 +97,28 @@ config
 
     //delete connection ``eth1``  ``eth2``
 
-	# nmcli con del 8a71d519-dd24-4fa3-bec2-61f0278d667b
-	# nmcli con del 7856b66e-bcd9-45f6-8917-40f7e7eb4c27
-	# nmcli c s
+		nmcli con del 8a71d519-dd24-4fa3-bec2-61f0278d667b
+		nmcli con del 7856b66e-bcd9-45f6-8917-40f7e7eb4c27
+		nmcli c s
 
-	NAME         UUID                                  TYPE            DEVICE
-	eth0         81208c98-cfc3-4a14-9595-0eb2f54a7966  802-3-ethernet  eth0
-	System eth0  5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03  802-3-ethernet  --
+		NAME         UUID                                  TYPE            DEVICE
+		eth0         81208c98-cfc3-4a14-9595-0eb2f54a7966  802-3-ethernet  eth0
+		System eth0  5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03  802-3-ethernet  --
 
 
 Create connection ชนิด team  ชื่อ myteam0  พร้อมกับการสร้าง interface ใหม่ ชื่อ team0
 ::
 
-          //สร้าง team
-	# nmcli con add type team con-name team0 ifname team0 config '{ "runner": {"name": "loadbalance"}}'
+  //สร้าง team ด้วยคำสั่ง nmcli con add type team
+
+	nmcli con add type team con-name team0 ifname team0 config '{ "runner": {"name": "loadbalance"}}'
 	Connection 'myteam0' (bc60cf30-a296-44b5-8157-dceabe7a06c7) successfully added.
 
-         //สร้างให้เองอัตโนมัติ
-    cat /etc/sysconfig/network-scripts/ifcfg-myteam0
+
+.. note:: คำสั่ง nmcli จะสร้าง ifcfg-myteam0 ให้เองอัตโนมัติ
+::
+
+  cat /etc/sysconfig/network-scripts/ifcfg-myteam0
 
 	DEVICE=team0
 	TEAM_CONFIG="{ \"runner\": {\"name\": \"loadbalance\"}}"
@@ -133,22 +138,31 @@ Create connection ชนิด team  ชื่อ myteam0  พร้อมกั
 	UUID=bc60cf30-a296-44b5-8157-dceabe7a06c7
 	ONBOOT=yes
 
-	//กำหนด ip
-	# nmcli con mod team0 ipv4.addresses 10.0.0.10/24
-	# nmcli con mod team0 ipv4.gateway 10.0.0.1
-	# nmcli con mod team0 ipv4.method manual
+กำหนด ip ให้แก่ team0
+::
 
-    	//เพิ่ม  eth1 ให้เป็น team interface ชนิด  team-slave ของinterface team0 มีชื่อว่า team0-slave0
-	# nmcli con add type team-slave con-name team0-slave0 ifname eth1 master team0
+	nmcli con mod team0 ipv4.addresses 10.0.0.10/24
+	nmcli con mod team0 ipv4.gateway 10.0.0.1
+	nmcli con mod team0 ipv4.method manual
+
+เพิ่ม  eth1 ให้เป็น team interface ชนิด  team-slave ของinterface team0 มีชื่อว่า team0-slave0
+::
+
+	nmcli con add type team-slave con-name team0-slave0 ifname eth1 master team0
+  (ผลที่ได้)
 	Connection 'team0-slave0' (329c1ff0-d674-46aa-9bd5-7af1b60d5327) successfully added.
 
-	//เพิ่ม  eth2 ให้เป็น team interface ชนิด  team-slave ของinterface team0 มีชื่อว่า team0-slave1
-	# nmcli con add type team-slave con-name team0-slave1 ifname eth2 master team0
+เพิ่ม  eth2 ให้เป็น team interface ชนิด  team-slave ของinterface team0 มีชื่อว่า team0-slave1
+::
+
+	nmcli con add type team-slave con-name team0-slave1 ifname eth2 master team0
+  (ผลที่ได้)
 	Connection 'team0-slave1' (eb9e1180-d8d3-4abe-a88e-42ffe1c8f72b) successfully added.
 
-         //โดยที่ nmcli จะสร้าง config ให้แก่  connection ทั้ง team0-slave0 และ team0-slave1
+.. note:: โดยที่ nmcli จะสร้าง config ให้แก่  connection ทั้ง team0-slave0 และ team0-slave1
+::
 
-    # cat /etc/sysconfig/network-scripts/ifcfg-team0-slave0
+  cat /etc/sysconfig/network-scripts/ifcfg-team0-slave0
 	NAME=team0-slave0
 	UUID=329c1ff0-d674-46aa-9bd5-7af1b60d5327
 	DEVICE=eth1
@@ -156,7 +170,7 @@ Create connection ชนิด team  ชื่อ myteam0  พร้อมกั
 	TEAM_MASTER=team0
 	DEVICETYPE=TeamPort
 
-	# cat /etc/sysconfig/network-scripts/ifcfg-team0-slave1
+	cat /etc/sysconfig/network-scripts/ifcfg-team0-slave1
 	NAME=team0-slave1
 	UUID=eb9e1180-d8d3-4abe-a88e-42ffe1c8f72b
 	DEVICE=eth2
@@ -165,14 +179,16 @@ Create connection ชนิด team  ชื่อ myteam0  พร้อมกั
 	DEVICETYPE=TeamPort
 
 
-Activate Team
+Activate Team0
 -------------
 ::
 
-	# nmcli con up team0
+	nmcli con up team0
+	(ผลที่ได้)
 	Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/3)
 
-	# nmcli c s
+	nmcli c s
+	(ผลที่ได้)
 	NAME          UUID                                  TYPE            DEVICE
 	eth0          49fe963e-b0e5-4604-8745-e319f8c7e162  802-3-ethernet  eth0
 	team0         3c59a2f2-5cb4-47a7-8593-f0c683d66c28  team            team0
@@ -181,10 +197,10 @@ Activate Team
 	myteam0       bc60cf30-a296-44b5-8157-dceabe7a06c7  team            --
 	System eth0   5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03  802-3-ethernet  --
 
-	# teamdctl team0 state
+	teamdctl team0 state
 
-    # teamdctl team0 config dump
-
+  teamdctl team0 config dump
+  (ผลที่ได้)
 	setup:
 	  runner: loadbalance
 	ports:
@@ -203,9 +219,11 @@ Activate Team
 		    link: up
 		    down count: 0
 
-	//check port status
-	# teamnl team0 ports
+check port status ของ
+::
+
+	teamnl team0 ports
 	 4: eth2: up 0Mbit HD
 	 3: eth1: up 0Mbit HD
 
-    #nmcli con reload
+  nmcli con reload
