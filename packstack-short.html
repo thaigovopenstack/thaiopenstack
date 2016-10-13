@@ -101,6 +101,8 @@
 <li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Openstack Cloud</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#network-architecture">Network Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openvswitch-device">Openvswitch device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#virtual-network">สร้าง virtual network</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
@@ -247,25 +249,65 @@ end
 </pre></div>
 </div>
 <p>Terminal1:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">prepare</span> <span class="n">disk</span> <span class="k">for</span> <span class="n">volume</span> <span class="n">group</span>
-<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
-<span class="n">fdisk</span> <span class="o">-</span><span class="n">l</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>//prepare disk for volume group
+sudo su -
+fdisk -l
 
-<span class="n">fdisk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
-<span class="n">n</span>
-<span class="n">p</span>
-<span class="mi">1</span>
-<span class="n">enter</span>
-<span class="n">enter</span>
-<span class="n">w</span>
+fdisk /dev/vdb
+n
+p
+1
+enter
+enter
+w
 
-<span class="n">partprobe</span>
+partprobe
 
-<span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
-<span class="n">vgcreate</span> <span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
+pvcreate /dev/vdb1
+vgcreate cinder-volumes /dev/vdb1
+
+
+ตั้งค่า Timeserver (Terminal 2 )::
+
+    $ sudo yum install chrony -y
+    $ sudo vi  /etc/chrony.conf
+    //เปลี่ยนแปลง time server
+    server 1.th.pool.ntp.org iburst
+    server 0.asia.pool.ntp.org iburst
+    server 2.asia.pool.ntp.org iburst
+
+    //อนุญาติให้เครื่องในวง 10.20.30.0/24 สามารถ syncได้
+    allow 10.20.30.0/24
+
+    $ sudo systemctl restart chronyd
+    $ chronyc source
+
+    210 Number of sources = 3
+    MS Name/IP address         Stratum Poll Reach LastRx Last sample
+    ===============================================================================
+    ^- ntp02.cpe.rmutt.ac.th         2   6     7     1    -16ms[  -11ms] +/-  225ms
+    ^* time1.isu.net.sa              1   6     7     0  +5882us[  +11ms] +/-  140ms
+    ^+ 202-65-114-202.jogja.citr     2   6     7     1    -13ms[-7965us] +/-   93ms
+
+ตั้งค่า Timeserver (Terminal 1 )::
+
+    sudo yum install chrony -y
+    vi  /etc/chrony.conf
+    //เปลี่ยนแปลง time server ให้ชื้ไปยัง server
+    server 10.20.30.41 iburst
+
+
+    sudo systemctl restart chronyd
+    $ chronyc sources
+    210 Number of sources = 1
+    MS Name/IP address         Stratum Poll Reach LastRx Last sample
+    ===============================================================================
+    ^? 10.20.30.41                   3   6     1     1  +6209us[+6209us] +/-   84ms
 </pre></div>
 </div>
-<p>เครื่อง controller</p>
+<p>เครื่อง controller ให้ run คำสั่ง packstack พร้อมกับ option เพื่อ ติดตั้ง openstack โดยคำสั่ง
+packstack จะรับค่าoption และนำไปสร้าง file template ที่มีตัวแปรที่กำหนด หลังจากนั้นจะส่งต่อให้
+puppet นำไปสร้างเป็น puppet module เพื่อติดตั้ง openstack ต่อไป</p>
 <p>Terminal1:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">run</span> <span class="n">packstck</span>
 <span class="o">//</span><span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="n">CONTROLLER_ADDRESS</span><span class="p">,</span><span class="n">COMPUTE_ADDRESSES</span>
@@ -296,7 +338,7 @@ end
 <span class="n">Finalizing</span>                                           <span class="p">[</span> <span class="n">DONE</span> <span class="p">]</span>
 
 <span class="n">Additional</span> <span class="n">information</span><span class="p">:</span>
- <span class="o">*</span> <span class="n">A</span> <span class="n">new</span> <span class="n">answerfile</span> <span class="n">was</span> <span class="n">created</span> <span class="ow">in</span><span class="p">:</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">packstack</span><span class="o">-</span><span class="n">answers</span><span class="o">-</span><span class="mi">20161012</span><span class="o">-</span><span class="mf">011347.</span><span class="n">txt</span>
+ <span class="o">*</span> <span class="n">A</span> <span class="n">new</span> <span class="n">answerfile</span> <span class="n">was</span> <span class="n">created</span> <span class="ow">in</span><span class="p">:</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">packstack</span><span class="o">-</span><span class="n">answers</span><span class="o">-</span><span class="mi">20161012</span><span class="o">-</span><span class="mf">141203.</span><span class="n">txt</span>
  <span class="o">*</span> <span class="n">Time</span> <span class="n">synchronization</span> <span class="n">installation</span> <span class="n">was</span> <span class="n">skipped</span><span class="o">.</span> <span class="n">Please</span> <span class="n">note</span> <span class="n">that</span> <span class="n">unsynchronized</span> <span class="n">time</span> <span class="n">on</span> <span class="n">server</span> <span class="n">instances</span> <span class="n">might</span> <span class="n">be</span> <span class="n">problem</span> <span class="k">for</span> <span class="n">some</span> <span class="n">OpenStack</span> <span class="n">components</span><span class="o">.</span>
  <span class="o">*</span> <span class="n">File</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">keystonerc_admin</span> <span class="n">has</span> <span class="n">been</span> <span class="n">created</span> <span class="n">on</span> <span class="n">OpenStack</span> <span class="n">client</span> <span class="n">host</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="o">.</span> <span class="n">To</span> <span class="n">use</span> <span class="n">the</span> <span class="n">command</span> <span class="n">line</span> <span class="n">tools</span> <span class="n">you</span> <span class="n">need</span> <span class="n">to</span> <span class="n">source</span> <span class="n">the</span> <span class="n">file</span><span class="o">.</span>
  <span class="o">*</span> <span class="n">To</span> <span class="n">access</span> <span class="n">the</span> <span class="n">OpenStack</span> <span class="n">Dashboard</span> <span class="n">browse</span> <span class="n">to</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="o">/</span><span class="n">dashboard</span> <span class="o">.</span>
@@ -310,6 +352,14 @@ end
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
+<p>เมื่อติดตั้ง ประสบความสำเร็จ packstack จะรายงายผลออกมาที่สำคัญได้แก่</p>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="n">ชื่อของ</span> <span class="n">answerfile</span> <span class="n">ที่ใช้สำหรับการแก้ไขต่อไปในอนาคต</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">packstack</span><span class="o">-</span><span class="n">answers</span><span class="o">-</span><span class="mi">20161012</span><span class="o">-</span><span class="mf">141203.</span><span class="n">txt</span>
+<span class="o">*</span> <span class="n">ip</span> <span class="n">address</span> <span class="n">สำหรับการเข้าใช้งาน</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
 <p>หากมีความผิดพลาดแล้วจะต้อง run packstack ใหม่ให้ สั่งคำสั่ง จาก answerfil ที่สร้างขึ้น</p>
 <div class="last highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="nd">@controller</span> <span class="o">~</span><span class="p">]</span><span class="c1"># ls</span>
 <span class="n">packstack</span><span class="o">-</span><span class="n">answers</span><span class="o">-</span><span class="mi">20161012</span><span class="o">-</span><span class="mf">011347.</span><span class="n">txt</span>
@@ -317,46 +367,68 @@ end
 </pre></div>
 </div>
 </div>
-<p>เครื่อง host</p>
+<p>เครื่อง host จะทำการติดตั้ง openstack client  เพื่อเข้าไปใช้งาน</p>
 <p>Terminal2:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">install</span> <span class="n">openstack</span> <span class="n">client</span>
-<span class="c1">## Install openstack client [on host]</span>
-<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="p">{</span><span class="n">openstack</span><span class="p">,</span><span class="n">keystone</span><span class="p">,</span><span class="n">nova</span><span class="p">,</span><span class="n">neutron</span><span class="p">,</span><span class="n">glance</span><span class="p">,</span><span class="n">cinder</span><span class="p">,</span>\
-<span class="n">swift</span><span class="p">,</span><span class="n">heat</span><span class="p">,</span><span class="n">ceilometer</span><span class="p">}</span><span class="n">client</span>
-<span class="c1">## create working folder</span>
-<span class="n">cd</span> <span class="o">~</span> <span class="o">&amp;&amp;</span> <span class="n">mkdir</span> <span class="n">openstackrc</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="n">openstackrc</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>//install openstack client
+## Install openstack client [on host]
+$ sudo dnf install python-{openstack,keystone,nova,neutron,glance,cinder,\
+swift,heat,ceilometer}client
 
-<span class="c1">##create file ชื่อ admin_rc_v2 (เป็นชื่ออะไรก็ได)</span>
-<span class="n">cat</span> <span class="o">&lt;&lt;</span> <span class="n">RC</span> <span class="o">&gt;</span> <span class="n">admin_rc_v2</span>
-<span class="n">unset</span> <span class="n">OS_SERVICE_TOKEN</span>
-<span class="n">export</span> <span class="n">OS_USERNAME</span><span class="o">=</span><span class="n">admin</span>
-<span class="n">export</span> <span class="n">OS_PASSWORD</span><span class="o">=</span><span class="n">linux</span>
-<span class="n">export</span> <span class="n">OS_AUTH_URL</span><span class="o">=</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">:</span><span class="mi">5000</span><span class="o">/</span><span class="n">v2</span><span class="o">.</span><span class="mi">0</span>
-<span class="n">export</span> <span class="n">PS1</span><span class="o">=</span><span class="s1">&#39;[\u@\h \W(keystone_admin)]\$ &#39;</span>
-<span class="n">export</span> <span class="n">OS_TENANT_NAME</span><span class="o">=</span><span class="n">admin</span>
-<span class="n">export</span> <span class="n">OS_REGION_NAME</span><span class="o">=</span><span class="n">RegionOne</span>
-<span class="n">RC</span>
-<span class="c1">## Test</span>
-<span class="n">source</span> <span class="n">admin_rc_v2</span>
-<span class="n">openstack</span> <span class="n">user</span> <span class="nb">list</span>
+## create working folder
 
-<span class="o">+----------------------------------+------------+</span>
-<span class="o">|</span> <span class="n">ID</span>                               <span class="o">|</span> <span class="n">Name</span>       <span class="o">|</span>
-<span class="o">+----------------------------------+------------+</span>
-<span class="o">|</span> <span class="mi">5</span><span class="n">c08e42a280445e283a71d6e01735811</span> <span class="o">|</span> <span class="n">admin</span>      <span class="o">|</span>
-<span class="o">|</span> <span class="mi">08</span><span class="n">bc39d8bfaf40e5903dd96a0641ee9d</span> <span class="o">|</span> <span class="n">neutron</span>    <span class="o">|</span>
-<span class="o">|</span> <span class="n">a7dfe90d96e345268d303f95cab83ef2</span> <span class="o">|</span> <span class="n">heat</span>       <span class="o">|</span>
-<span class="o">|</span> <span class="n">ab12686ca4b14868956d310f1aca1af8</span> <span class="o">|</span> <span class="n">gnocchi</span>    <span class="o">|</span>
-<span class="o">|</span> <span class="mi">38</span><span class="n">be373dfe674e089e02c88be07f92a2</span> <span class="o">|</span> <span class="n">aodh</span>       <span class="o">|</span>
-<span class="o">|</span> <span class="mi">036</span><span class="n">d2e3e3ed940dd84b0575d838621bc</span> <span class="o">|</span> <span class="n">nova</span>       <span class="o">|</span>
-<span class="o">|</span> <span class="mi">302</span><span class="n">bbb18eeab418f83288690521dd1bf</span> <span class="o">|</span> <span class="n">glance</span>     <span class="o">|</span>
-<span class="o">|</span> <span class="n">eb387675e73441a497f4549d59fa02f4</span> <span class="o">|</span> <span class="n">trove</span>      <span class="o">|</span>
-<span class="o">|</span> <span class="mi">14</span><span class="n">c2a2c213d64be499315b8897585924</span> <span class="o">|</span> <span class="n">sahara</span>     <span class="o">|</span>
-<span class="o">|</span> <span class="n">e44524eff3da4c57a8283caead1c63ea</span> <span class="o">|</span> <span class="n">ceilometer</span> <span class="o">|</span>
-<span class="o">|</span> <span class="mi">830</span><span class="n">c925ee56045df8c7a226612f66d26</span> <span class="o">|</span> <span class="n">cinder</span>     <span class="o">|</span>
-<span class="o">|</span> <span class="mi">96</span><span class="n">f580c5af874165a54f28d71f3641ca</span> <span class="o">|</span> <span class="n">heat</span><span class="o">-</span><span class="n">cfn</span>   <span class="o">|</span>
-<span class="o">|</span> <span class="mi">355</span><span class="n">e46c0f63b499aa2b7eb14f698f97e</span> <span class="o">|</span> <span class="n">swift</span>      <span class="o">|</span>
-<span class="o">+----------------------------------+------------+</span>
+$ cd ~ &amp;&amp; mkdir openstackrc &amp;&amp; cd openstackrc
+
+##create file ชื่อ admin_rc_v2 (เป็นชื่ออะไรก็ได)
+$ cat &lt;&lt; RC &gt; admin_rc_v2
+unset OS_SERVICE_TOKEN
+export OS_USERNAME=admin
+export OS_PASSWORD=linux
+export OS_AUTH_URL=http://10.10.10.10:5000/v2.0
+export PS1=&#39;[\u@\h \W(keystone_admin)]\$ &#39;
+export OS_TENANT_NAME=admin
+export OS_REGION_NAME=RegionOne
+RC
+## Test เรียกดู user
+$ source admin_rc_v2
+$ openstack user list
+
++----------------------------------+------------+
+| ID                               | Name       |
++----------------------------------+------------+
+| 5c08e42a280445e283a71d6e01735811 | admin      |
+| 08bc39d8bfaf40e5903dd96a0641ee9d | neutron    |
+| a7dfe90d96e345268d303f95cab83ef2 | heat       |
+| ab12686ca4b14868956d310f1aca1af8 | gnocchi    |
+| 38be373dfe674e089e02c88be07f92a2 | aodh       |
+| 036d2e3e3ed940dd84b0575d838621bc | nova       |
+| 302bbb18eeab418f83288690521dd1bf | glance     |
+| eb387675e73441a497f4549d59fa02f4 | trove      |
+| 14c2a2c213d64be499315b8897585924 | sahara     |
+| e44524eff3da4c57a8283caead1c63ea | ceilometer |
+| 830c925ee56045df8c7a226612f66d26 | cinder     |
+| 96f580c5af874165a54f28d71f3641ca | heat-cfn   |
+| 355e46c0f63b499aa2b7eb14f698f97e | swift      |
++----------------------------------+------------+
+
+$ openstack project list
++----------------------------------+----------+
+| ID                               | Name     |
++----------------------------------+----------+
+| 297c9df6fa3c469cbb587248cf59cb4e | admin    |
+| 34c47a8e222543918153a2ed348f419d | services |
++----------------------------------+----------+
+
+$ openstack role list
++----------------------------------+------------------+
+| ID                               | Name             |
++----------------------------------+------------------+
+| 3db26d6d909848aa8aefd886d9aa8f2a | SwiftOperator    |
+| 84bb64935d284a248791c4a3bac183ff | heat_stack_user  |
+| 88c6a2e7af25486487e61153554fde71 | admin            |
+| 9fe2ff9ee4384b1894a90878d3e92bab | _member_         |
+| b10f0d654b5c4d22bc2818c0c9d1012c | ResellerAdmin    |
+| d609a95d200f46bca2d893b421f12cff | heat_stack_owner |
++----------------------------------+------------------+
 </pre></div>
 </div>
 <p>เครื่อง host</p>
@@ -403,7 +475,86 @@ $ openstack image list
 </div>
 <div class="section" id="network-architecture">
 <h2>Network Architecture<a class="headerlink" href="#network-architecture" title="Permalink to this headline">¶</a></h2>
-<img alt="_images/Neutron_architecture.png" src="_images/Neutron_architecture.png" />
+<img alt="_images/ovs-neutron-1024x515.gif" src="_images/ovs-neutron-1024x515.gif" />
+</div>
+<div class="section" id="openvswitch-device">
+<h2>Openvswitch device<a class="headerlink" href="#openvswitch-device" title="Permalink to this headline">¶</a></h2>
+<p>Terminal 1 บนเครื่อง controller ตรวจสอบ ด้วยคำสั่ง <cite>ovs-vscht show</cite></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># ovs-vsctl show</span>
+<span class="mi">6</span><span class="n">a15cbb5</span><span class="o">-</span><span class="mi">18</span><span class="n">ef</span><span class="o">-</span><span class="mi">4</span><span class="n">e40</span><span class="o">-</span><span class="mi">8</span><span class="n">a6a</span><span class="o">-</span><span class="mi">339</span><span class="n">dc0fccb7b</span>
+    <span class="n">Manager</span> <span class="s2">&quot;ptcp:6640:127.0.0.1&quot;</span>
+        <span class="n">is_connected</span><span class="p">:</span> <span class="n">true</span>
+    <span class="n">Bridge</span> <span class="n">br</span><span class="o">-</span><span class="n">tun</span>
+        <span class="n">Controller</span> <span class="s2">&quot;tcp:127.0.0.1:6633&quot;</span>
+            <span class="n">is_connected</span><span class="p">:</span> <span class="n">true</span>
+        <span class="n">fail_mode</span><span class="p">:</span> <span class="n">secure</span>
+        <span class="n">Port</span> <span class="n">patch</span><span class="o">-</span><span class="nb">int</span>
+            <span class="n">Interface</span> <span class="n">patch</span><span class="o">-</span><span class="nb">int</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">patch</span>
+                <span class="n">options</span><span class="p">:</span> <span class="p">{</span><span class="n">peer</span><span class="o">=</span><span class="n">patch</span><span class="o">-</span><span class="n">tun</span><span class="p">}</span>
+        <span class="n">Port</span> <span class="n">br</span><span class="o">-</span><span class="n">tun</span>
+            <span class="n">Interface</span> <span class="n">br</span><span class="o">-</span><span class="n">tun</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">internal</span>
+        <span class="n">Port</span> <span class="s2">&quot;vxlan-0a0a0a0b&quot;</span>
+            <span class="n">Interface</span> <span class="s2">&quot;vxlan-0a0a0a0b&quot;</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">vxlan</span>
+                <span class="n">options</span><span class="p">:</span> <span class="p">{</span><span class="n">df_default</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="n">in_key</span><span class="o">=</span><span class="n">flow</span><span class="p">,</span> <span class="n">local_ip</span><span class="o">=</span><span class="s2">&quot;10.10.10.10&quot;</span><span class="p">,</span> <span class="n">out_key</span><span class="o">=</span><span class="n">flow</span><span class="p">,</span> <span class="n">remote_ip</span><span class="o">=</span><span class="s2">&quot;10.10.10.11&quot;</span><span class="p">}</span>
+    <span class="n">Bridge</span> <span class="n">br</span><span class="o">-</span><span class="nb">int</span>
+        <span class="n">Controller</span> <span class="s2">&quot;tcp:127.0.0.1:6633&quot;</span>
+            <span class="n">is_connected</span><span class="p">:</span> <span class="n">true</span>
+        <span class="n">fail_mode</span><span class="p">:</span> <span class="n">secure</span>
+        <span class="n">Port</span> <span class="s2">&quot;int-br-eth2&quot;</span>
+            <span class="n">Interface</span> <span class="s2">&quot;int-br-eth2&quot;</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">patch</span>
+                <span class="n">options</span><span class="p">:</span> <span class="p">{</span><span class="n">peer</span><span class="o">=</span><span class="s2">&quot;phy-br-eth2&quot;</span><span class="p">}</span>
+        <span class="n">Port</span> <span class="nb">int</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+            <span class="n">Interface</span> <span class="nb">int</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">patch</span>
+                <span class="n">options</span><span class="p">:</span> <span class="p">{</span><span class="n">peer</span><span class="o">=</span><span class="n">phy</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">}</span>
+        <span class="n">Port</span> <span class="n">patch</span><span class="o">-</span><span class="n">tun</span>
+            <span class="n">Interface</span> <span class="n">patch</span><span class="o">-</span><span class="n">tun</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">patch</span>
+                <span class="n">options</span><span class="p">:</span> <span class="p">{</span><span class="n">peer</span><span class="o">=</span><span class="n">patch</span><span class="o">-</span><span class="nb">int</span><span class="p">}</span>
+        <span class="n">Port</span> <span class="n">br</span><span class="o">-</span><span class="nb">int</span>
+            <span class="n">Interface</span> <span class="n">br</span><span class="o">-</span><span class="nb">int</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">internal</span>
+    <span class="n">Bridge</span> <span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+        <span class="n">Controller</span> <span class="s2">&quot;tcp:127.0.0.1:6633&quot;</span>
+            <span class="n">is_connected</span><span class="p">:</span> <span class="n">true</span>
+        <span class="n">fail_mode</span><span class="p">:</span> <span class="n">secure</span>
+        <span class="n">Port</span> <span class="s2">&quot;eth0&quot;</span>
+            <span class="n">Interface</span> <span class="s2">&quot;eth0&quot;</span>
+        <span class="n">Port</span> <span class="n">phy</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+            <span class="n">Interface</span> <span class="n">phy</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">patch</span>
+                <span class="n">options</span><span class="p">:</span> <span class="p">{</span><span class="n">peer</span><span class="o">=</span><span class="nb">int</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">}</span>
+        <span class="n">Port</span> <span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+            <span class="n">Interface</span> <span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">internal</span>
+    <span class="n">Bridge</span> <span class="s2">&quot;br-eth2&quot;</span>
+        <span class="n">Controller</span> <span class="s2">&quot;tcp:127.0.0.1:6633&quot;</span>
+            <span class="n">is_connected</span><span class="p">:</span> <span class="n">true</span>
+        <span class="n">fail_mode</span><span class="p">:</span> <span class="n">secure</span>
+        <span class="n">Port</span> <span class="s2">&quot;eth2&quot;</span>
+            <span class="n">Interface</span> <span class="s2">&quot;eth2&quot;</span>
+        <span class="n">Port</span> <span class="s2">&quot;br-eth2&quot;</span>
+            <span class="n">Interface</span> <span class="s2">&quot;br-eth2&quot;</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">internal</span>
+        <span class="n">Port</span> <span class="s2">&quot;phy-br-eth2&quot;</span>
+            <span class="n">Interface</span> <span class="s2">&quot;phy-br-eth2&quot;</span>
+                <span class="nb">type</span><span class="p">:</span> <span class="n">patch</span>
+                <span class="n">options</span><span class="p">:</span> <span class="p">{</span><span class="n">peer</span><span class="o">=</span><span class="s2">&quot;int-br-eth2&quot;</span><span class="p">}</span>
+    <span class="n">ovs_version</span><span class="p">:</span> <span class="s2">&quot;2.5.0&quot;</span>
+</pre></div>
+</div>
+<p>ภาพแสดง อุปกรณ์ ที่เป็น virtual devices ที่สร้างโดย openstack
+Compute node</p>
+<img alt="_images/under-the-hood-scenario-1-ovs-compute.png" src="_images/under-the-hood-scenario-1-ovs-compute.png" />
+<p>Controller/Network node</p>
+<img alt="_images/under-the-hood-scenario-1-ovs-network.png" src="_images/under-the-hood-scenario-1-ovs-network.png" />
+</div>
+<div class="section" id="virtual-network">
+<h2>สร้าง virtual network<a class="headerlink" href="#virtual-network" title="Permalink to this headline">¶</a></h2>
 <p>สร้าง flat network ชื่อ extnet  [เนื่องจาก &#8211;os-neutron-ovs-bridge-mappings=extnet:br-ex]</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ neutron net-create external_network --provider:network_type flat --provider:physical_network extnet  --router:external
 Created a new network:
