@@ -19,7 +19,7 @@ vagrant
 	  config.vm.define :server1 do |node|
 		    node.vm.network :private_network, :ip => "10.0.0.10"
 		    node.vm.network :private_network, :ip => "20.0.0.10"
-				node.vm.hostname = "server1.example.com"
+            node.vm.hostname = "server1.example.com"
 		    node.vm.provider :libvirt do |domain|
 		      domain.uri = 'qemu+unix:///system'
 		      domain.driver = 'kvm'
@@ -35,7 +35,7 @@ vagrant
 	  config.vm.define :server2 do |node|
 		    node.vm.network :private_network, :ip => "10.0.0.11"
 		    node.vm.network :private_network, :ip => "20.0.0.11"
-				node.vm.hostname = "server2.example.com"
+			node.vm.hostname = "server2.example.com"
 		    node.vm.provider :libvirt do |domain|
 		      domain.uri = 'qemu+unix:///system'
 		      domain.driver = 'kvm'
@@ -109,9 +109,7 @@ config
 
 Create connection ชนิด team  ชื่อ myteam0  พร้อมกับการสร้าง interface ใหม่ ชื่อ team0
 ::
-
-    //สร้าง team ด้วยคำสั่ง nmcli con add type team
-
+    
 	nmcli con add type team con-name team0 ifname team0 config '{ "runner": {"name": "loadbalance"}}'
     (ผลลัพท) 
 	Connection 'myteam0' (bc60cf30-a296-44b5-8157-dceabe7a06c7) successfully added.
