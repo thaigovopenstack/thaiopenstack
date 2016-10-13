@@ -58,11 +58,12 @@ Config Team
 ***********
 On Server1::
 
-  sudo su -
+    sudo su -
 	yum install -y teamd
 
-  //check kernel
-  modprobe team
+    //ตรวจสอบ check kernel ด้วยคำสั่ง modprobe
+    
+    modprobe team
 	modinfo team
 
 	filename:       /lib/modules/3.10.0-327.18.2.el7.x86_64/kernel/drivers/net/team/team.ko
@@ -97,48 +98,50 @@ config
 
     //delete connection ``eth1``  ``eth2``
 
-		nmcli con del 8a71d519-dd24-4fa3-bec2-61f0278d667b
-		nmcli con del 7856b66e-bcd9-45f6-8917-40f7e7eb4c27
-		nmcli c s
+	nmcli con del 8a71d519-dd24-4fa3-bec2-61f0278d667b
+	nmcli con del 7856b66e-bcd9-45f6-8917-40f7e7eb4c27
+	nmcli c s
 
-		NAME         UUID                                  TYPE            DEVICE
-		eth0         81208c98-cfc3-4a14-9595-0eb2f54a7966  802-3-ethernet  eth0
-		System eth0  5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03  802-3-ethernet  --
+	NAME         UUID                                  TYPE            DEVICE
+	eth0         81208c98-cfc3-4a14-9595-0eb2f54a7966  802-3-ethernet  eth0
+	System eth0  5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03  802-3-ethernet  --
 
 
 Create connection ชนิด team  ชื่อ myteam0  พร้อมกับการสร้าง interface ใหม่ ชื่อ team0
 ::
 
-  //สร้าง team ด้วยคำสั่ง nmcli con add type team
+    //สร้าง team ด้วยคำสั่ง nmcli con add type team
 
 	nmcli con add type team con-name team0 ifname team0 config '{ "runner": {"name": "loadbalance"}}'
+    (ผลลัพท) 
 	Connection 'myteam0' (bc60cf30-a296-44b5-8157-dceabe7a06c7) successfully added.
 
 
 .. note:: คำสั่ง nmcli จะสร้าง ifcfg-myteam0 ให้เองอัตโนมัติ
+
 ::
 
-  cat /etc/sysconfig/network-scripts/ifcfg-myteam0
+    cat /etc/sysconfig/network-scripts/ifcfg-team0
 
-	DEVICE=team0
-	TEAM_CONFIG="{ \"runner\": {\"name\": \"loadbalance\"}}"
-	DEVICETYPE=Team
-	BOOTPROTO=dhcp
-	DEFROUTE=yes
-	PEERDNS=yes
-	PEERROUTES=yes
-	IPV4_FAILURE_FATAL=no
-	IPV6INIT=yes
-	IPV6_AUTOCONF=yes
-	IPV6_DEFROUTE=yes
-	IPV6_PEERDNS=yes
-	IPV6_PEERROUTES=yes
-	IPV6_FAILURE_FATAL=no
-	NAME=team0
-	UUID=bc60cf30-a296-44b5-8157-dceabe7a06c7
-	ONBOOT=yes
+    DEVICE=team0
+    TEAM_CONFIG="{ \"runner\": {\"name\": \"loadbalance\"}}"
+    DEVICETYPE=Team
+    BOOTPROTO=dhcp
+    DEFROUTE=yes
+    PEERDNS=yes
+    PEERROUTES=yes
+    IPV4_FAILURE_FATAL=no
+    IPV6INIT=yes
+    IPV6_AUTOCONF=yes
+    IPV6_DEFROUTE=yes
+    IPV6_PEERDNS=yes
+    IPV6_PEERROUTES=yes
+    IPV6_FAILURE_FATAL=no
+    NAME=team0
+    UUID=bc60cf30-a296-44b5-8157-dceabe7a06c7
+    ONBOOT=yes
 
-กำหนด ip ให้แก่ team0
+กำหนด ip ให้แก่ team0 ด้วยคำสั่ง 
 ::
 
 	nmcli con mod team0 ipv4.addresses 10.0.0.10/24
@@ -160,6 +163,7 @@ Create connection ชนิด team  ชื่อ myteam0  พร้อมกั
 	Connection 'team0-slave1' (eb9e1180-d8d3-4abe-a88e-42ffe1c8f72b) successfully added.
 
 .. note:: โดยที่ nmcli จะสร้าง config ให้แก่  connection ทั้ง team0-slave0 และ team0-slave1
+
 ::
 
   cat /etc/sysconfig/network-scripts/ifcfg-team0-slave0
@@ -180,7 +184,8 @@ Create connection ชนิด team  ชื่อ myteam0  พร้อมกั
 
 
 Activate Team0
--------------
+--------------
+
 ::
 
 	nmcli con up team0
@@ -199,8 +204,10 @@ Activate Team0
 
 	teamdctl team0 state
 
-  teamdctl team0 config dump
-  (ผลที่ได้)
+::
+
+    teamdctl team0 config dump
+    (ผลที่ได้)
 	setup:
 	  runner: loadbalance
 	ports:
@@ -220,10 +227,14 @@ Activate Team0
 		    down count: 0
 
 check port status ของ
+
 ::
 
 	teamnl team0 ports
 	 4: eth2: up 0Mbit HD
 	 3: eth1: up 0Mbit HD
 
-  nmcli con reload
+Reload
+::
+
+    nmcli con reload

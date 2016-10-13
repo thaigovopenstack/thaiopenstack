@@ -233,16 +233,16 @@ openvswitch คือ virtual switch รองรับการทำงาน 
 </pre></div>
 </div>
 <p>edit network config</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>      <span class="c1"># cd /etc/sysconfig/network-scripts</span>
-<span class="c1"># vim ifcfg-enp3s0</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">network</span><span class="o">-</span><span class="n">scripts</span>
+<span class="n">vim</span> <span class="n">ifcfg</span><span class="o">-</span><span class="n">enp3s0</span>
 
-      <span class="n">DEVICE</span><span class="o">=</span><span class="n">enp3s0</span>
+    <span class="n">DEVICE</span><span class="o">=</span><span class="n">enp3s0</span>
 <span class="n">NAME</span><span class="o">=</span><span class="n">enp3s0</span>
-      <span class="n">HWADDR</span><span class="o">=</span><span class="mi">54</span><span class="p">:</span><span class="n">ee</span><span class="p">:</span><span class="mi">75</span><span class="p">:</span><span class="mi">8</span><span class="n">a</span><span class="p">:</span><span class="mi">86</span><span class="p">:</span><span class="mi">09</span>
-      <span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
-      <span class="n">DEVICETYPE</span><span class="o">=</span><span class="n">ovs</span>
-      <span class="n">TYPE</span><span class="o">=</span><span class="n">OVSPort</span>
-      <span class="n">OVS_BRIDGE</span><span class="o">=</span><span class="n">ovsbr0</span>
+    <span class="n">HWADDR</span><span class="o">=</span><span class="mi">54</span><span class="p">:</span><span class="n">ee</span><span class="p">:</span><span class="mi">75</span><span class="p">:</span><span class="mi">8</span><span class="n">a</span><span class="p">:</span><span class="mi">86</span><span class="p">:</span><span class="mi">09</span>
+    <span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
+    <span class="n">DEVICETYPE</span><span class="o">=</span><span class="n">ovs</span>
+    <span class="n">TYPE</span><span class="o">=</span><span class="n">OVSPort</span>
+    <span class="n">OVS_BRIDGE</span><span class="o">=</span><span class="n">ovsbr0</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -282,13 +282,13 @@ openvswitch คือ virtual switch รองรับการทำงาน 
 </div>
 <p>ยกเลิกการทำงาน NetworkManager</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">resolv</span><span class="o">.</span><span class="n">conf</span>
-      <span class="n">systemctl</span> <span class="n">stop</span> <span class="n">NetworkManager</span>
-      <span class="n">systemctl</span> <span class="n">disable</span> <span class="n">NetworkManager</span>
+    <span class="n">systemctl</span> <span class="n">stop</span> <span class="n">NetworkManager</span>
+    <span class="n">systemctl</span> <span class="n">disable</span> <span class="n">NetworkManager</span>
 
-      <span class="n">systemctl</span> <span class="n">start</span> <span class="n">network</span>
-      <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">network</span>
+    <span class="n">systemctl</span> <span class="n">start</span> <span class="n">network</span>
+    <span class="n">systemctl</span> <span class="n">enable</span> <span class="n">network</span>
 
-      <span class="n">reboot</span>
+    <span class="n">reboot</span>
 </pre></div>
 </div>
 </div>
