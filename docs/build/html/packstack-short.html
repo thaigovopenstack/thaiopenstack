@@ -199,7 +199,7 @@ Vagrant.configure(2) do |config|
       node.vm.provider :libvirt do |libvirt|
         libvirt.uri = &#39;qemu+unix:///system&#39;
         libvirt.cpus = 8
-        libvirt.memory = 8192
+        libvirt.memory = 16484
         libvirt.nested = true
         libvirt.storage :file, :size =&gt; &#39;10G&#39;
         libvirt.storage :file, :size =&gt; &#39;10G&#39;
@@ -275,11 +275,11 @@ server 1.th.pool.ntp.org iburst
 server 0.asia.pool.ntp.org iburst
 server 2.asia.pool.ntp.org iburst
 
-//อนุญาติให้เครื่องในวง 10.20.30.0/24 สามารถ syncได้
-allow 10.20.30.0/24
+//อนุญาติให้เครื่องในวง 10.10.10.0/24 สามารถ syncได้
+allow 10.10.10.0/24
 
 $ sudo systemctl restart chronyd
-$ chronyc source
+$ chronyc sources
 
 210 Number of sources = 3
 MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -293,7 +293,7 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 <div class="highlight-default"><div class="highlight"><pre><span></span>sudo yum install chrony -y
 vi  /etc/chrony.conf
 //เปลี่ยนแปลง time server ให้ชื้ไปยัง server
-server 10.20.30.41 iburst
+server 10.10.10.10 iburst
 
 
 sudo systemctl restart chronyd
@@ -301,7 +301,7 @@ $ chronyc sources
 210 Number of sources = 1
 MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ===============================================================================
-^? 10.20.30.41                   3   6     1     1  +6209us[+6209us] +/-   84ms
+^? controller.example.com     3   6     1     1  +6209us[+6209us] +/-   84ms
 </pre></div>
 </div>
 <p>เครื่อง controller ให้ run คำสั่ง packstack พร้อมกับ option เพื่อ ติดตั้ง openstack โดยคำสั่ง
@@ -315,7 +315,6 @@ puppet นำไปสร้างเป็น puppet module เพื่อต�
 <span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">,</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span> \
 <span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
 <span class="o">--</span><span class="n">provision</span><span class="o">-</span><span class="n">demo</span><span class="o">=</span><span class="n">n</span> \
-<span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
 <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ovs</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">mappings</span><span class="o">=</span><span class="n">extnet</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">,</span><span class="n">physnet1</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span> \
 <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ovs</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">interfaces</span><span class="o">=</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">:</span><span class="n">eth0</span><span class="p">,</span><span class="n">br</span><span class="o">-</span><span class="n">eth2</span><span class="p">:</span><span class="n">eth2</span> \
 <span class="o">--</span><span class="n">os</span><span class="o">-</span><span class="n">neutron</span><span class="o">-</span><span class="n">ml2</span><span class="o">-</span><span class="nb">type</span><span class="o">-</span><span class="n">drivers</span><span class="o">=</span><span class="n">vxlan</span><span class="p">,</span><span class="n">flat</span><span class="p">,</span><span class="n">local</span><span class="p">,</span><span class="n">vlan</span> \
@@ -327,6 +326,7 @@ puppet นำไปสร้างเป็น puppet module เพื่อต�
 <span class="o">--</span><span class="n">keystone</span><span class="o">-</span><span class="n">admin</span><span class="o">-</span><span class="n">passwd</span><span class="o">=</span><span class="n">linux</span>
 </pre></div>
 </div>
+<p>ท่านสามารถเเปลี่ยน password ได้จาก บรรทัด keystone-admin-passwd=&lt;password ที่ต้องการ&gt;</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Applying</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="n">_controller</span><span class="o">.</span><span class="n">pp</span>
 <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="n">_controller</span><span class="o">.</span><span class="n">pp</span><span class="p">:</span>                           <span class="p">[</span> <span class="n">DONE</span> <span class="p">]</span>
 <span class="n">Applying</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="n">_network</span><span class="o">.</span><span class="n">pp</span>
