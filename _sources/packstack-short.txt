@@ -66,11 +66,11 @@ Terminal1::
         server 0.asia.pool.ntp.org iburst
         server 2.asia.pool.ntp.org iburst
 
-        //อนุญาติให้เครื่องในวง 10.20.30.0/24 สามารถ syncได้
-        allow 10.20.30.0/24
+        //อนุญาติให้เครื่องในวง 10.10.10.0/24 สามารถ syncได้
+        allow 10.10.10.0/24
 
         $ sudo systemctl restart chronyd
-        $ chronyc source
+        $ chronyc sources
 
         210 Number of sources = 3
         MS Name/IP address         Stratum Poll Reach LastRx Last sample
@@ -84,7 +84,7 @@ Terminal1::
         sudo yum install chrony -y
         vi  /etc/chrony.conf
         //เปลี่ยนแปลง time server ให้ชื้ไปยัง server
-        server 10.20.30.41 iburst
+        server 10.10.10.10 iburst
 
 
         sudo systemctl restart chronyd
@@ -92,7 +92,7 @@ Terminal1::
         210 Number of sources = 1
         MS Name/IP address         Stratum Poll Reach LastRx Last sample
         ===============================================================================
-        ^? 10.20.30.41                   3   6     1     1  +6209us[+6209us] +/-   84ms
+        ^? controller.example.com     3   6     1     1  +6209us[+6209us] +/-   84ms
 
 เครื่อง controller ให้ run คำสั่ง packstack พร้อมกับ option เพื่อ ติดตั้ง openstack โดยคำสั่ง
 packstack จะรับค่าoption และนำไปสร้าง file template ที่มีตัวแปรที่กำหนด หลังจากนั้นจะส่งต่อให้
@@ -107,7 +107,6 @@ Terminal1::
     packstack --install-hosts=10.10.10.10,10.10.10.11 \
     --nagios-install=n \
     --provision-demo=n \
-    --nagios-install=n \
     --os-neutron-ovs-bridge-mappings=extnet:br-ex,physnet1:br-eth2 \
     --os-neutron-ovs-bridge-interfaces=br-ex:eth0,br-eth2:eth2 \
     --os-neutron-ml2-type-drivers=vxlan,flat,local,vlan \
@@ -118,7 +117,7 @@ Terminal1::
     --cinder-volumes-create=n \
     --keystone-admin-passwd=linux
 
-
+ท่านสามารถเเปลี่ยน password ได้จาก บรรทัด keystone-admin-passwd=<password ที่ต้องการ>
 ::
 
     Applying 10.10.10.10_controller.pp
