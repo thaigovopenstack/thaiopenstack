@@ -35,13 +35,13 @@ Install Openvswitch
 	nf_nat                 24576  4 openvswitch,nf_nat_ipv4,nf_nat_ipv6,nf_nat_masquerade_ipv4
 	nf_conntrack          106496  8 openvswitch,nf_nat,nf_nat_ipv4,nf_nat_ipv6,xt_conntrack,nf_nat_masquerade_ipv4,nf_conntrack_ipv4,nf_conntrack_ipv6
 
-ให้เด็บค่า inteface name ,ip ,mac ,route ด้วยคำสั่ง
+ให้เก็บค่า inteface name ,ip ,mac ,route ด้วยคำสั่ง
 ::
 
 	ip a
 	ip r
 
-	
+
 create bridge
 -------------
 ::
@@ -120,13 +120,15 @@ edit network config
 	DELAY=0
 	IPV6INIT=no
 
-ยกเลิกการทำงาน NetworkManager
-::
-
 .. note:: ให้แทนค่า
 
 		* 192.168.1.100 ด้วย ip เดิม ของ enp3s0
+		* 192.168.1.100 ด้วย gateway เดิม
 
+ยกเลิกการทำงาน NetworkManager
+::
+
+  rm -rf /etc/resolv.conf
 	systemctl stop NetworkManager
 	systemctl disable NetworkManager
 
