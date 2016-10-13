@@ -57,7 +57,7 @@ Terminal1::
     vgcreate cinder-volumes /dev/vdb1
 
 
-    ตั้งค่า Timeserver (Terminal 2 )::
+ตั้งค่า Timeserver (Terminal 2 )::
 
         $ sudo yum install chrony -y
         $ sudo vi  /etc/chrony.conf
@@ -79,7 +79,7 @@ Terminal1::
         ^* time1.isu.net.sa              1   6     7     0  +5882us[  +11ms] +/-  140ms
         ^+ 202-65-114-202.jogja.citr     2   6     7     1    -13ms[-7965us] +/-   93ms
 
-    ตั้งค่า Timeserver (Terminal 1 )::
+ตั้งค่า Timeserver (Terminal 1 )::
 
         sudo yum install chrony -y
         vi  /etc/chrony.conf

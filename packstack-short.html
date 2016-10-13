@@ -249,60 +249,59 @@ end
 </pre></div>
 </div>
 <p>Terminal1:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>//prepare disk for volume group
-sudo su -
-fdisk -l
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">prepare</span> <span class="n">disk</span> <span class="k">for</span> <span class="n">volume</span> <span class="n">group</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">fdisk</span> <span class="o">-</span><span class="n">l</span>
 
-fdisk /dev/vdb
-n
-p
-1
-enter
-enter
-w
+<span class="n">fdisk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
+<span class="n">n</span>
+<span class="n">p</span>
+<span class="mi">1</span>
+<span class="n">enter</span>
+<span class="n">enter</span>
+<span class="n">w</span>
 
-partprobe
+<span class="n">partprobe</span>
 
-pvcreate /dev/vdb1
-vgcreate cinder-volumes /dev/vdb1
+<span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
+<span class="n">vgcreate</span> <span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
+</pre></div>
+</div>
+<p>ตั้งค่า Timeserver (Terminal 2 ):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo yum install chrony -y
+$ sudo vi  /etc/chrony.conf
+//เปลี่ยนแปลง time server
+server 1.th.pool.ntp.org iburst
+server 0.asia.pool.ntp.org iburst
+server 2.asia.pool.ntp.org iburst
+
+//อนุญาติให้เครื่องในวง 10.20.30.0/24 สามารถ syncได้
+allow 10.20.30.0/24
+
+$ sudo systemctl restart chronyd
+$ chronyc source
+
+210 Number of sources = 3
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^- ntp02.cpe.rmutt.ac.th         2   6     7     1    -16ms[  -11ms] +/-  225ms
+^* time1.isu.net.sa              1   6     7     0  +5882us[  +11ms] +/-  140ms
+^+ 202-65-114-202.jogja.citr     2   6     7     1    -13ms[-7965us] +/-   93ms
+</pre></div>
+</div>
+<p>ตั้งค่า Timeserver (Terminal 1 ):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>sudo yum install chrony -y
+vi  /etc/chrony.conf
+//เปลี่ยนแปลง time server ให้ชื้ไปยัง server
+server 10.20.30.41 iburst
 
 
-ตั้งค่า Timeserver (Terminal 2 )::
-
-    $ sudo yum install chrony -y
-    $ sudo vi  /etc/chrony.conf
-    //เปลี่ยนแปลง time server
-    server 1.th.pool.ntp.org iburst
-    server 0.asia.pool.ntp.org iburst
-    server 2.asia.pool.ntp.org iburst
-
-    //อนุญาติให้เครื่องในวง 10.20.30.0/24 สามารถ syncได้
-    allow 10.20.30.0/24
-
-    $ sudo systemctl restart chronyd
-    $ chronyc source
-
-    210 Number of sources = 3
-    MS Name/IP address         Stratum Poll Reach LastRx Last sample
-    ===============================================================================
-    ^- ntp02.cpe.rmutt.ac.th         2   6     7     1    -16ms[  -11ms] +/-  225ms
-    ^* time1.isu.net.sa              1   6     7     0  +5882us[  +11ms] +/-  140ms
-    ^+ 202-65-114-202.jogja.citr     2   6     7     1    -13ms[-7965us] +/-   93ms
-
-ตั้งค่า Timeserver (Terminal 1 )::
-
-    sudo yum install chrony -y
-    vi  /etc/chrony.conf
-    //เปลี่ยนแปลง time server ให้ชื้ไปยัง server
-    server 10.20.30.41 iburst
-
-
-    sudo systemctl restart chronyd
-    $ chronyc sources
-    210 Number of sources = 1
-    MS Name/IP address         Stratum Poll Reach LastRx Last sample
-    ===============================================================================
-    ^? 10.20.30.41                   3   6     1     1  +6209us[+6209us] +/-   84ms
+sudo systemctl restart chronyd
+$ chronyc sources
+210 Number of sources = 1
+MS Name/IP address         Stratum Poll Reach LastRx Last sample
+===============================================================================
+^? 10.20.30.41                   3   6     1     1  +6209us[+6209us] +/-   84ms
 </pre></div>
 </div>
 <p>เครื่อง controller ให้ run คำสั่ง packstack พร้อมกับ option เพื่อ ติดตั้ง openstack โดยคำสั่ง
