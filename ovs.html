@@ -193,6 +193,11 @@ openvswitch คือ virtual switch รองรับการทำงาน 
 <span class="n">nf_conntrack</span>          <span class="mi">106496</span>  <span class="mi">8</span> <span class="n">openvswitch</span><span class="p">,</span><span class="n">nf_nat</span><span class="p">,</span><span class="n">nf_nat_ipv4</span><span class="p">,</span><span class="n">nf_nat_ipv6</span><span class="p">,</span><span class="n">xt_conntrack</span><span class="p">,</span><span class="n">nf_nat_masquerade_ipv4</span><span class="p">,</span><span class="n">nf_conntrack_ipv4</span><span class="p">,</span><span class="n">nf_conntrack_ipv6</span>
 </pre></div>
 </div>
+<p>ให้เด็บค่า inteface name ,ip ,mac ,route ด้วยคำสั่ง</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">a</span>
+<span class="n">ip</span> <span class="n">r</span>
+</pre></div>
+</div>
 <div class="section" id="create-bridge">
 <h4>create bridge<a class="headerlink" href="#create-bridge" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># ovs-vsctl add-br ovsbr0</span>
@@ -221,47 +226,68 @@ openvswitch คือ virtual switch รองรับการทำงาน 
 </pre></div>
 </div>
 <img alt="_images/ovs002.png" src="_images/ovs002.png" />
+<p>หลังจากนั้นให้ แก้ config</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">network</span><span class="o">-</span><span class="n">scripts</span>
+<span class="n">cp</span> <span class="n">ifcfg</span><span class="o">-</span><span class="n">enp3s0</span>  <span class="o">/</span><span class="n">root</span>
+<span class="n">cp</span> <span class="n">ifcfg</span><span class="o">-</span><span class="n">enp3s0</span>  <span class="n">ifcfg</span><span class="o">-</span><span class="n">ovsbr0</span>
+</pre></div>
+</div>
 <p>edit network config</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># cd /etc/sysconfig/network-scripts</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>      <span class="c1"># cd /etc/sysconfig/network-scripts</span>
 <span class="c1"># vim ifcfg-enp3s0</span>
 
-    <span class="n">DEVICE</span><span class="o">=</span><span class="n">enp3s0</span>
-    <span class="n">NAME</span><span class="o">=</span><span class="n">enp3s0</span>
-    <span class="n">HWADDR</span><span class="o">=</span><span class="mi">54</span><span class="p">:</span><span class="n">ee</span><span class="p">:</span><span class="mi">75</span><span class="p">:</span><span class="mi">8</span><span class="n">a</span><span class="p">:</span><span class="mi">86</span><span class="p">:</span><span class="mi">09</span>
-    <span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
-    <span class="n">DEVICETYPE</span><span class="o">=</span><span class="n">ovs</span>
-    <span class="n">TYPE</span><span class="o">=</span><span class="n">OVSPort</span>
-    <span class="n">OVS_BRIDGE</span><span class="o">=</span><span class="n">ovsbr0</span>
+      <span class="n">DEVICE</span><span class="o">=</span><span class="n">enp3s0</span>
+<span class="n">NAME</span><span class="o">=</span><span class="n">enp3s0</span>
+      <span class="n">HWADDR</span><span class="o">=</span><span class="mi">54</span><span class="p">:</span><span class="n">ee</span><span class="p">:</span><span class="mi">75</span><span class="p">:</span><span class="mi">8</span><span class="n">a</span><span class="p">:</span><span class="mi">86</span><span class="p">:</span><span class="mi">09</span>
+      <span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
+      <span class="n">DEVICETYPE</span><span class="o">=</span><span class="n">ovs</span>
+      <span class="n">TYPE</span><span class="o">=</span><span class="n">OVSPort</span>
+      <span class="n">OVS_BRIDGE</span><span class="o">=</span><span class="n">ovsbr0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>ให้แทนค่า</p>
+<ul class="last simple">
+<li>enp3s0 ด้วยชื่อของ interface ของตัวเอง</li>
+<li>HWADDR=54:ee:75:8a:86:09  ด้วย mac ของตัวเอง</li>
+</ul>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># vim ifcfg-ovsbr0</span>
 
-    <span class="c1"># vim ifcfg-ovsbr0</span>
-
-    <span class="n">DEVICE</span><span class="o">=</span><span class="n">ovsbr0</span>
-    <span class="n">NAME</span><span class="o">=</span><span class="n">ovsbr0</span>
-    <span class="n">DEVICETYPE</span><span class="o">=</span><span class="n">ovs</span>
-    <span class="n">TYPE</span><span class="o">=</span><span class="n">OVSBridge</span>
-    <span class="n">BOOTPROTO</span><span class="o">=</span><span class="n">static</span>
-    <span class="n">DEFROUTE</span><span class="o">=</span><span class="n">yes</span>
-    <span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
-    <span class="n">IPADDR</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span>
-    <span class="n">PREFIX</span><span class="o">=</span><span class="mi">24</span>
-    <span class="n">GATEWAY</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span>
-    <span class="n">DNS1</span><span class="o">=</span><span class="mf">8.8</span><span class="o">.</span><span class="mf">8.8</span>
-    <span class="n">DNS2</span><span class="o">=</span><span class="mf">8.8</span><span class="o">.</span><span class="mf">4.4</span>
-    <span class="n">HOTPLUG</span><span class="o">=</span><span class="n">no</span>
-    <span class="n">DELAY</span><span class="o">=</span><span class="mi">0</span>
-    <span class="n">IPV6INIT</span><span class="o">=</span><span class="n">no</span>
+<span class="n">DEVICE</span><span class="o">=</span><span class="n">ovsbr0</span>
+<span class="n">NAME</span><span class="o">=</span><span class="n">ovsbr0</span>
+<span class="n">DEVICETYPE</span><span class="o">=</span><span class="n">ovs</span>
+<span class="n">TYPE</span><span class="o">=</span><span class="n">OVSBridge</span>
+<span class="n">BOOTPROTO</span><span class="o">=</span><span class="n">static</span>
+<span class="n">DEFROUTE</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">IPADDR</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span>
+<span class="n">PREFIX</span><span class="o">=</span><span class="mi">24</span>
+<span class="n">GATEWAY</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span>
+<span class="n">DNS1</span><span class="o">=</span><span class="mf">8.8</span><span class="o">.</span><span class="mf">8.8</span>
+<span class="n">DNS2</span><span class="o">=</span><span class="mf">8.8</span><span class="o">.</span><span class="mf">4.4</span>
+<span class="n">HOTPLUG</span><span class="o">=</span><span class="n">no</span>
+<span class="n">DELAY</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">IPV6INIT</span><span class="o">=</span><span class="n">no</span>
 </pre></div>
 </div>
 <p>ยกเลิกการทำงาน NetworkManager</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">stop</span> <span class="n">NetworkManager</span>
-<span class="n">systemctl</span> <span class="n">disable</span> <span class="n">NetworkManager</span>
-
-<span class="n">systemctl</span> <span class="n">start</span> <span class="n">network</span>
-<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">network</span>
-
-<span class="n">reboot</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">note</span><span class="p">::</span> <span class="n">ให้แทนค่า</span>
 </pre></div>
 </div>
+<blockquote>
+<div><blockquote>
+<div><ul class="simple">
+<li>192.168.1.100 ด้วย ip เดิม ของ enp3s0</li>
+</ul>
+</div></blockquote>
+<p>systemctl stop NetworkManager
+systemctl disable NetworkManager</p>
+<p>systemctl start network
+systemctl enable network</p>
+<p>reboot</p>
+</div></blockquote>
 </div>
 </div>
 </div>

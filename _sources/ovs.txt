@@ -35,7 +35,13 @@ Install Openvswitch
 	nf_nat                 24576  4 openvswitch,nf_nat_ipv4,nf_nat_ipv6,nf_nat_masquerade_ipv4
 	nf_conntrack          106496  8 openvswitch,nf_nat,nf_nat_ipv4,nf_nat_ipv6,xt_conntrack,nf_nat_masquerade_ipv4,nf_conntrack_ipv4,nf_conntrack_ipv6
 
+ให้เด็บค่า inteface name ,ip ,mac ,route ด้วยคำสั่ง
+::
 
+	ip a
+	ip r
+
+	
 create bridge
 -------------
 ::
@@ -68,19 +74,33 @@ create bridge
 
 .. image:: images/ovs002.png
 
+หลังจากนั้นให้ แก้ config
+::
+
+		cd /etc/sysconfig/network-scripts
+		cp ifcfg-enp3s0  /root
+		cp ifcfg-enp3s0  ifcfg-ovsbr0
+
 edit network config
 ::
 
 	# cd /etc/sysconfig/network-scripts
-    # vim ifcfg-enp3s0
+  # vim ifcfg-enp3s0
 
 	DEVICE=enp3s0
-        NAME=enp3s0
+  NAME=enp3s0
 	HWADDR=54:ee:75:8a:86:09
 	ONBOOT=yes
 	DEVICETYPE=ovs
 	TYPE=OVSPort
 	OVS_BRIDGE=ovsbr0
+
+.. note:: ให้แทนค่า
+
+		* enp3s0 ด้วยชื่อของ interface ของตัวเอง
+		* HWADDR=54:ee:75:8a:86:09  ด้วย mac ของตัวเอง
+
+::
 
 	# vim ifcfg-ovsbr0
 
@@ -102,6 +122,10 @@ edit network config
 
 ยกเลิกการทำงาน NetworkManager
 ::
+
+.. note:: ให้แทนค่า
+
+		* 192.168.1.100 ด้วย ip เดิม ของ enp3s0
 
 	systemctl stop NetworkManager
 	systemctl disable NetworkManager
