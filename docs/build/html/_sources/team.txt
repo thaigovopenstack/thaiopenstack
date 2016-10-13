@@ -48,8 +48,11 @@ vagrant
 
 	end
 
-Terminal 1  -> vagrant ssh server1
-Terminal 2  -> vagrant ssh server2
+เปิด  2 terminal
+::
+
+		Terminal 1  -> vagrant ssh server1
+		Terminal 2  -> vagrant ssh server2
 
 Config Team
 ***********
