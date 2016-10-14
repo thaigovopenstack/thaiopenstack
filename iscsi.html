@@ -105,9 +105,15 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#install">Install</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#step1-create-backstores">step1 create backstores</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step2-iscsi-qualified-name-iqn">step2 สร้าง iSCSI qualified name (IQN)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step3-acl">step3 สร้าง acl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step4-prompt-exit">step4 สุดท้ายให้ออกจาก prompt ด้วยการพิม exit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-5-verify">step 5 verify</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#install-iscsi-client">Install ISCSI Client</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">install</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#verify">verify</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#use-disk">use disk</a></li>
 </ul>
@@ -251,12 +257,12 @@ Disk Management
 </div>
 <div class="section" id="step-2-prepare">
 <h3>step 2 Prepare<a class="headerlink" href="#step-2-prepare" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
-    <span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdc1</span>
-    <span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdd1</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>            <span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
+            <span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdc1</span>
+            <span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdd1</span>
 
-    <span class="n">vgcreate</span> <span class="n">iscsi_vg</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdc1</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdd1</span>
-    <span class="n">lvcreate</span> <span class="o">-</span><span class="n">l</span> <span class="mi">100</span><span class="o">%</span><span class="n">FREE</span> <span class="o">-</span><span class="n">n</span> <span class="n">iscsi_lv</span>  <span class="n">iscsi_vg</span>
+            <span class="n">vgcreate</span> <span class="n">iscsi_vg</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdc1</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdd1</span>
+            <span class="n">lvcreate</span> <span class="o">-</span><span class="n">l</span> <span class="mi">100</span><span class="o">%</span><span class="n">FREE</span> <span class="o">-</span><span class="n">n</span> <span class="n">iscsi_lv</span>  <span class="n">iscsi_vg</span>
 
 <span class="n">vgs</span>
 <span class="p">(</span><span class="n">result</span><span class="p">)</span>
@@ -290,10 +296,10 @@ Disk Management
 <span class="p">(</span><span class="n">หลังจาก</span> <span class="n">run</span> <span class="n">คำสั่งแล้วจะได้</span> <span class="n">prompt</span> <span class="p">)</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li>step1 create backstores  (target)</li>
-</ul>
-<p>method1 แบบทีละขั้นตอน  (เลือกแบบ1 หรือ 2 อย่างเดียว)</p>
+<div class="section" id="step1-create-backstores">
+<h4>step1 create backstores<a class="headerlink" href="#step1-create-backstores" title="Permalink to this headline">¶</a></h4>
+<p>การสร้างสามารถทำได้ 2 แบบ
+แบบ1 แบบทีละขั้นตอน  (เลือกแบบ1 หรือ 2 อย่างเดียว)</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/&gt;</span><span class="n">ls</span>
 <span class="o">/&gt;</span><span class="n">cd</span> <span class="n">backstores</span>
 <span class="o">/&gt;</span><span class="n">ls</span>
@@ -303,7 +309,7 @@ Disk Management
 </pre></div>
 </div>
 <img alt="_images/iscsi001.png" src="_images/iscsi001.png" />
-<p>method2 แบบขั้นตอนเดียว</p>
+<p>แบบ2 แบบขั้นตอนเดียว แต่ให้ดูตำแหน่งให้สอดคล้องก่อน</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/&gt;</span> <span class="n">ls</span>
 <span class="o">/&gt;</span> <span class="n">backstores</span><span class="o">/</span><span class="n">block</span> <span class="n">create</span> <span class="n">server1</span><span class="o">.</span><span class="n">disk1</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">iscsi_vg</span><span class="o">/</span><span class="n">iscsi_lv</span>
 </pre></div>
@@ -317,9 +323,10 @@ Disk Management
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/&gt;</span> <span class="n">backstores</span><span class="o">/</span><span class="n">fileio</span> <span class="n">create</span> <span class="n">sharedata</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">sharedata</span><span class="o">.</span><span class="n">img</span> <span class="mi">4</span><span class="n">G</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li>step2 สร้าง iSCSI qualified name (IQN) ชื่อ iqn.2016-07.com.example.server1 ตามด้วย target name <code class="docutils literal"><span class="pre">t1</span></code> (เป็นชื่ออะไรก็ได้)</li>
-</ul>
+</div>
+<div class="section" id="step2-iscsi-qualified-name-iqn">
+<h4>step2 สร้าง iSCSI qualified name (IQN)<a class="headerlink" href="#step2-iscsi-qualified-name-iqn" title="Permalink to this headline">¶</a></h4>
+<p>ชื่อ iqn.2016-07.com.example.server1 ตามด้วย target name <code class="docutils literal"><span class="pre">t1</span></code> (เป็นชื่ออะไรก็ได้)</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/&gt;</span><span class="n">iscsi</span><span class="o">/</span> <span class="n">create</span> <span class="n">iqn</span><span class="o">.</span><span class="mi">2016</span><span class="o">-</span><span class="mf">07.</span><span class="n">com</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">t1</span>
 <span class="n">Created</span> <span class="n">target</span> <span class="n">iqn</span><span class="o">.</span><span class="mi">2016</span><span class="o">-</span><span class="mf">07.</span><span class="n">com</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">t1</span><span class="o">.</span>
 <span class="n">Created</span> <span class="n">TPG</span> <span class="mf">1.</span>
@@ -346,14 +353,17 @@ Disk Management
 </ul>
 </div></blockquote>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">iscsi</span><span class="o">/</span><span class="n">iqn</span><span class="o">.</span><span class="mf">20.</span><span class="o">..</span><span class="n">le</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">t1</span><span class="o">&gt;</span> <span class="n">tpg1</span><span class="o">/</span><span class="n">luns</span> <span class="n">create</span> <span class="o">/</span><span class="n">backstores</span><span class="o">/</span><span class="n">fileio</span><span class="o">/</span><span class="n">sharedata</span>
+
+<span class="o">/</span><span class="n">iscsi</span><span class="o">/</span><span class="n">iqn</span><span class="o">.</span><span class="mf">20.</span><span class="o">..</span><span class="n">le</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">t1</span><span class="o">&gt;</span> <span class="n">tpg1</span><span class="o">/</span><span class="n">luns</span> <span class="n">create</span> <span class="o">/</span><span class="n">backstores</span><span class="o">/</span><span class="n">block</span><span class="o">/</span><span class="n">server1</span><span class="o">.</span><span class="n">disk1</span>
+
+<span class="o">/</span><span class="n">iscsi</span><span class="o">/</span><span class="n">iqn</span><span class="o">.</span><span class="mf">20.</span><span class="o">..</span><span class="n">le</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">t1</span><span class="o">&gt;</span> <span class="n">ls</span>
 </pre></div>
 </div>
-<p>/iscsi/iqn.20...le.server1:t1&gt; tpg1/luns create /backstores/block/server1.disk1</p>
-<p>/iscsi/iqn.20...le.server1:t1&gt; ls</p>
 <img alt="_images/iscsi004.png" src="_images/iscsi004.png" />
-<ul class="simple">
-<li>step3 สร้าง acl อ้างอิงกับ iqn ที่สร้างขึ้น <code class="docutils literal"><span class="pre">iqn.2016-07.com.example.server1</span></code></li>
-</ul>
+</div>
+<div class="section" id="step3-acl">
+<h4>step3 สร้าง acl<a class="headerlink" href="#step3-acl" title="Permalink to this headline">¶</a></h4>
+<p>อ้างอิงกับ iqn ที่สร้างขึ้น <code class="docutils literal"><span class="pre">iqn.2016-07.com.example.server1</span></code></p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="o">/</span><span class="n">iscsi</span><span class="o">/</span><span class="n">iqn</span><span class="o">.</span><span class="mf">20.</span><span class="o">..</span><span class="n">le</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">t1</span><span class="o">&gt;</span> <span class="n">tpg1</span><span class="o">/</span><span class="n">acls</span> <span class="n">create</span> <span class="n">iqn</span><span class="o">.</span><span class="mi">2016</span><span class="o">-</span><span class="mf">07.</span><span class="n">com</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">client</span>
     <span class="n">Created</span> <span class="n">Node</span> <span class="n">ACL</span> <span class="k">for</span> <span class="n">iqn</span><span class="o">.</span><span class="mi">2016</span><span class="o">-</span><span class="mf">07.</span><span class="n">com</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">client</span>
     <span class="n">Created</span> <span class="n">mapped</span> <span class="n">LUN</span> <span class="mf">1.</span>
@@ -370,9 +380,9 @@ Disk Management
 </pre></div>
 </div>
 <img alt="_images/iscsi005.png" src="_images/iscsi005.png" />
-<ul class="simple">
-<li>step4 สุดท้ายให้ออกจาก prompt ด้วยการพิม exit</li>
-</ul>
+</div>
+<div class="section" id="step4-prompt-exit">
+<h4>step4 สุดท้ายให้ออกจาก prompt ด้วยการพิม exit<a class="headerlink" href="#step4-prompt-exit" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">iscsi</span><span class="o">/</span><span class="n">iqn</span><span class="o">.</span><span class="mf">20.</span><span class="o">..</span><span class="n">rver1</span><span class="p">:</span><span class="n">t1</span><span class="o">/</span><span class="n">tpg1</span><span class="o">&gt;</span> <span class="n">exit</span>
 <span class="n">Global</span> <span class="n">pref</span> <span class="n">auto_save_on_exit</span><span class="o">=</span><span class="n">true</span>
 <span class="n">Last</span> <span class="mi">10</span> <span class="n">configs</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">target</span><span class="o">/</span><span class="n">backup</span><span class="o">.</span>
@@ -381,9 +391,9 @@ Disk Management
 </div>
 <p>จะได้ config ไฟล์เก็บไว้ที่  /etc/target/saveconfig.json</p>
 <img alt="_images/iscsi006.png" src="_images/iscsi006.png" />
-<ul class="simple">
-<li>step 5 verify</li>
-</ul>
+</div>
+<div class="section" id="step-5-verify">
+<h4>step 5 verify<a class="headerlink" href="#step-5-verify" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">net</span><span class="o">-</span><span class="n">tools</span>
 
     <span class="c1"># netstat -ant | grep 3260</span>
@@ -393,11 +403,14 @@ Disk Management
 <span class="n">firewall</span><span class="o">-</span><span class="n">cmd</span> <span class="o">--</span><span class="n">reload</span>
 </pre></div>
 </div>
+</div>
 <div class="section" id="install-iscsi-client">
 <h4>Install ISCSI Client<a class="headerlink" href="#install-iscsi-client" title="Permalink to this headline">¶</a></h4>
-<p>เครื่อง client จะเรียกว่า initiator (เครื่อง server เรียกว่า target)
-install
-&#8212;&#8212;-</p>
+<p>เครื่อง client จะเรียกว่า initiator (เครื่อง server เรียกว่า target) ให้เปิดอีก terminal ใหม่</p>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>install<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">server2</span>
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
 <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">iscsi</span><span class="o">-</span><span class="n">initiator</span><span class="o">-</span><span class="n">utils</span>
@@ -427,7 +440,6 @@ iscsiadm --mode node --targetname iqn.2016-07.com.example.server1:t1 --portal 19
 Logging in to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] (multiple)
 Login to [iface: default, target: iqn.2016-07.com.example.server1:t1, portal: 192.168.121.144,3260] successful.
 </pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="verify">
