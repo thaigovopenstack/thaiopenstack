@@ -241,10 +241,15 @@ install
 
 	InitiatorName=iqn.2016-07.com.example.server1:client
 
-	vi iscsid.conf
-	57 node.session.auth.authmethod = CHAP
-	61 node.session.auth.username = usr
-	62 node.session.auth.password = pwd
+::
+
+		vi iscsid.conf
+		57 node.session.auth.authmethod = CHAP
+		61 node.session.auth.username = usr
+		62 node.session.auth.password = pwd
+
+.. note:: ให้แก้ไขไฟล์ ``iscsid.conf`` ในบรรทัดที่ กำหนด ท่านสามารถใช้คำสั่ง ``:se nu`` เพื่อ
+เปิดให้ vi แสดงหมายเลขบรรทัด หรือกด ``:57``  ``:61`` ``:62`` เพื่อไปยังบรรทัดที่ต้องการ
 
 start service
 ::

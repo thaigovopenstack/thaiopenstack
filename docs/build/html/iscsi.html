@@ -423,13 +423,19 @@ Disk Management
 <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">iscsi</span><span class="o">/</span><span class="n">initiatorname</span><span class="o">.</span><span class="n">iscsi</span>
 
 <span class="n">InitiatorName</span><span class="o">=</span><span class="n">iqn</span><span class="o">.</span><span class="mi">2016</span><span class="o">-</span><span class="mf">07.</span><span class="n">com</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">server1</span><span class="p">:</span><span class="n">client</span>
-
-<span class="n">vi</span> <span class="n">iscsid</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vi</span> <span class="n">iscsid</span><span class="o">.</span><span class="n">conf</span>
 <span class="mi">57</span> <span class="n">node</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">authmethod</span> <span class="o">=</span> <span class="n">CHAP</span>
 <span class="mi">61</span> <span class="n">node</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">usr</span>
 <span class="mi">62</span> <span class="n">node</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">pwd</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">ให้แก้ไขไฟล์ <code class="docutils literal"><span class="pre">iscsid.conf</span></code> ในบรรทัดที่ กำหนด ท่านสามารถใช้คำสั่ง <code class="docutils literal"><span class="pre">:se</span> <span class="pre">nu</span></code> เพื่อ</p>
+</div>
+<p>เปิดให้ vi แสดงหมายเลขบรรทัด หรือกด <code class="docutils literal"><span class="pre">:57</span></code>  <code class="docutils literal"><span class="pre">:61</span></code> <code class="docutils literal"><span class="pre">:62</span></code> เพื่อไปยังบรรทัดที่ต้องการ</p>
 <p>start service</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>systemctl start iscsi
 systemctl enable iscsi
