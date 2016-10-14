@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  config.vm.define :server1 do |node|
+            node.vm.network :private_network, :ip => "10.0.0.10"
+            node.vm.network :private_network, :ip => "20.0.0.10"
+            node.vm.hostname = "server1.example.com"
+            node.vm.provider :libvirt do |domain|
+              domain.uri = 'qemu+unix:///system'
+              domain.driver = 'kvm'
+              domain.memory = 2048
+              domain.cpus = 2
+              domain.nested = true
+              domain.volume_cache = 'none'
+              domain.storage :file, :size => '20G'
+              domain.storage :file, :size => '20G'
+              domain.storage :file, :size => '20G'
+            end
+  end
+  config.vm.define :server2 do |node|
+            node.vm.network :private_network, :ip => "10.0.0.11"
+            node.vm.network :private_network, :ip => "20.0.0.11"
+            node.vm.hostname = "server2.example.com"
+            node.vm.provider :libvirt do |domain|
+              domain.uri = 'qemu+unix:///system'
+              domain.driver = 'kvm'
+              domain.memory = 2048
+              domain.cpus = 2
+              domain.nested = true
+              domain.volume_cache = 'none'
+            end
+  end
+end
