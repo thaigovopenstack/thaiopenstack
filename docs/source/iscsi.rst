@@ -5,9 +5,15 @@ ISCSI Remote Storage
 ISCSI
 =========
 
+.. image:: images/iscsi_cinder.png
+
+์Nova จะทำการร้องขอ disk จาก cinder และ cinder จะให้บริการผ่าน iscsi
 Disk Management
 ***************
 การทำสอบให้ใช้ Vagrantfile
+
+.. literalinclude:: lvm_vagrantfile
+
 ::
 
 	vagrant ssh server1
