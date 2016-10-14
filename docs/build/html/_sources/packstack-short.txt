@@ -32,9 +32,9 @@ Terminal1::
     ssh-copy-id controller
 
     //Test ssh
-    ssh compute
+    ssh compute "hostname"
     exit
-    ssh controller
+    ssh controller "hostname"
     exit
 
 Terminal1::
