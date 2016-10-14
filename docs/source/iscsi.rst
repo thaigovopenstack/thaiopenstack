@@ -95,7 +95,7 @@ Install
 	(หลังจาก run คำสั่งแล้วจะได้ prompt )
 
 * step1 create backstores  (target)
-method1 แบบทีละขั้นตอน
+method1 แบบทีละขั้นตอน  (เลือกแบบ1 หรือ 2 อย่างเดียว)
 ::
 
 	/>ls
@@ -118,7 +118,12 @@ method2 แบบขั้นตอนเดียว
 นอกจากการสร้าง backstore ให้สามารถใช้งาน disk แล้ว ยังสามารถสร้าง backstore จาก file system เป็นชนิด fileio เช่นสร้าง fileio มีชื่อว่า sharedata มีขนาด 1G ไว้ที่ /opt
 ::
 
-	/> backstores/fileio create sharedata /opt/sharedata.img 1G
+	dd if=/dev/zero of=/opt/sharedata.img bs=4G count=1
+
+create backstore  แบบ fileio
+::
+
+	/> backstores/fileio create sharedata /opt/sharedata.img 4G
 
 
 * step2 สร้าง iSCSI qualified name (IQN) ชื่อ iqn.2016-07.com.example.server1 ตามด้วย target name ``t1`` (เป็นชื่ออะไรก็ได้)
