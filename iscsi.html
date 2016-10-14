@@ -293,7 +293,7 @@ Disk Management
 <ul class="simple">
 <li>step1 create backstores  (target)</li>
 </ul>
-<p>method1 แบบทีละขั้นตอน</p>
+<p>method1 แบบทีละขั้นตอน  (เลือกแบบ1 หรือ 2 อย่างเดียว)</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/&gt;</span><span class="n">ls</span>
 <span class="o">/&gt;</span><span class="n">cd</span> <span class="n">backstores</span>
 <span class="o">/&gt;</span><span class="n">ls</span>
@@ -310,7 +310,11 @@ Disk Management
 </div>
 <img alt="_images/iscsi002.png" src="_images/iscsi002.png" />
 <p>นอกจากการสร้าง backstore ให้สามารถใช้งาน disk แล้ว ยังสามารถสร้าง backstore จาก file system เป็นชนิด fileio เช่นสร้าง fileio มีชื่อว่า sharedata มีขนาด 1G ไว้ที่ /opt</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/&gt;</span> <span class="n">backstores</span><span class="o">/</span><span class="n">fileio</span> <span class="n">create</span> <span class="n">sharedata</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">sharedata</span><span class="o">.</span><span class="n">img</span> <span class="mi">1</span><span class="n">G</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dd</span> <span class="k">if</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">zero</span> <span class="n">of</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">sharedata</span><span class="o">.</span><span class="n">img</span> <span class="n">bs</span><span class="o">=</span><span class="mi">4</span><span class="n">G</span> <span class="n">count</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>create backstore  แบบ fileio</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/&gt;</span> <span class="n">backstores</span><span class="o">/</span><span class="n">fileio</span> <span class="n">create</span> <span class="n">sharedata</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">sharedata</span><span class="o">.</span><span class="n">img</span> <span class="mi">4</span><span class="n">G</span>
 </pre></div>
 </div>
 <ul class="simple">
