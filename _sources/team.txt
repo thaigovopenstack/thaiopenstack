@@ -58,12 +58,15 @@ Config Team
 ***********
 On Server1::
 
-    sudo su -
+  sudo su -
 	yum install -y teamd
 
-    //ตรวจสอบ check kernel ด้วยคำสั่ง modprobe
-    
-    modprobe team
+  //ตรวจสอบ check kernel ด้วยคำสั่ง modprobe
+  lsmod | grep team
+  team                   39577  0
+
+  //load kernel module
+	modprobe team
 	modinfo team
 
 	filename:       /lib/modules/3.10.0-327.18.2.el7.x86_64/kernel/drivers/net/team/team.ko
@@ -109,9 +112,9 @@ config
 
 Create connection ชนิด team  ชื่อ myteam0  พร้อมกับการสร้าง interface ใหม่ ชื่อ team0
 ::
-    
+
 	nmcli con add type team con-name team0 ifname team0 config '{ "runner": {"name": "loadbalance"}}'
-    (ผลลัพท) 
+    (ผลลัพท)
 	Connection 'myteam0' (bc60cf30-a296-44b5-8157-dceabe7a06c7) successfully added.
 
 
@@ -139,7 +142,7 @@ Create connection ชนิด team  ชื่อ myteam0  พร้อมกั
     UUID=bc60cf30-a296-44b5-8157-dceabe7a06c7
     ONBOOT=yes
 
-กำหนด ip ให้แก่ team0 ด้วยคำสั่ง 
+กำหนด ip ให้แก่ team0 ด้วยคำสั่ง
 ::
 
 	nmcli con mod team0 ipv4.addresses 10.0.0.10/24

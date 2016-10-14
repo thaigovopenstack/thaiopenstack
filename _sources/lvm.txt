@@ -6,15 +6,20 @@ Volumegroups
 ============
 Volume groups are nothing but a pool of storage that consists of one or more physical volumes. Once you create the physical volume, you can create the volume group (VG) from these physical volumes (PV).
 
+.. image:: images/LVM_original_description.png
+
+
+.. literalinclude:: lvm_vagrantfile
+
 pvcreate,vgcreate,lvcreate
 **************************
-:: 
-	
+::
+
 	vagrant ssh server1
     sudo su -
     fdisk -l
 
-         // แสดง disk ทีี่เชื่อมกับ server1
+	// แสดง disk ทีี่เชื่อมกับ server1
 	Disk /dev/vdb: 21.5 GB, 21474836480 bytes, 41943040 sectors
 	Units = sectors of 1 * 512 = 512 bytes
 	Sector size (logical/physical): 512 bytes / 512 bytes
@@ -33,7 +38,7 @@ pvcreate,vgcreate,lvcreate
 	I/O size (minimum/optimal): 512 bytes / 512 bytes
 
     //create phisical volume
-    # pvcreate /dev/vdb 
+    # pvcreate /dev/vdb
     Physical volume "/dev/vdb" successfully created
 
     # pvcreate /dev/vdc
@@ -50,10 +55,10 @@ pvcreate,vgcreate,lvcreate
 ::
 
 	  # vgdisplay
-     
+
 	  --- Volume group ---
 	  VG Name               myvol
-	  System ID             
+	  System ID
 	  Format                lvm2
 	  Metadata Areas        3
 	  Metadata Sequence No  1
@@ -68,18 +73,18 @@ pvcreate,vgcreate,lvcreate
 	  VG Size               59.99 GiB
 	  PE Size               4.00 MiB
 	  Total PE              15357
-	  Alloc PE / Size       0 / 0   
+	  Alloc PE / Size       0 / 0
 	  Free  PE / Size       15357 / 59.99 GiB
 	  VG UUID               5UZdx5-6m3S-Bh7O-yMWk-A3gS-dJey-N8Ndd1
 
 การใช้งาน volumegroup ได้โดยการแบ่งพื้นที่การใช้งาน ด้วยคำสั่ง lvcreate
 ::
 
-	# lvcreate -l 5 -n data1 myvol
+		# lvcreate -l 5 -n data1 myvol
   	Logical volume "data1" created.
 
     # lvdisplay
- 
+
   	--- Logical volume ---
   	LV Path                /dev/myvol/data1
   	LV Name                data1
@@ -100,11 +105,8 @@ pvcreate,vgcreate,lvcreate
 Format สร้าง file system และ  สร้าง mount point สำหรับการใช้้งาน
 ::
 
-	# mkfs.ext4 /dev/myvol/data1
+		# mkfs.ext4 /dev/myvol/data1
     # mkdir /data1
     # mount /dev/myvol/data1  /data1
     # cd /data1
     # touch text.txt
-
-
-

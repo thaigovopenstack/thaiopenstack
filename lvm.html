@@ -159,13 +159,51 @@
 <div class="section" id="volumegroups">
 <h2>Volumegroups<a class="headerlink" href="#volumegroups" title="Permalink to this headline">¶</a></h2>
 <p>Volume groups are nothing but a pool of storage that consists of one or more physical volumes. Once you create the physical volume, you can create the volume group (VG) from these physical volumes (PV).</p>
+<img alt="_images/LVM_original_description.png" src="_images/LVM_original_description.png" />
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: ruby -*-</span>
+<span class="c1"># vi: set ft=ruby :</span>
+
+<span class="n">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="n">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;centos/7&quot;</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">server1</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.10&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;20.0.0.10&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="s2">&quot;server1.example.com&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+            <span class="n">end</span>
+  <span class="n">end</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">server2</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.11&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;20.0.0.11&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">hostname</span> <span class="o">=</span> <span class="s2">&quot;server2.example.com&quot;</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
+              <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+            <span class="n">end</span>
+  <span class="n">end</span>
+<span class="n">end</span>
+</pre></div>
+</div>
 <div class="section" id="pvcreate-vgcreate-lvcreate">
 <h3>pvcreate,vgcreate,lvcreate<a class="headerlink" href="#pvcreate-vgcreate-lvcreate" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">server1</span>
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
 <span class="n">fdisk</span> <span class="o">-</span><span class="n">l</span>
 
-     <span class="o">//</span> <span class="n">แสดง</span> <span class="n">disk</span> <span class="n">ทีี่เชื่อมกับ</span> <span class="n">server1</span>
+    <span class="o">//</span> <span class="n">แสดง</span> <span class="n">disk</span> <span class="n">ทีี่เชื่อมกับ</span> <span class="n">server1</span>
     <span class="n">Disk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span><span class="p">:</span> <span class="mf">21.5</span> <span class="n">GB</span><span class="p">,</span> <span class="mi">21474836480</span> <span class="nb">bytes</span><span class="p">,</span> <span class="mi">41943040</span> <span class="n">sectors</span>
     <span class="n">Units</span> <span class="o">=</span> <span class="n">sectors</span> <span class="n">of</span> <span class="mi">1</span> <span class="o">*</span> <span class="mi">512</span> <span class="o">=</span> <span class="mi">512</span> <span class="nb">bytes</span>
     <span class="n">Sector</span> <span class="n">size</span> <span class="p">(</span><span class="n">logical</span><span class="o">/</span><span class="n">physical</span><span class="p">):</span> <span class="mi">512</span> <span class="nb">bytes</span> <span class="o">/</span> <span class="mi">512</span> <span class="nb">bytes</span>
@@ -224,7 +262,7 @@
 </pre></div>
 </div>
 <p>การใช้งาน volumegroup ได้โดยการแบ่งพื้นที่การใช้งาน ด้วยคำสั่ง lvcreate</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># lvcreate -l 5 -n data1 myvol</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>            <span class="c1"># lvcreate -l 5 -n data1 myvol</span>
     <span class="n">Logical</span> <span class="n">volume</span> <span class="s2">&quot;data1&quot;</span> <span class="n">created</span><span class="o">.</span>
 
 <span class="c1"># lvdisplay</span>
@@ -248,7 +286,7 @@
 </pre></div>
 </div>
 <p>Format สร้าง file system และ  สร้าง mount point สำหรับการใช้้งาน</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="c1"># mkfs.ext4 /dev/myvol/data1</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>            <span class="c1"># mkfs.ext4 /dev/myvol/data1</span>
 <span class="c1"># mkdir /data1</span>
 <span class="c1"># mount /dev/myvol/data1  /data1</span>
 <span class="c1"># cd /data1</span>
