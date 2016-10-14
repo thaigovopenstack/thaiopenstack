@@ -176,7 +176,6 @@ step3 สร้าง acl
 ::
 
 		/iscsi/iqn.20...le.server1:t1> tpg1/acls create iqn.2016-07.com.example.server1:client
-
 		Created Node ACL for iqn.2016-07.com.example.server1:client
 		Created mapped LUN 1.
 		Created mapped LUN 0.
@@ -190,8 +189,8 @@ step3 สร้าง acl
 
 		Parameter password is now 'pwd'.
 
-    /iscsi/iqn.20...erver1:client> cd ../..
-    /iscsi/iqn.20...rver1:t1/tpg1> ls
+		/iscsi/iqn.20...erver1:client> cd ../..
+		/iscsi/iqn.20...rver1:t1/tpg1> ls
 
 .. image:: images/iscsi005.png
 
@@ -248,8 +247,10 @@ install
 		61 node.session.auth.username = usr
 		62 node.session.auth.password = pwd
 
-.. note:: ให้แก้ไขไฟล์ ``iscsid.conf`` ในบรรทัดที่ กำหนด ท่านสามารถใช้คำสั่ง ``:se nu`` เพื่อ
-เปิดให้ vi แสดงหมายเลขบรรทัด หรือกด ``:57``  ``:61`` ``:62`` เพื่อไปยังบรรทัดที่ต้องการ
+.. note::
+		ให้แก้ไขไฟล์ ``iscsid.conf`` ในบรรทัดที่ กำหนด ท่านสามารถใช้คำสั่ง ``:se nu``
+		เพื่อเปิดให้ vi แสดงหมายเลขบรรทัด หรือกด ``:57``  ``:61`` ``:62`` เพื่อไปยังบรรทัดที่ต้องการ
+
 
 start service
 ::
