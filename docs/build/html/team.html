@@ -213,26 +213,29 @@
 <h4>Config Team<a class="headerlink" href="#config-team" title="Permalink to this headline">¶</a></h4>
 <p>On Server1:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
-    <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">teamd</span>
+      <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">teamd</span>
 
 <span class="o">//</span><span class="n">ตรวจสอบ</span> <span class="n">check</span> <span class="n">kernel</span> <span class="n">ด้วยคำสั่ง</span> <span class="n">modprobe</span>
+<span class="n">lsmod</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">team</span>
+<span class="n">team</span>                   <span class="mi">39577</span>  <span class="mi">0</span>
 
-<span class="n">modprobe</span> <span class="n">team</span>
-    <span class="n">modinfo</span> <span class="n">team</span>
+<span class="o">//</span><span class="n">load</span> <span class="n">kernel</span> <span class="n">module</span>
+      <span class="n">modprobe</span> <span class="n">team</span>
+      <span class="n">modinfo</span> <span class="n">team</span>
 
-    <span class="n">filename</span><span class="p">:</span>       <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="mf">3.10</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mf">327.18</span><span class="o">.</span><span class="mf">2.</span><span class="n">el7</span><span class="o">.</span><span class="n">x86_64</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">drivers</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">team</span><span class="o">/</span><span class="n">team</span><span class="o">.</span><span class="n">ko</span>
-    <span class="n">alias</span><span class="p">:</span>          <span class="n">rtnl</span><span class="o">-</span><span class="n">link</span><span class="o">-</span><span class="n">team</span>
-    <span class="n">description</span><span class="p">:</span>    <span class="n">Ethernet</span> <span class="n">team</span> <span class="n">device</span> <span class="n">driver</span>
-    <span class="n">author</span><span class="p">:</span>         <span class="n">Jiri</span> <span class="n">Pirko</span> <span class="o">&lt;</span><span class="n">jpirko</span><span class="nd">@redhat</span><span class="o">.</span><span class="n">com</span><span class="o">&gt;</span>
-    <span class="n">license</span><span class="p">:</span>        <span class="n">GPL</span> <span class="n">v2</span>
-    <span class="n">rhelversion</span><span class="p">:</span>    <span class="mf">7.2</span>
-    <span class="n">srcversion</span><span class="p">:</span>     <span class="n">C59FD6905408120CA7C83CD</span>
-    <span class="n">depends</span><span class="p">:</span>
-    <span class="n">intree</span><span class="p">:</span>         <span class="n">Y</span>
-    <span class="n">vermagic</span><span class="p">:</span>       <span class="mf">3.10</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mf">327.18</span><span class="o">.</span><span class="mf">2.</span><span class="n">el7</span><span class="o">.</span><span class="n">x86_64</span> <span class="n">SMP</span> <span class="n">mod_unload</span> <span class="n">modversions</span>
-    <span class="n">signer</span><span class="p">:</span>         <span class="n">CentOS</span> <span class="n">Linux</span> <span class="n">kernel</span> <span class="n">signing</span> <span class="n">key</span>
-    <span class="n">sig_key</span><span class="p">:</span>        <span class="n">EB</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">91</span><span class="p">:</span><span class="n">DE</span><span class="p">:</span><span class="mi">1</span><span class="n">A</span><span class="p">:</span><span class="n">BE</span><span class="p">:</span><span class="n">A5</span><span class="p">:</span><span class="n">F9</span><span class="p">:</span><span class="mi">5</span><span class="n">A</span><span class="p">:</span><span class="n">A5</span><span class="p">:</span><span class="n">BC</span><span class="p">:</span><span class="n">B8</span><span class="p">:</span><span class="mi">91</span><span class="p">:</span><span class="n">E1</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">2</span><span class="n">B</span><span class="p">:</span><span class="n">ED</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">8</span><span class="n">E</span><span class="p">:</span><span class="mi">5</span><span class="n">E</span>
-    <span class="n">sig_hashalgo</span><span class="p">:</span>   <span class="n">sha256</span>
+      <span class="n">filename</span><span class="p">:</span>       <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="mf">3.10</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mf">327.18</span><span class="o">.</span><span class="mf">2.</span><span class="n">el7</span><span class="o">.</span><span class="n">x86_64</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">drivers</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">team</span><span class="o">/</span><span class="n">team</span><span class="o">.</span><span class="n">ko</span>
+      <span class="n">alias</span><span class="p">:</span>          <span class="n">rtnl</span><span class="o">-</span><span class="n">link</span><span class="o">-</span><span class="n">team</span>
+      <span class="n">description</span><span class="p">:</span>    <span class="n">Ethernet</span> <span class="n">team</span> <span class="n">device</span> <span class="n">driver</span>
+      <span class="n">author</span><span class="p">:</span>         <span class="n">Jiri</span> <span class="n">Pirko</span> <span class="o">&lt;</span><span class="n">jpirko</span><span class="nd">@redhat</span><span class="o">.</span><span class="n">com</span><span class="o">&gt;</span>
+      <span class="n">license</span><span class="p">:</span>        <span class="n">GPL</span> <span class="n">v2</span>
+      <span class="n">rhelversion</span><span class="p">:</span>    <span class="mf">7.2</span>
+      <span class="n">srcversion</span><span class="p">:</span>     <span class="n">C59FD6905408120CA7C83CD</span>
+      <span class="n">depends</span><span class="p">:</span>
+      <span class="n">intree</span><span class="p">:</span>         <span class="n">Y</span>
+      <span class="n">vermagic</span><span class="p">:</span>       <span class="mf">3.10</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mf">327.18</span><span class="o">.</span><span class="mf">2.</span><span class="n">el7</span><span class="o">.</span><span class="n">x86_64</span> <span class="n">SMP</span> <span class="n">mod_unload</span> <span class="n">modversions</span>
+      <span class="n">signer</span><span class="p">:</span>         <span class="n">CentOS</span> <span class="n">Linux</span> <span class="n">kernel</span> <span class="n">signing</span> <span class="n">key</span>
+      <span class="n">sig_key</span><span class="p">:</span>        <span class="n">EB</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">91</span><span class="p">:</span><span class="n">DE</span><span class="p">:</span><span class="mi">1</span><span class="n">A</span><span class="p">:</span><span class="n">BE</span><span class="p">:</span><span class="n">A5</span><span class="p">:</span><span class="n">F9</span><span class="p">:</span><span class="mi">5</span><span class="n">A</span><span class="p">:</span><span class="n">A5</span><span class="p">:</span><span class="n">BC</span><span class="p">:</span><span class="n">B8</span><span class="p">:</span><span class="mi">91</span><span class="p">:</span><span class="n">E1</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="mi">2</span><span class="n">B</span><span class="p">:</span><span class="n">ED</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">8</span><span class="n">E</span><span class="p">:</span><span class="mi">5</span><span class="n">E</span>
+      <span class="n">sig_hashalgo</span><span class="p">:</span>   <span class="n">sha256</span>
 </pre></div>
 </div>
 </div>
