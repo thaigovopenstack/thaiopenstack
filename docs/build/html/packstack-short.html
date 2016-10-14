@@ -236,6 +236,7 @@ end
 
 
 <span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
+<span class="o">//</span><span class="n">change</span> <span class="n">to</span> <span class="n">root</span>
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
 <span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">b</span> <span class="mi">4096</span> <span class="o">-</span><span class="n">C</span> <span class="s2">&quot;openstack&quot;</span>
 <span class="n">ssh</span><span class="o">-</span><span class="n">copy</span><span class="o">-</span><span class="nb">id</span> <span class="n">compute</span>
@@ -250,6 +251,7 @@ end
 </div>
 <p>Terminal1:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">prepare</span> <span class="n">disk</span> <span class="k">for</span> <span class="n">volume</span> <span class="n">group</span>
+<span class="o">//</span><span class="n">change</span> <span class="n">to</span> <span class="n">root</span>
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
 <span class="n">fdisk</span> <span class="o">-</span><span class="n">l</span>
 
@@ -312,6 +314,7 @@ puppet นำไปสร้างเป็น puppet module เพื่อต�
 <span class="o">//</span><span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="n">CONTROLLER_ADDRESS</span><span class="p">,</span><span class="n">COMPUTE_ADDRESSES</span>
 
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">cd</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span>
 <span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">,</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span> \
 <span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
 <span class="o">--</span><span class="n">provision</span><span class="o">-</span><span class="n">demo</span><span class="o">=</span><span class="n">n</span> \

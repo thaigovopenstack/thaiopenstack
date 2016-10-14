@@ -26,6 +26,7 @@ Terminal1::
 
 
     vagrant ssh controller
+    //change to root
     sudo su -
     ssh-keygen -t rsa -b 4096 -C "openstack"
     ssh-copy-id compute
@@ -40,6 +41,7 @@ Terminal1::
 Terminal1::
 
     //prepare disk for volume group
+    //change to root
     sudo su -
     fdisk -l
 
@@ -104,6 +106,7 @@ Terminal1::
     //packstack --install-hosts=CONTROLLER_ADDRESS,COMPUTE_ADDRESSES
 
     sudo su -
+    cd /root/
     packstack --install-hosts=10.10.10.10,10.10.10.11 \
     --nagios-install=n \
     --provision-demo=n \
