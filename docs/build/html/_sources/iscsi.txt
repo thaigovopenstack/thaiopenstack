@@ -156,7 +156,9 @@ create backstore  แบบ fileio
 /iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/fileio/sharedata
 
 /iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/block/server1.disk1
-Created LUN 1.
+
+/iscsi/iqn.20...le.server1:t1> ls
+
 
 .. image:: images/iscsi004.png
 
