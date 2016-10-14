@@ -211,7 +211,9 @@
 
     <span class="c1">#เพิ่ม ip ให้ interface</span>
     <span class="c1"># syntax: ip a add {ip_addr/mask} dev {interface}</span>
-    <span class="n">ip</span> <span class="n">a</span> <span class="n">add</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.200</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">eth0</span>
+    <span class="o">//</span> <span class="n">เลือก</span> <span class="n">ip</span> <span class="n">ที่อยู่ใน</span> <span class="n">subnet</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">121.0</span><span class="o">/</span><span class="mi">24</span>
+
+    <span class="n">ip</span> <span class="n">a</span> <span class="n">add</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">121.20</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">eth0</span>
     <span class="n">ip</span> <span class="n">a</span> <span class="n">s</span> <span class="n">eth0</span>
 
     <span class="c1">#เปลี่ยนแปลงค่า MTU</span>
