@@ -53,7 +53,7 @@ Object สามารถ แทนค่าได้ตามตารางด
 	#เพิ่ม ip ให้ interface
 	# syntax: ip a add {ip_addr/mask} dev {interface}
 	// เลือก ip ที่อยู่ใน subnet 192.168.121.0/24
-	
+
 	ip a add 192.168.121.20/24 dev eth0
 	ip a s eth0
 
@@ -67,10 +67,15 @@ Object สามารถ แทนค่าได้ตามตารางด
 	#ลบ ip route
 	ip route del default via 192.168.1.100 dev eth2
 
+สร้าง bridge (type bridge)
+::
+
 	ip link
 
 	ip link add br0 type bridge
 
+	ip link
+	
 	#เพิ่ม physical network interface ไปยัง bridge  ที่สร้างมา
 	ip link set eth0 master br0
 

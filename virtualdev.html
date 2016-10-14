@@ -225,18 +225,22 @@
     <span class="n">ip</span> <span class="n">route</span>
     <span class="c1">#ลบ ip route</span>
     <span class="n">ip</span> <span class="n">route</span> <span class="k">del</span> <span class="n">default</span> <span class="n">via</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span> <span class="n">dev</span> <span class="n">eth2</span>
+</pre></div>
+</div>
+<p>สร้าง bridge (type bridge)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">link</span>
 
-    <span class="n">ip</span> <span class="n">link</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="n">add</span> <span class="n">br0</span> <span class="nb">type</span> <span class="n">bridge</span>
 
-    <span class="n">ip</span> <span class="n">link</span> <span class="n">add</span> <span class="n">br0</span> <span class="nb">type</span> <span class="n">bridge</span>
+<span class="n">ip</span> <span class="n">link</span>
 
-    <span class="c1">#เพิ่ม physical network interface ไปยัง bridge  ที่สร้างมา</span>
-    <span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">eth0</span> <span class="n">master</span> <span class="n">br0</span>
+<span class="c1">#เพิ่ม physical network interface ไปยัง bridge  ที่สร้างมา</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">eth0</span> <span class="n">master</span> <span class="n">br0</span>
 
-    <span class="c1">#เพิ่มip</span>
-    <span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">br0</span>
-    <span class="c1">#ลบip</span>
-    <span class="n">ip</span> <span class="n">addr</span> <span class="k">del</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">br0</span>
+<span class="c1">#เพิ่มip</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">br0</span>
+<span class="c1">#ลบip</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="k">del</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">br0</span>
 </pre></div>
 </div>
 </div>
