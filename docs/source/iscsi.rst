@@ -175,16 +175,20 @@ step3 สร้าง acl
 
 ::
 
-	/iscsi/iqn.20...le.server1:t1> tpg1/acls create iqn.2016-07.com.example.server1:client
-	Created Node ACL for iqn.2016-07.com.example.server1:client
-	Created mapped LUN 1.
-	Created mapped LUN 0.
-    /iscsi/iqn.20...le.server1:t1> cd tpg1/acls/iqn.2016-07.com.example.server1:client/
+		/iscsi/iqn.20...le.server1:t1> tpg1/acls create iqn.2016-07.com.example.server1:client
 
-	/iscsi/iqn.20...erver1:client> set auth userid=usr
-	Parameter userid is now 'usr'.
-	/iscsi/iqn.20...erver1:client> set auth password=pwd
-	Parameter password is now 'pwd'.
+		Created Node ACL for iqn.2016-07.com.example.server1:client
+		Created mapped LUN 1.
+		Created mapped LUN 0.
+
+		/iscsi/iqn.20...le.server1:t1> cd tpg1/acls/iqn.2016-07.com.example.server1:client/
+		/iscsi/iqn.20...erver1:client> set auth userid=usr
+
+		Parameter userid is now 'usr'.
+
+		/iscsi/iqn.20...erver1:client> set auth password=pwd
+
+		Parameter password is now 'pwd'.
 
     /iscsi/iqn.20...erver1:client> cd ../..
     /iscsi/iqn.20...rver1:t1/tpg1> ls
