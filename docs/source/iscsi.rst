@@ -57,12 +57,12 @@ step 2 Prepare
 --------------
 ::
 
-	pvcreate /dev/vdb1
-	pvcreate /dev/vdc1
-	pvcreate /dev/vdd1
+		pvcreate /dev/vdb1
+		pvcreate /dev/vdc1
+		pvcreate /dev/vdd1
 
-	vgcreate iscsi_vg  /dev/vdb1  /dev/vdc1 /dev/vdd1
-	lvcreate -l 100%FREE -n iscsi_lv  iscsi_vg
+		vgcreate iscsi_vg  /dev/vdb1  /dev/vdc1 /dev/vdd1
+		lvcreate -l 100%FREE -n iscsi_lv  iscsi_vg
 
     vgs
     (result)
@@ -94,8 +94,11 @@ Install
 	/>
 	(หลังจาก run คำสั่งแล้วจะได้ prompt )
 
-* step1 create backstores  (target)
-method1 แบบทีละขั้นตอน  (เลือกแบบ1 หรือ 2 อย่างเดียว)
+step1 create backstores
+***********************
+
+การสร้างสามารถทำได้ 2 แบบ
+แบบ1 แบบทีละขั้นตอน  (เลือกแบบ1 หรือ 2 อย่างเดียว)
 ::
 
 	/>ls
@@ -107,7 +110,7 @@ method1 แบบทีละขั้นตอน  (เลือกแบบ1 �
 
 .. image:: images/iscsi001.png
 
-method2 แบบขั้นตอนเดียว
+แบบ2 แบบขั้นตอนเดียว แต่ให้ดูตำแหน่งให้สอดคล้องก่อน
 ::
 
 	/> ls
@@ -126,7 +129,10 @@ create backstore  แบบ fileio
 	/> backstores/fileio create sharedata /opt/sharedata.img 4G
 
 
-* step2 สร้าง iSCSI qualified name (IQN) ชื่อ iqn.2016-07.com.example.server1 ตามด้วย target name ``t1`` (เป็นชื่ออะไรก็ได้)
+step2 สร้าง iSCSI qualified name (IQN)
+*************************************
+
+ชื่อ iqn.2016-07.com.example.server1 ตามด้วย target name ``t1`` (เป็นชื่ออะไรก็ได้)
 ::
 
 	/>iscsi/ create iqn.2016-07.com.example.server1:t1
@@ -153,16 +159,20 @@ create backstore  แบบ fileio
 
 ::
 
-/iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/fileio/sharedata
+		/iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/fileio/sharedata
 
-/iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/block/server1.disk1
+		/iscsi/iqn.20...le.server1:t1> tpg1/luns create /backstores/block/server1.disk1
 
-/iscsi/iqn.20...le.server1:t1> ls
+		/iscsi/iqn.20...le.server1:t1> ls
 
 
 .. image:: images/iscsi004.png
 
-* step3 สร้าง acl อ้างอิงกับ iqn ที่สร้างขึ้น ``iqn.2016-07.com.example.server1``
+step3 สร้าง acl
+**************
+
+อ้างอิงกับ iqn ที่สร้างขึ้น ``iqn.2016-07.com.example.server1``
+
 ::
 
 	/iscsi/iqn.20...le.server1:t1> tpg1/acls create iqn.2016-07.com.example.server1:client
@@ -181,7 +191,9 @@ create backstore  แบบ fileio
 
 .. image:: images/iscsi005.png
 
-* step4 สุดท้ายให้ออกจาก prompt ด้วยการพิม exit
+step4 สุดท้ายให้ออกจาก prompt ด้วยการพิม exit
+**************************
+
 ::
 
 	/iscsi/iqn.20...rver1:t1/tpg1> exit
@@ -194,7 +206,9 @@ create backstore  แบบ fileio
 .. image:: images/iscsi006.png
 
 
-* step 5 verify
+step 5 verify
+*************
+
 ::
 
 	yum install -y net-tools
@@ -208,7 +222,8 @@ create backstore  แบบ fileio
 
 Install ISCSI Client
 ********************
-เครื่อง client จะเรียกว่า initiator (เครื่อง server เรียกว่า target)
+เครื่อง client จะเรียกว่า initiator (เครื่อง server เรียกว่า target) ให้เปิดอีก terminal ใหม่
+
 install
 -------
 ::
