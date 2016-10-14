@@ -10,7 +10,7 @@ Getting Setup
 
 Introduction
 ------------
-เราสามารถสร้าง network bridge เพื่อทำหน้าที่เป็น virtual switch ใน linux เพื่อให้รองรับการสร้าง vm guest โดย   vm จะเชื่อมต่ออยู่กับ Network Adapter ที่สร้างที่อยู่บน bridge เดียวกันจะสามารถสื่อสารระหว่างกันได้  เหมือนกับการต่ออยู่กับ physical switch. 
+เราสามารถสร้าง network bridge เพื่อทำหน้าที่เป็น virtual switch ใน linux เพื่อให้รองรับการสร้าง vm guest โดย   vm จะเชื่อมต่ออยู่กับ Network Adapter ที่สร้างที่อยู่บน bridge เดียวกันจะสามารถสื่อสารระหว่างกันได้  เหมือนกับการต่ออยู่กับ physical switch.
 ก่อนหน้านี้เราใช้คำสั่ง brctl จาก package ชื่อ bridge-utils ในการสร้าง bridge และทำการเชื่อม bridgeกับ interface ปัจจุบัน สามารถใช้คำสั่ง ip ที่อยู่ใน package ชื่อ iproute3
 
 IP Command
@@ -41,50 +41,52 @@ Object สามารถ แทนค่าได้ตามตารางด
     sudo su -
 ::
 
-	su -	
-    ip addr 
+	su -
+    ip addr
     ip addr show eth0
     ip route show
     traceroute google.com
-	
+
 	//list interface
 	ip link
-	
+
 	#เพิ่ม ip ให้ interface
 	# syntax: ip a add {ip_addr/mask} dev {interface}
-	ip a add 192.168.1.200/24 dev eth0
+	// เลือก ip ที่อยู่ใน subnet 192.168.121.0/24
+	
+	ip a add 192.168.121.20/24 dev eth0
 	ip a s eth0
 
 	#เปลี่ยนแปลงค่า MTU
 	ip link set mtu 9000 dev eth0
 	ip a s eth0
-	
+
 	#เปลี่ยน route ให้ไปออกที่ eth2 และมี next ip 192.168.1.100
 	ip route add default via 192.168.1.100 dev eth2
 	ip route
 	#ลบ ip route
 	ip route del default via 192.168.1.100 dev eth2
-  	
+
 	ip link
 
 	ip link add br0 type bridge
-	
+
 	#เพิ่ม physical network interface ไปยัง bridge  ที่สร้างมา
 	ip link set eth0 master br0
 
 	#เพิ่มip
 	ip addr add 192.168.1.100/24 dev br0
-	#ลบip	
+	#ลบip
 	ip addr del 192.168.1.100/24 dev br0
 
 
 Linux bridge
------------- 
-เพื่อเชื่อมเครื่องคอมพิวเตอร์ เข้าหากัน โดยการใช้ Mac Address (Layer 2) แทนที่จะเป็นการเชื่อมกันระหว่าง ip (Layer3) โดยปรกติ linux network จะป้องกันไม่ให้ส่ง traffice จาก interface หนึ่งไปอีก interface หนึ่ง เราอาจ ใช้  ip routing ให้ทำหน้าที่ในการส่งข้อมูล ด้วยการกำหนดค่า ใน sysctrl เป็นการทำ ip forward 
+------------
+เพื่อเชื่อมเครื่องคอมพิวเตอร์ เข้าหากัน โดยการใช้ Mac Address (Layer 2) แทนที่จะเป็นการเชื่อมกันระหว่าง ip (Layer3) โดยปรกติ linux network จะป้องกันไม่ให้ส่ง traffice จาก interface หนึ่งไปอีก interface หนึ่ง เราอาจ ใช้  ip routing ให้ทำหน้าที่ในการส่งข้อมูล ด้วยการกำหนดค่า ใน sysctrl เป็นการทำ ip forward
 
 ::
 
-	cat /proc/sys/net/ipv4/ip_forward	
+	cat /proc/sys/net/ipv4/ip_forward
 	vi /etc/sysctrl.conf
 	net.ipv4.ip_forward = 1
 	sysctl -p /etc/sysctl.conf
@@ -146,7 +148,7 @@ bridge-utils
 	ip link set dev br0 down
 	brctl delbr br0
 
-ที่ทำมาทั้งหมด จะหายไปเมื่อมีการ reboot เครื่อง เนื่องจากเป็นเพียง  session เท่านั้น เพื่อต้องการให้การเปลี่ยนแปลง สามารถเป็นแบบ ถาวร จะต้องทำการสร้าง  config file ให้แก่ br0 ที่  ``/etc/sysconfig/network-scripts/ifcfg-br0`` และทำการแก้ไข  ``/etc/sysconfig/network-scripts/ifcfg-eth0`` 
+ที่ทำมาทั้งหมด จะหายไปเมื่อมีการ reboot เครื่อง เนื่องจากเป็นเพียง  session เท่านั้น เพื่อต้องการให้การเปลี่ยนแปลง สามารถเป็นแบบ ถาวร จะต้องทำการสร้าง  config file ให้แก่ br0 ที่  ``/etc/sysconfig/network-scripts/ifcfg-br0`` และทำการแก้ไข  ``/etc/sysconfig/network-scripts/ifcfg-eth0``
 
 /etc/sysconfig/network-scripts/ifcfg-br0::
 
@@ -184,12 +186,12 @@ Test plan
     vagrant up
     vagrant ssh
     sudo su -
- 
+
     //list ROOT network namespace
     ifup eth0
     dhclient eth0
     ip link
-    ip a 
+    ip a
     ip r
 
 .. image:: images/virtdev001.png
@@ -199,7 +201,7 @@ Test plan
     //create new two network namespaces
     ip netns add red
     ip netns add green
-    
+
     //list network name space
     ip netns
     --or--
@@ -220,7 +222,7 @@ Test plan
     //up the loopback interfaces (lo) of the namespaces
     ip netns exec red ip link set dev lo up
     ip netns exec green ip link set dev lo up
-    
+
 .. image:: images/virtdev003.png
 
 Create Switch (bridge)
@@ -233,7 +235,7 @@ Create Switch (bridge)
     systemctl enable openvswitch
 
     lsmod | grep openv
-    openvswitch            84543  0 
+    openvswitch            84543  0
     libcrc32c              12644  1 openvswitch
 
     ovs-vsctl add-br ovs1
@@ -245,9 +247,9 @@ Create Switch (bridge)
                 type: internal
     ovs_version: "2.4.0"
 
-    //list in ROOT network namespace    
+    //list in ROOT network namespace
     ip link
-	
+
 .. image:: images/virtdev004.png
 
 .. image:: images/virtdev005.png
@@ -259,15 +261,15 @@ Create Switch (bridge)
 .. image:: images/virtdev006.png
 
 ::
-  
+
     //create veth pair ไว้ก่อนแต่ยังไม่ได้เชื่อมกัน
     ip link add eth0-r type veth peer name veth-r
     ip link
 
     // will see both end of pipe
-    3: ovs-system: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT 
+    3: ovs-system: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT
         link/ether 9e:f0:39:2f:ec:c0 brd ff:ff:ff:ff:ff:ff
-    4: ovs1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT 
+    4: ovs1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT
         link/ether 36:82:a4:26:c1:43 brd ff:ff:ff:ff:ff:ff
 
     5: veth-r@eth0-r: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000
@@ -275,19 +277,19 @@ Create Switch (bridge)
     6: eth0-r@veth-r: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000
         link/ether 02:f7:ed:a4:30:62 brd ff:ff:ff:ff:ff:ff
 
-    //add eth0-r to red network namespace    
+    //add eth0-r to red network namespace
     ip link set eth0-r netns red
     ip link
     (eth0-r หายไปจาก root network name space)
-    3: ovs-system: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT 
+    3: ovs-system: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT
         link/ether 9e:f0:39:2f:ec:c0 brd ff:ff:ff:ff:ff:ff
-    4: ovs1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT 
+    4: ovs1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT
         link/ether 36:82:a4:26:c1:43 brd ff:ff:ff:ff:ff:ff
     5: veth-r@if6: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000
 
     //check in red namespace จะเป็นว่า  eth0-r มาแสดงอยู่ภายใน
     ip netns exec red ip link
-    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT 
+    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT
         link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     6: eth0-r@if5: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000
         link/ether 02:f7:ed:a4:30:62 brd ff:ff:ff:ff:ff:ff link-netnsid 0
@@ -352,43 +354,43 @@ Add ip
     ip netns exec red ip a
 
     (result)
-    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN 
+    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN
         link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
         inet 127.0.0.1/8 scope host lo
            valid_lft forever preferred_lft forever
-        inet6 ::1/128 scope host 
+        inet6 ::1/128 scope host
            valid_lft forever preferred_lft forever
     6: eth0-r@if5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
         link/ether 02:f7:ed:a4:30:62 brd ff:ff:ff:ff:ff:ff link-netnsid 0
         inet 10.0.0.1/24 scope global eth0-r
            valid_lft forever preferred_lft forever
-        inet6 fe80::f7:edff:fea4:3062/64 scope link 
+        inet6 fe80::f7:edff:fea4:3062/64 scope link
            valid_lft forever preferred_lft forever
 
     //check route
     ip netns exec red ip r
-    10.0.0.0/24 dev eth0-r  proto kernel  scope link  src 10.0.0.1 
+    10.0.0.0/24 dev eth0-r  proto kernel  scope link  src 10.0.0.1
 
     //In root
     //checkroute ใน root namespace จะเห็นว่า ยังไม่รับทราบ ถึง network 10.0.0.0/24
     ip route
-    default via 192.168.121.1 dev eth0  proto static  metric 100 
+    default via 192.168.121.1 dev eth0  proto static  metric 100
     192.168.121.0/24 dev eth0  proto kernel  scope link  src 192.168.121.189  metric 100
 
     //In green
     ip netns exec green ip a add 10.0.0.2/24 dev eth0-g
     ip netns exec green ip a
-    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN 
+    1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN
         link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
         inet 127.0.0.1/8 scope host lo
            valid_lft forever preferred_lft forever
-        inet6 ::1/128 scope host 
+        inet6 ::1/128 scope host
            valid_lft forever preferred_lft forever
     8: eth0-g@if7: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
         link/ether 02:9e:59:e8:76:d0 brd ff:ff:ff:ff:ff:ff link-netnsid 0
         inet 10.0.0.2/24 scope global eth0-g
            valid_lft forever preferred_lft forever
-        inet6 fe80::9e:59ff:fee8:76d0/64 scope link 
+        inet6 fe80::9e:59ff:fee8:76d0/64 scope link
            valid_lft forever preferred_lft forever
 
 .. image:: images/virtdev009.png
@@ -403,4 +405,3 @@ Test ping
     64 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=0.061 ms
     64 bytes from 10.0.0.2: icmp_seq=3 ttl=64 time=0.076 ms
     64 bytes from 10.0.0.2: icmp_seq=4 ttl=64 time=0.061 ms
-
