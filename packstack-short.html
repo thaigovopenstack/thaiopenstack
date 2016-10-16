@@ -102,6 +102,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Openstack Cloud</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#network-architecture">Network Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#openvswitch-device">Openvswitch device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openstack-bridge-mappings">openstack <code class="docutils literal"><span class="pre">bridge</span> <span class="pre">mappings</span></code> ใช้สำหรับทำอะไร</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#virtual-network">สร้าง virtual network</a></li>
 </ul>
 </li>
@@ -572,6 +573,20 @@ Compute node</p>
 <img alt="_images/under-the-hood-scenario-1-ovs-compute.png" src="_images/under-the-hood-scenario-1-ovs-compute.png" />
 <p>Controller/Network node</p>
 <img alt="_images/under-the-hood-scenario-1-ovs-network.png" src="_images/under-the-hood-scenario-1-ovs-network.png" />
+</div>
+<div class="section" id="openstack-bridge-mappings">
+<h2>openstack <code class="docutils literal"><span class="pre">bridge</span> <span class="pre">mappings</span></code> ใช้สำหรับทำอะไร<a class="headerlink" href="#openstack-bridge-mappings" title="Permalink to this headline">¶</a></h2>
+<p>Bridge Mappings  เป็นการอนุญาตให้ traffic ของ provider network สามารถส่งผ่่านไปยัง physical
+network โดยการไหลของ package จะออกจาก provider network ผ่านทาง qg-vvv โดยรับมาทาง  br-int
+และ veth pair ที่ทำหน้าเชื่อม br-int และ br-ex จะอนุญาต traffic ให้ผ่าน bridge ของ provider
+network และออกผ่านไปยัง physical network</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">int</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span> <span class="o">&lt;-&gt;</span> <span class="n">phy</span><span class="o">-</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span>
+</pre></div>
+</div>
+<p>การเชื่อมต่อ config ของ  bridge_mappings setting</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bridge_mappings</span> <span class="o">=</span> <span class="n">extnet</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">ex</span><span class="p">,</span><span class="n">physnet2</span><span class="p">:</span><span class="n">br</span><span class="o">-</span><span class="n">ex2</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="virtual-network">
 <h2>สร้าง virtual network<a class="headerlink" href="#virtual-network" title="Permalink to this headline">¶</a></h2>

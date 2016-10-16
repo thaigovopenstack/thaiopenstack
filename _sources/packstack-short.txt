@@ -367,6 +367,22 @@ Controller/Network node
 
 .. image:: images/under-the-hood-scenario-1-ovs-network.png
 
+openstack ``bridge mappings`` ใช้สำหรับทำอะไร
+*******************************************
+
+Bridge Mappings  เป็นการอนุญาตให้ traffic ของ provider network สามารถส่งผ่่านไปยัง physical
+network โดยการไหลของ package จะออกจาก provider network ผ่านทาง qg-vvv โดยรับมาทาง  br-int
+และ veth pair ที่ทำหน้าเชื่อม br-int และ br-ex จะอนุญาต traffic ให้ผ่าน bridge ของ provider
+network และออกผ่านไปยัง physical network
+::
+
+    int-br-ex <-> phy-br-ex
+
+การเชื่อมต่อ config ของ  bridge_mappings setting
+::
+
+    bridge_mappings = extnet:br-ex,physnet2:br-ex2
+
 สร้าง virtual network
 ********************
 
