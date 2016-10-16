@@ -226,50 +226,51 @@ end
 </pre></div>
 </div>
 <p>Terminal1:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">vagrant</span> <span class="n">up</span> <span class="o">--</span><span class="n">provider</span> <span class="n">libvirt</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span>   vagrant up --provider libvirt
 
-<span class="n">vagrant</span> <span class="n">status</span>
-<span class="n">Current</span> <span class="n">machine</span> <span class="n">states</span><span class="p">:</span>
+   vagrant status
+   Current machine states:
 
-<span class="n">controller</span>                <span class="n">running</span> <span class="p">(</span><span class="n">libvirt</span><span class="p">)</span>
-<span class="n">compute</span>                   <span class="n">running</span> <span class="p">(</span><span class="n">libvirt</span><span class="p">)</span>
+   controller                running (libvirt)
+   compute                   running (libvirt)
 
 
-<span class="n">vagrant</span> <span class="n">ssh</span> <span class="n">controller</span>
-<span class="o">//</span><span class="n">change</span> <span class="n">to</span> <span class="n">root</span>
-<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
-<span class="n">ssh</span><span class="o">-</span><span class="n">keygen</span> <span class="o">-</span><span class="n">t</span> <span class="n">rsa</span> <span class="o">-</span><span class="n">b</span> <span class="mi">4096</span> <span class="o">-</span><span class="n">C</span> <span class="s2">&quot;openstack&quot;</span>
-<span class="n">ssh</span><span class="o">-</span><span class="n">copy</span><span class="o">-</span><span class="nb">id</span> <span class="n">compute</span>
-<span class="n">ssh</span><span class="o">-</span><span class="n">copy</span><span class="o">-</span><span class="nb">id</span> <span class="n">controller</span>
+   vagrant ssh controller
+   //change to root
+   sudo su -
+   ssh-keygen -t rsa -b 4096 -C &quot;openstack&quot;
+   ssh-copy-id compute
+   ssh-copy-id controller
 
-<span class="o">//</span><span class="n">Test</span> <span class="n">ssh</span>
-<span class="n">ssh</span> <span class="n">compute</span> <span class="s2">&quot;hostname&quot;</span>
-<span class="n">exit</span>
-<span class="n">ssh</span> <span class="n">controller</span> <span class="s2">&quot;hostname&quot;</span>
-<span class="n">exit</span>
+   //Test ssh
+   ssh compute &quot;hostname&quot;
+   exit
+   ssh controller &quot;hostname&quot;
+   exit
+
+สร้าง volume group ชื่อว่า ``cinder-volumes`` Terminal1::
+
+   //prepare disk for volume group
+   //change to root
+   sudo su -
+   fdisk -l
+
+   fdisk /dev/vdb
+   n
+   p
+   1
+   enter
+   enter
+   w
+
+   partprobe
+   cat /proc/partitions
+
+   pvcreate /dev/vdb1
+   vgcreate cinder-volumes /dev/vdb1
 </pre></div>
 </div>
-<p>Terminal1:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">prepare</span> <span class="n">disk</span> <span class="k">for</span> <span class="n">volume</span> <span class="n">group</span>
-<span class="o">//</span><span class="n">change</span> <span class="n">to</span> <span class="n">root</span>
-<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
-<span class="n">fdisk</span> <span class="o">-</span><span class="n">l</span>
-
-<span class="n">fdisk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb</span>
-<span class="n">n</span>
-<span class="n">p</span>
-<span class="mi">1</span>
-<span class="n">enter</span>
-<span class="n">enter</span>
-<span class="n">w</span>
-
-<span class="n">partprobe</span>
-
-<span class="n">pvcreate</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
-<span class="n">vgcreate</span> <span class="n">cinder</span><span class="o">-</span><span class="n">volumes</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">vdb1</span>
-</pre></div>
-</div>
-<p>ตั้งค่า Timeserver (Terminal 2 ):</p>
+<p>ตั้งค่า Timeserver ให้แก่เครื่อง controller:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo yum install chrony -y
 $ sudo vi  /etc/chrony.conf
 //เปลี่ยนแปลง time server
@@ -291,9 +292,13 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ^+ 202-65-114-202.jogja.citr     2   6     7     1    -13ms[-7965us] +/-   93ms
 </pre></div>
 </div>
-<p>ตั้งค่า Timeserver (Terminal 1 ):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>sudo yum install chrony -y
-vi  /etc/chrony.conf
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">ค่า Stratum มีค่าเท่ากับ 2</p>
+</div>
+<p>ตั้งค่า Timeserver แก่เครื่อง compute1 (สามารถเปิด อีก Terminal 2 มาทำงานได้ ):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ sudo yum install chrony -y
+$ sudo vi  /etc/chrony.conf
 //เปลี่ยนแปลง time server ให้ชื้ไปยัง server
 server 10.10.10.10 iburst
 
@@ -306,15 +311,22 @@ MS Name/IP address         Stratum Poll Reach LastRx Last sample
 ^? controller.example.com     3   6     1     1  +6209us[+6209us] +/-   84ms
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">ค่า Stratum มีค่าเท่ากับ 3 และ sync ไปยัง controller.example.com</p>
+</div>
 <p>เครื่อง controller ให้ run คำสั่ง packstack พร้อมกับ option เพื่อ ติดตั้ง openstack โดยคำสั่ง
 packstack จะรับค่าoption และนำไปสร้าง file template ที่มีตัวแปรที่กำหนด หลังจากนั้นจะส่งต่อให้
 puppet นำไปสร้างเป็น puppet module เพื่อติดตั้ง openstack ต่อไป</p>
-<p>Terminal1:</p>
+<p>ติดตั้ง openstack Terminal1:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">//</span><span class="n">run</span> <span class="n">packstck</span>
 <span class="o">//</span><span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="n">CONTROLLER_ADDRESS</span><span class="p">,</span><span class="n">COMPUTE_ADDRESSES</span>
 
 <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
 <span class="n">cd</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span>
+<span class="n">hostname</span>
+<span class="n">controller</span>
+
 <span class="n">packstack</span> <span class="o">--</span><span class="n">install</span><span class="o">-</span><span class="n">hosts</span><span class="o">=</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.10</span><span class="p">,</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span> \
 <span class="o">--</span><span class="n">nagios</span><span class="o">-</span><span class="n">install</span><span class="o">=</span><span class="n">n</span> \
 <span class="o">--</span><span class="n">provision</span><span class="o">-</span><span class="n">demo</span><span class="o">=</span><span class="n">n</span> \
@@ -369,7 +381,7 @@ puppet นำไปสร้างเป็น puppet module เพื่อต�
 </pre></div>
 </div>
 </div>
-<p>เครื่อง host จะทำการติดตั้ง openstack client  เพื่อเข้าไปใช้งาน</p>
+<p>ให้เปิด terminal เพื่อใช้สำหรับติดตั้งบนเครื่อง host โดยจะทำการติดตั้ง openstack client  เพื่อเข้าไปใช้งาน</p>
 <p>Terminal2:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>//install openstack client
 ## Install openstack client [on host]
@@ -473,6 +485,12 @@ $ openstack image list
 +--------------------------------------+--------+--------+
 | eb971176-4804-4fc2-8266-a90b1341b8a6 | cirros | active |
 +--------------------------------------+--------+--------+
+
+$ wget http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
+$ openstack image create &quot;centos-7-x86_64&quot; \
+--file CentOS-7-x86_64-GenericCloud.qcow2 \
+--disk-format qcow2 --container-format bare \
+--public
 </pre></div>
 </div>
 <div class="section" id="network-architecture">
