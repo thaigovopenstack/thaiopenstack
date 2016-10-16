@@ -173,6 +173,7 @@ cat &lt;&lt; HOST &gt;&gt; /etc/hosts
 10.10.10.10  controller.example.com controller
 10.10.10.11  compute.example.com compute
 HOST
+echo &quot;keepcache = 1&quot; &gt;&gt; /etc/yum.conf
 echo &quot;nameserver 8.8.8.8&quot; &gt; /etc/resolv.conf
 sed -i &quot;s/SELINUX=enforcing/SELINUX=disabled/g&quot; /etc/selinux/config
 setenforce 0
