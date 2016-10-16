@@ -38,7 +38,7 @@ Terminal1::
     ssh controller "hostname"
     exit
 
-Terminal1::
+ สร้าง volume group ชื่อว่า ``cinder-volumes`` Terminal1::
 
     //prepare disk for volume group
     //change to root
@@ -54,12 +54,13 @@ Terminal1::
     w
 
     partprobe
+    cat /proc/partitions
 
     pvcreate /dev/vdb1
     vgcreate cinder-volumes /dev/vdb1
 
 
-ตั้งค่า Timeserver (Terminal 2 )::
+ตั้งค่า Timeserver ให้แก่เครื่อง controller::
 
         $ sudo yum install chrony -y
         $ sudo vi  /etc/chrony.conf
@@ -81,10 +82,12 @@ Terminal1::
         ^* time1.isu.net.sa              1   6     7     0  +5882us[  +11ms] +/-  140ms
         ^+ 202-65-114-202.jogja.citr     2   6     7     1    -13ms[-7965us] +/-   93ms
 
-ตั้งค่า Timeserver (Terminal 1 )::
+.. note:: ค่า Stratum มีค่าเท่ากับ 2
 
-        sudo yum install chrony -y
-        vi  /etc/chrony.conf
+ตั้งค่า Timeserver แก่เครื่อง compute1 (สามารถเปิด อีก Terminal 2 มาทำงานได้ )::
+
+        $ sudo yum install chrony -y
+        $ sudo vi  /etc/chrony.conf
         //เปลี่ยนแปลง time server ให้ชื้ไปยัง server
         server 10.10.10.10 iburst
 
@@ -96,17 +99,22 @@ Terminal1::
         ===============================================================================
         ^? controller.example.com     3   6     1     1  +6209us[+6209us] +/-   84ms
 
+.. note:: ค่า Stratum มีค่าเท่ากับ 3 และ sync ไปยัง controller.example.com
+
 เครื่อง controller ให้ run คำสั่ง packstack พร้อมกับ option เพื่อ ติดตั้ง openstack โดยคำสั่ง
 packstack จะรับค่าoption และนำไปสร้าง file template ที่มีตัวแปรที่กำหนด หลังจากนั้นจะส่งต่อให้
 puppet นำไปสร้างเป็น puppet module เพื่อติดตั้ง openstack ต่อไป
 
-Terminal1::
+ติดตั้ง openstack Terminal1::
 
     //run packstck
     //packstack --install-hosts=CONTROLLER_ADDRESS,COMPUTE_ADDRESSES
 
     sudo su -
     cd /root/
+    hostname
+    controller
+
     packstack --install-hosts=10.10.10.10,10.10.10.11 \
     --nagios-install=n \
     --provision-demo=n \
@@ -159,7 +167,7 @@ Terminal1::
         packstack-answers-20161012-011347.txt
         [root@controller ~]# packstack --answer-file=packstack-answers-20161012-011347.txt
 
-เครื่อง host จะทำการติดตั้ง openstack client  เพื่อเข้าไปใช้งาน
+ให้เปิด terminal เพื่อใช้สำหรับติดตั้งบนเครื่อง host โดยจะทำการติดตั้ง openstack client  เพื่อเข้าไปใช้งาน
 
 Terminal2::
 
@@ -268,6 +276,11 @@ Terminal2::
       | eb971176-4804-4fc2-8266-a90b1341b8a6 | cirros | active |
       +--------------------------------------+--------+--------+
 
+      $ wget http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
+      $ openstack image create "centos-7-x86_64" \
+      --file CentOS-7-x86_64-GenericCloud.qcow2 \
+      --disk-format qcow2 --container-format bare \
+      --public
 
 Network Architecture
 ********************
