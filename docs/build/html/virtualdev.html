@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Network Virtualization Device &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="Linux Network Namespce" href="namespace.html"/>
+        <link rel="prev" title="ISCSI Remote Storage" href="iscsi.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setuplab.html">Setup Vagrant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Network Virtualization Device</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#network-bridge">Network Bridge</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-setup">Getting Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ip-command">IP Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linux-bridge">Linux bridge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iproute2">iproute2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bridge-utils">bridge-utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="namespace.html">Linux Network Namespce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack-short.html">Openstack Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Network Virtualization Device</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/virtualdev.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="network-virtualization-device">
+<h1>Network Virtualization Device<a class="headerlink" href="#network-virtualization-device" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="network-bridge">
+<h2>Network Bridge<a class="headerlink" href="#network-bridge" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getting-setup">
+<h3>Getting Setup<a class="headerlink" href="#getting-setup" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="introduction">
+<h4>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h4>
+<p>เราสามารถสร้าง network bridge เพื่อทำหน้าที่เป็น virtual switch ใน linux เพื่อให้รองรับการสร้าง vm guest โดย   vm จะเชื่อมต่ออยู่กับ Network Adapter ที่สร้างที่อยู่บน bridge เดียวกันจะสามารถสื่อสารระหว่างกันได้  เหมือนกับการต่ออยู่กับ physical switch.
+ก่อนหน้านี้เราใช้คำสั่ง brctl จาก package ชื่อ bridge-utils ในการสร้าง bridge และทำการเชื่อม bridgeกับ interface ปัจจุบัน สามารถใช้คำสั่ง ip ที่อยู่ใน package ชื่อ iproute3</p>
+</div>
+<div class="section" id="ip-command">
+<h4>IP Command<a class="headerlink" href="#ip-command" title="Permalink to this headline">¶</a></h4>
+<p>คำสั่ง ip เป็นคำสั่งที่อยู่ใน package  iproute3 ส่วนคำสั่ง ifconfig จะอยู่ใน package nettools</p>
+<img alt="_images/Linux-Nettools-vs-Iproute2.png" src="_images/Linux-Nettools-vs-Iproute2.png" />
+<p>Syntax</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">OBJECT</span> <span class="n">COMMAND</span>
+<span class="n">ip</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">OBJECT</span> <span class="n">COMMAND</span>
+<span class="n">ip</span> <span class="n">OBJECT</span> <span class="n">help</span>
+</pre></div>
+</div>
+<p>Object สามารถ แทนค่าได้ตามตารางด้านล่าง ทั้งแบบเต็มหรือแบบย่อ</p>
+<img alt="_images/ipobject.png" src="_images/ipobject.png" />
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">~</span>
+<span class="n">mkdir</span> <span class="n">bridge</span>
+<span class="n">cd</span> <span class="n">bridge</span>
+<span class="n">vagrant</span> <span class="n">init</span> <span class="n">centos</span><span class="o">/</span><span class="mi">7</span>
+<span class="n">vagrant</span> <span class="n">up</span>
+<span class="n">vagrant</span> <span class="n">ssh</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">su</span> <span class="o">-</span>
+<span class="n">ip</span> <span class="n">addr</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="n">show</span> <span class="n">eth0</span>
+<span class="n">ip</span> <span class="n">route</span> <span class="n">show</span>
+<span class="n">traceroute</span> <span class="n">google</span><span class="o">.</span><span class="n">com</span>
+
+    <span class="o">//</span><span class="nb">list</span> <span class="n">interface</span>
+    <span class="n">ip</span> <span class="n">link</span>
+
+    <span class="c1">#เพิ่ม ip ให้ interface</span>
+    <span class="c1"># syntax: ip a add {ip_addr/mask} dev {interface}</span>
+    <span class="o">//</span> <span class="n">เลือก</span> <span class="n">ip</span> <span class="n">ที่อยู่ใน</span> <span class="n">subnet</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">121.0</span><span class="o">/</span><span class="mi">24</span>
+
+    <span class="n">ip</span> <span class="n">a</span> <span class="n">add</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">121.20</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">eth0</span>
+    <span class="n">ip</span> <span class="n">a</span> <span class="n">s</span> <span class="n">eth0</span>
+
+    <span class="c1">#เปลี่ยนแปลงค่า MTU</span>
+    <span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">mtu</span> <span class="mi">9000</span> <span class="n">dev</span> <span class="n">eth0</span>
+    <span class="n">ip</span> <span class="n">a</span> <span class="n">s</span> <span class="n">eth0</span>
+
+    <span class="c1">#เปลี่ยน route ให้ไปออกที่ eth2 และมี next ip 192.168.1.100</span>
+    <span class="n">ip</span> <span class="n">route</span> <span class="n">add</span> <span class="n">default</span> <span class="n">via</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span> <span class="n">dev</span> <span class="n">eth2</span>
+    <span class="n">ip</span> <span class="n">route</span>
+    <span class="c1">#ลบ ip route</span>
+    <span class="n">ip</span> <span class="n">route</span> <span class="k">del</span> <span class="n">default</span> <span class="n">via</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span> <span class="n">dev</span> <span class="n">eth2</span>
+</pre></div>
+</div>
+<p>สร้าง bridge (type bridge)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">link</span>
+
+<span class="n">ip</span> <span class="n">link</span> <span class="n">add</span> <span class="n">br0</span> <span class="nb">type</span> <span class="n">bridge</span>
+
+<span class="n">ip</span> <span class="n">link</span>
+
+<span class="c1">#เพิ่ม physical network interface ไปยัง bridge  ที่สร้างมา</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">eth0</span> <span class="n">master</span> <span class="n">br0</span>
+
+<span class="c1">#เพิ่มip</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">br0</span>
+<span class="c1">#ลบip</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="k">del</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.100</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">br0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="linux-bridge">
+<h4>Linux bridge<a class="headerlink" href="#linux-bridge" title="Permalink to this headline">¶</a></h4>
+<p>เพื่อเชื่อมเครื่องคอมพิวเตอร์ เข้าหากัน โดยการใช้ Mac Address (Layer 2) แทนที่จะเป็นการเชื่อมกันระหว่าง ip (Layer3) โดยปรกติ linux network จะป้องกันไม่ให้ส่ง traffice จาก interface หนึ่งไปอีก interface หนึ่ง เราอาจ ใช้  ip routing ให้ทำหน้าที่ในการส่งข้อมูล ด้วยการกำหนดค่า ใน sysctrl เป็นการทำ ip forward</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">ipv4</span><span class="o">/</span><span class="n">ip_forward</span>
+<span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysctrl</span><span class="o">.</span><span class="n">conf</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">ip_forward</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">sysctl</span> <span class="o">-</span><span class="n">p</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysctl</span><span class="o">.</span><span class="n">conf</span>
+<span class="n">service</span> <span class="n">network</span> <span class="n">restart</span>
+<span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">ipv4</span><span class="o">/</span><span class="n">ip_forward</span>
+</pre></div>
+</div>
+<p>Linux kernel ยังสามารถ bridge ระหว่าง interface เพื่อส่งผ่าน ethernet frame การสร้าง linux bridge ได้หลายหลายวิธี  โดยมี kernel module</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">lsmod</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">bridge</span>
+<span class="n">bridge</span>                <span class="mi">126976</span>  <span class="mi">1</span> <span class="n">ebtable_broute</span>
+<span class="n">stp</span>                    <span class="mi">16384</span>  <span class="mi">2</span> <span class="n">garp</span><span class="p">,</span><span class="n">bridge</span>
+<span class="n">llc</span>                    <span class="mi">16384</span>  <span class="mi">3</span> <span class="n">stp</span><span class="p">,</span><span class="n">garp</span><span class="p">,</span><span class="n">bridge</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>สร้างด้วย iproute2 คำสั่ง ip</li>
+<li>สร้างด้วย bridge-utils คำสั่ง brctl</li>
+</ul>
+</div>
+<div class="section" id="iproute2">
+<h4>iproute2<a class="headerlink" href="#iproute2" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#bridge ชือ br0</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="n">add</span> <span class="n">br0</span> <span class="nb">type</span> <span class="n">bridge</span>
+<span class="n">ip</span> <span class="n">link</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">br0</span> <span class="n">up</span>
+
+<span class="c1">#เพิ่ม interface (eth0) ไปยัง  bridge ต้องอยู่สถานะ up</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="n">flush</span> <span class="n">eth0</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">eth0</span> <span class="n">up</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">eth0</span> <span class="n">master</span> <span class="n">br0</span>
+<span class="c1">#ดูสถานะ</span>
+<span class="n">bridge</span> <span class="n">link</span>
+<span class="c1">#ถอด  eth0 จาก br0</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">eth0</span> <span class="n">nomaster</span>
+<span class="c1">#ลบ bridge</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="n">delete</span> <span class="n">br0</span> <span class="nb">type</span> <span class="n">bridge</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bridge-utils">
+<h4>bridge-utils<a class="headerlink" href="#bridge-utils" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1">#bridge ชือ br0</span>
+<span class="n">brctl</span> <span class="n">addbr</span> <span class="n">br0</span>
+<span class="n">brctl</span> <span class="n">show</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">br0</span> <span class="n">up</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="n">flush</span> <span class="n">eth0</span>
+<span class="n">brctl</span> <span class="n">addif</span> <span class="n">br0</span> <span class="n">eth0</span>
+<span class="n">brctl</span> <span class="n">show</span>
+<span class="n">brctl</span> <span class="n">showmacs</span> <span class="n">br0</span>
+<span class="c1">#mac ของ bridge คือ mac ของ eth0</span>
+<span class="c1">#กำหนด ip</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.10</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">br0</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="n">show</span> <span class="n">br0</span>
+<span class="n">brctl</span> <span class="n">showmacs</span> <span class="n">br0</span>
+
+<span class="c1">#ลบbridge ต้อง down ก่อน</span>
+<span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">br0</span> <span class="n">down</span>
+<span class="n">brctl</span> <span class="n">delbr</span> <span class="n">br0</span>
+</pre></div>
+</div>
+<p>ที่ทำมาทั้งหมด จะหายไปเมื่อมีการ reboot เครื่อง เนื่องจากเป็นเพียง  session เท่านั้น เพื่อต้องการให้การเปลี่ยนแปลง สามารถเป็นแบบ ถาวร จะต้องทำการสร้าง  config file ให้แก่ br0 ที่  <code class="docutils literal"><span class="pre">/etc/sysconfig/network-scripts/ifcfg-br0</span></code> และทำการแก้ไข  <code class="docutils literal"><span class="pre">/etc/sysconfig/network-scripts/ifcfg-eth0</span></code></p>
+<p>/etc/sysconfig/network-scripts/ifcfg-br0:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DEVICE</span><span class="o">=</span><span class="n">br0</span>
+<span class="n">TYPE</span><span class="o">=</span><span class="n">Bridge</span>
+<span class="n">IPADDR</span><span class="o">=</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.10</span>
+<span class="n">PREFIX</span><span class="o">=</span><span class="mi">24</span>
+<span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
+</pre></div>
+</div>
+<p>/etc/sysconfig/network-scripts/ifcfg-eth0:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DEVICE</span><span class="o">=</span><span class="n">eth0</span>
+<span class="n">BRIDGE</span><span class="o">=</span><span class="n">br0</span>
+<span class="n">TYPE</span><span class="o">=</span><span class="n">Ethernet</span>
+<span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="namespace.html" class="btn btn-neutral float-right" title="Linux Network Namespce" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="iscsi.html" class="btn btn-neutral" title="ISCSI Remote Storage" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

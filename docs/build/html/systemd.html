@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Understand systemd &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="Journalclt" href="journal.html"/>
+        <link rel="prev" title="Setup Vagrant" href="setuplab.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setuplab.html">Setup Vagrant</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Understand systemd</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#systemd">Systemd</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#framework">Framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basic-command">Basic Command</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#service-list">Service List</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test">Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unit-detail">Unit Detail</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dependencies">Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#checking-unit-properties">Checking Unit Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#masking-and-unmasking-units">Masking and Unmasking Units</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="namespace.html">Linux Network Namespce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack-short.html">Openstack Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Understand systemd</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/systemd.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="understand-systemd">
+<h1>Understand systemd<a class="headerlink" href="#understand-systemd" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="systemd">
+<h2>Systemd<a class="headerlink" href="#systemd" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/systemd001.png" src="_images/systemd001.png" />
+<div class="section" id="framework">
+<h3>Framework<a class="headerlink" href="#framework" title="Permalink to this headline">¶</a></h3>
+<img alt="_images/systemd002.png" src="_images/systemd002.png" />
+</div>
+<div class="section" id="basic-command">
+<h3>Basic Command<a class="headerlink" href="#basic-command" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="syntax">
+<h4>syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h4>
+<p>list units:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ systemctl list-units
+$ systemctl list-units --all
+    $ systemctl list-units --type service --all
+</pre></div>
+</div>
+<p>start/stop service:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span># systemctl start [name.service]
+# systemctl stop [name.service]
+# systemctl restart [name.service]
+# systemctl reload [name.service]
+$ systemctl status [name.service]
+# systemctl is-active [name.service]
+</pre></div>
+</div>
+</div>
+<div class="section" id="service-list">
+<h4>Service List<a class="headerlink" href="#service-list" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li>Service: Linux Service</li>
+<li>Target: group of units</li>
+<li>Automount: filesystem auto-mountpoint</li>
+<li>Device: kernel device names, which you can see in sysfs and udev</li>
+<li>Mount: filesystem mountpoint</li>
+<li>Path: file or directory</li>
+<li>Scope: external processes not started by systemd</li>
+<li>Slice: a management unit of processes</li>
+<li>Snapshot: systemd saved state</li>
+<li>Socket: IPC (inter-process communication) socket</li>
+<li>Swap: swap file</li>
+<li>Timer: systemd timer.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="test">
+<h4>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">dnf</span> <span class="n">install</span> <span class="n">httpd</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">httpd</span><span class="o">.</span><span class="n">service</span>
+     <span class="o">--</span> <span class="n">หรือ</span> <span class="o">--</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">httpd</span><span class="o">.</span><span class="n">service</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">httpd</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="unit-detail">
+<h4>Unit Detail<a class="headerlink" href="#unit-detail" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">systemctl</span> <span class="n">cat</span> <span class="n">httpd</span>
+<span class="n">systemctl</span> <span class="nb">list</span><span class="o">-</span><span class="n">dependencies</span> <span class="n">httpd</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dependencies">
+<h4>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="nb">list</span><span class="o">-</span><span class="n">dependencies</span> <span class="n">sshd</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="checking-unit-properties">
+<h4>Checking Unit Properties<a class="headerlink" href="#checking-unit-properties" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">show</span> <span class="n">sshd</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="masking-and-unmasking-units">
+<h4>Masking and Unmasking Units<a class="headerlink" href="#masking-and-unmasking-units" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default"><div class="highlight"><pre><span></span>    <span class="n">systemctl</span> <span class="n">mask</span> <span class="n">httpd</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">httpd</span>
+<span class="n">systemctl</span> <span class="n">unmask</span> <span class="n">httpd</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">httpd</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="journal.html" class="btn btn-neutral float-right" title="Journalclt" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="setuplab.html" class="btn btn-neutral" title="Setup Vagrant" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
