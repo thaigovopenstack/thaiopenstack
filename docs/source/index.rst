@@ -25,6 +25,7 @@ Contents:
    lvm
    iscsi
    virtualdev
+   namespace
    packstack-short
    packstack
    openstack-intro
