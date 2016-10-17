@@ -97,6 +97,17 @@ Command
     ip netns exec green ip addr add 10.0.0.11/24 dev veth1
     ip netns exec red ip a
 
+    //up the loopback interfaces (lo) of the namespaces
+    ip netns exec red ip link set dev veth0 up
+    ip netns exec green ip link set dev veth1 up
+
+    //Test ping from red to green
+    ip netns exec red /bin/bash
+    ping 10.10.10.11
+    exit
+
+.. image:: images/virtdev002-1.png
+
 Create Switch (bridge)
 ::
 
