@@ -245,8 +245,18 @@ ip netns del green
 
 <span class="n">ip</span> <span class="n">netns</span> <span class="n">exec</span> <span class="n">green</span> <span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">0.11</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">veth1</span>
 <span class="n">ip</span> <span class="n">netns</span> <span class="n">exec</span> <span class="n">red</span> <span class="n">ip</span> <span class="n">a</span>
+
+<span class="o">//</span><span class="n">up</span> <span class="n">the</span> <span class="n">loopback</span> <span class="n">interfaces</span> <span class="p">(</span><span class="n">lo</span><span class="p">)</span> <span class="n">of</span> <span class="n">the</span> <span class="n">namespaces</span>
+<span class="n">ip</span> <span class="n">netns</span> <span class="n">exec</span> <span class="n">red</span> <span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">veth0</span> <span class="n">up</span>
+<span class="n">ip</span> <span class="n">netns</span> <span class="n">exec</span> <span class="n">green</span> <span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">veth1</span> <span class="n">up</span>
+
+<span class="o">//</span><span class="n">Test</span> <span class="n">ping</span> <span class="kn">from</span> <span class="nn">red</span> <span class="n">to</span> <span class="n">green</span>
+<span class="n">ip</span> <span class="n">netns</span> <span class="n">exec</span> <span class="n">red</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span>
+<span class="n">ping</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">10.11</span>
+<span class="n">exit</span>
 </pre></div>
 </div>
+<img alt="_images/virtdev002-1.png" src="_images/virtdev002-1.png" />
 <p>Create Switch (bridge)</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">yum</span> <span class="n">install</span> <span class="n">wget</span>
 <span class="n">wget</span> <span class="n">ftp</span><span class="p">:</span><span class="o">//</span><span class="n">ftp</span><span class="o">.</span><span class="n">muug</span><span class="o">.</span><span class="n">mb</span><span class="o">.</span><span class="n">ca</span><span class="o">/</span><span class="n">mirror</span><span class="o">/</span><span class="n">centos</span><span class="o">/</span><span class="mf">7.2</span><span class="o">.</span><span class="mi">1511</span><span class="o">/</span><span class="n">cloud</span><span class="o">/</span><span class="n">x86_64</span><span class="o">/</span><span class="n">openstack</span><span class="o">-</span><span class="n">kilo</span><span class="o">/</span><span class="n">common</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">-</span><span class="mf">2.4</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="mf">1.</span><span class="n">el7</span><span class="o">.</span><span class="n">x86_64</span><span class="o">.</span><span class="n">rpm</span>
