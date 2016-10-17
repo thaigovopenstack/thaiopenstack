@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Openstack intro Mitaka Document &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="Lab Environment" href="environment.html"/>
+        <link rel="prev" title="Openstack with Packstack" href="packstack.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setuplab.html">Setup Vagrant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="namespace.html">Linux Network Namespce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack-short.html">Openstack Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Openstack intro Mitaka Document</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#node-hardware-requiements">Node hardware requiements</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#controller">controller</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">compute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Block storage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Block storage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Networking</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#option1-provider-network">option1 Provider network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#option2-provider-network">option2 Provider network</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Openstack intro Mitaka Document</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/openstack-intro.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="openstack-intro-mitaka-document">
+<h1>Openstack intro Mitaka Document<a class="headerlink" href="#openstack-intro-mitaka-document" title="Permalink to this headline">¶</a></h1>
+<p>Openstack project เป็น opensource cloud computing platform เพื่อสร้าง cloud environment เพื่อต้องการสร้างและขยายระบบ  Openstack จะทำหน้าที่ในส่วนของ Infrastructure-as-a-Service (IaaS) โดยประกอบด้วย Services ต่างๆ ที่ทำงานอยู่บน Node ต่างๆ การทำงาน service ต่างๆ จะเป็นลักษณะที่เรียกว่า Application Programming Interface (API) พัฒนาด้วยภาษา python เพื่อเป็นการศึกษาและพัฒนาการใช้งาน openstack จะเป็นเรียนรู้ step-by-step ในการติดตั้ง  service ตามลำดับเพื่อให้เห็นการทำงานเป็นขั้นตอน</p>
+<table border="1" class="docutils" id="id5">
+<caption><span class="caption-text"><strong>OpenStack services</strong></span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="19%" />
+<col width="14%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Service</th>
+<th class="head">Project name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/horizon">Dashboard</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/horizon/">Horizon</a></td>
+<td>Provides a web-based self-service portal
+to interact with underlying OpenStack services,
+such as launching an instance, assigning IP
+addresses and configuring access controls.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/nova">Compute</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/nova/">Nova</a></td>
+<td>Manages the lifecycle of compute instances in an
+OpenStack environment. Responsibilities include
+spawning, scheduling and decommissioning of virtual
+machines on demand.</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/neutron">Networking</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/neutron/">Neutron</a></td>
+<td>Enables Network-Connectivity-as-a-Service for
+other OpenStack services, such as OpenStack Compute.
+Provides an API for users to define networks and the
+attachments into them. Has a pluggable architecture
+that supports many popular networking vendors and
+technologies.</td>
+</tr>
+<tr class="row-odd"><td><strong>Storage</strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/swift">Object Storage</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/swift/">Swift</a></td>
+<td>Stores and retrieves arbitrary unstructured
+data objects via a <span class="xref std std-term">RESTful</span>, HTTP based API.
+It is highly fault tolerant with its data replication and
+scale-out architecture. Its implementation is not like a
+file server with mountable directories. In this case,
+it writes objects and files to multiple drives, ensuring the
+data is replicated across a server cluster.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/cinder">Block Storage</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/cinder/">Cinder</a></td>
+<td>Provides persistent block storage to running instances. Its pluggable
+driver architecture facilitates the creation and management of
+block storage devices.</td>
+</tr>
+<tr class="row-even"><td><strong>Shared services</strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/keystone">Identity service</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/keystone/">Keystone</a></td>
+<td>Provides an authentication and authorization service
+for other OpenStack services. Provides a catalog of endpoints
+for all OpenStack services.</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/glance">Image service</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/glance/">Glance</a></td>
+<td>Stores and retrieves virtual machine disk images.
+OpenStack Compute makes use of this during instance
+provisioning.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/ceilometer">Telemetry</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/ceilometer/">Ceilometer</a></td>
+<td>Monitors and meters the OpenStack cloud for billing, benchmarking,
+scalability, and statistical purposes.</td>
+</tr>
+<tr class="row-even"><td><strong>Higher-level services</strong></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://www.openstack.org/software/releases/liberty/components/heat">Orchestration</a></td>
+<td><a class="reference external" href="http://docs.openstack.org/developer/heat/">Heat</a></td>
+<td>Orchestrates multiple composite cloud applications by using
+either the native <span class="xref std std-term">HOT</span> template
+format or the AWS CloudFormation template format, through both an
+OpenStack-native REST API and a CloudFormation-compatible
+Query API.</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="section" id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p>ตัวอย่างของ architecture ที่ใช้้งาน อย่างน้อย 2 โหนด สร้างโดย virtual machine ดังตัวอย่างนี้ เป็นตัวอย่างการช้งานในรูปแบบ production ขนาดเล็ก:</p>
+<ul class="simple">
+<li>Networking Agent จะติดตั้งใน controller node หรือ ติดตั้งใน network node ที่แยกออกมา</li>
+<li>Overlay (tunnel) Traffic สามารถให้ติดต่อสื่อสารผ่านทาง management network หรือ แยก ออกมาเป็น data network ก็ได้</li>
+<li>Object storage node1,2 ติดตั้ง swift</li>
+<li>Block storage ติดตั้ง iscsi</li>
+</ul>
+<img alt="_images/hwreqs.png" src="_images/hwreqs.png" />
+<div class="section" id="node-hardware-requiements">
+<h3>Node hardware requiements<a class="headerlink" href="#node-hardware-requiements" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="controller">
+<h4>controller<a class="headerlink" href="#controller" title="Permalink to this headline">¶</a></h4>
+<p>controller node ทำหน้าที่ run services ได้แก่  identity service, image service, ส่วน management ของ compute,
+ส่วน management ของ Networking, network agent, dashboard , sql database, message queue, และ ntp
+นอกจากนั้นยัสามารถ run ส่วน manage ของ Block storage, object storage, orchestration และ Telemetry service</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">controller ต้องการ interface อย่างน้อย ต้องมี 2  interface</p>
+</div>
+</div>
+<div class="section" id="id1">
+<h4>compute<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>compute node เป็นส่วนที่ทำหน้าสร้าง vm (instance) มี hypervisor ทำงานอยู่ โดย default จะใช้ kvm และจะต้องมีส่วน ที่ run Networking service agent
+ที่จะทำหน้าที่เชื่อม vm เข้ากับ virtual network และยัง run firewall services ให้แก่ vm เรียกว่า security groups</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">compute ต้องการ interface อย่างน้อย ต้องมี 2  interface ในระบบ cloud อาจมี compute node ได้หลาย Node</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h4>Block storage<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>block storage คือ node ที่มี disk storage มีการให้บริการ ในรูปแบบของ Block storage ติดตั้งอยู่ และมีการ  iscsi ทำหน้าที่ share file system
+ผ่านทาง network การสือสาร สามารถสือสารผ่านทาง management network ได้ถ้า traffic ไม่สูงมากนัก แต่แนะนำควรแยก ออกมา ผ่านทาง storage network
+เพื่อเพิ่มประสิทธิภาพ และความปลอดภัย</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">compute ต้องการอย่างน้อย interface 1   interface</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h4>Block storage<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<p>ทางเลือกของ storage ในระบบ cloud นอกจากจะเป็น Block device ยังสามารถใช้ object storage ร่วมได้ ในที่นี้จะทำงานติดตั้ง swift storage เป็นพื้นฐาน</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">compute ต้องการอย่างน้อย interface 1   interface</p>
+</div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Networking<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="option1-provider-network">
+<h4>option1 Provider network<a class="headerlink" href="#option1-provider-network" title="Permalink to this headline">¶</a></h4>
+<p>provider networks  คือ การ ติดตั้งใช้งาน openstack networking service โดย เป็นการทำงาน ใน Layer 2 (bridge/switch)
+โดย  vm จะ bridge โดยตรงกับ physical network ภายนอก และจะต้องการอาศัย network ภายนอก ทำหน้าที่  เป็น layer 3 (routing) ให้</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">ในoption จะไม่สามารถสร้าง  private network ของตนแอง  ไม่สามารถมี router  และจะไม่สามารถใช้งาน</p>
+</div>
+<p>LBaaS และ  FWaaS</p>
+<p>layout services สำหรับ option 1 ที่จะต้องติดตั้ง:</p>
+<img alt="_images/network1-services.png" src="_images/network1-services.png" />
+</div>
+<div class="section" id="option2-provider-network">
+<h4>option2 Provider network<a class="headerlink" href="#option2-provider-network" title="Permalink to this headline">¶</a></h4>
+<p>เป็นรูปแบบที่ openstack จะจัดการ network ของตัวเอง (self-service) โดยจะรับผิดชอบทั้ง layer-3 service ที่ทำหน้า routing traffic จาก vm
+ไปยัง physical network โดยใช้ NAT และ รองรับการใช้งาน overlay network เช่น VXLAN, GRE นอกจากนั้นยังรองรับการให้บริการของ LBaaS, FWaaS</p>
+<p>layout services สำหรับ option 2 ที่จะต้องติดตั้ง:</p>
+<img alt="_images/network2-services.png" src="_images/network2-services.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="environment.html" class="btn btn-neutral float-right" title="Lab Environment" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="packstack.html" class="btn btn-neutral" title="Openstack with Packstack" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

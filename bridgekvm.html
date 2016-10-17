@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bridge Networking KVM &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="OpenVswitch Bridge" href="ovs.html"/>
+        <link rel="prev" title="Build Infrastructure" href="vagrant.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setuplab.html">Setup Vagrant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vagrant.html">Build Infrastructure</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Bridge Networking KVM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setup-on-kvm">setup on KVM</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linux-bridge-module">linux bridge module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-bridge-test-on-vm">Linux Bridge (test on vm)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#network-infrastructure">Network Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#brctl-command">brctl command</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-bridge-network">Create Bridge network</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="namespace.html">Linux Network Namespce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack-short.html">Openstack Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Bridge Networking KVM</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/bridgekvm.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bridge-networking-kvm">
+<h1>Bridge Networking KVM<a class="headerlink" href="#bridge-networking-kvm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setup-on-kvm">
+<h2>setup on KVM<a class="headerlink" href="#setup-on-kvm" title="Permalink to this headline">¶</a></h2>
+<p>มีหลายวิธีสำหรับในการบริหารจัดการ Networking in KVM เพื่อที่จะให้ vm สามารถติดต่อออกสู่ภายนอกได้ โดย Default เป็นการเชื่อมต่อภายนอกแบบ NAT network โดยสร้าง Virtual network (virbr0) เพื่อให้ vm มาเกาะเพื่อออกไปสู่internet และ vm จะได้รับ ip จาก  virtual network</p>
+<img alt="_images/vm026.png" src="_images/vm026.png" />
+<div class="section" id="linux-bridge-module">
+<h3>linux bridge module<a class="headerlink" href="#linux-bridge-module" title="Permalink to this headline">¶</a></h3>
+<p>การใช้งาน linux bridge จะต้องมี module ดังนี้ (ทำบนเครื่อง host)</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="n">modinfo</span> <span class="n">bridge</span>
+<span class="n">filename</span><span class="p">:</span>       <span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="mf">4.6</span><span class="o">.</span><span class="mi">7</span><span class="o">-</span><span class="mf">300.</span><span class="n">fc24</span><span class="o">.</span><span class="n">x86_64</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">bridge</span><span class="o">/</span><span class="n">bridge</span><span class="o">.</span><span class="n">ko</span><span class="o">.</span><span class="n">xz</span>
+<span class="n">alias</span><span class="p">:</span>          <span class="n">rtnl</span><span class="o">-</span><span class="n">link</span><span class="o">-</span><span class="n">bridge</span>
+<span class="n">version</span><span class="p">:</span>        <span class="mf">2.3</span>
+<span class="n">license</span><span class="p">:</span>        <span class="n">GPL</span>
+<span class="n">srcversion</span><span class="p">:</span>     <span class="n">C24028014A70FF3D3627689</span>
+<span class="n">depends</span><span class="p">:</span>        <span class="n">stp</span><span class="p">,</span><span class="n">llc</span>
+<span class="n">intree</span><span class="p">:</span>         <span class="n">Y</span>
+<span class="n">vermagic</span><span class="p">:</span>       <span class="mf">4.6</span><span class="o">.</span><span class="mi">7</span><span class="o">-</span><span class="mf">300.</span><span class="n">fc24</span><span class="o">.</span><span class="n">x86_64</span> <span class="n">SMP</span> <span class="n">mod_unload</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="linux-bridge-test-on-vm">
+<h3>Linux Bridge (test on vm)<a class="headerlink" href="#linux-bridge-test-on-vm" title="Permalink to this headline">¶</a></h3>
+<p>::
+mkdir bridge
+cd bridge
+vagrant init centos/7
+vagrant up &#8211;provider libvirt</p>
+<p>ตั้งค่า eth0 ให้เป็น static
+::
+vagrant ssh
+nmcli con mod</p>
+</div>
+<div class="section" id="network-infrastructure">
+<h3>Network Infrastructure<a class="headerlink" href="#network-infrastructure" title="Permalink to this headline">¶</a></h3>
+<p>(on host)
+virsh command
+&#8212;&#8212;&#8212;&#8212;-
+libvirt command</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>     <span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+     <span class="n">virsh</span> <span class="n">net</span><span class="o">-</span><span class="nb">list</span>
+
+      <span class="n">Name</span>                 <span class="n">State</span>      <span class="n">Autostart</span>     <span class="n">Persistent</span>
+     <span class="o">----------------------------------------------------------</span>
+      <span class="n">default</span>              <span class="n">active</span>     <span class="n">yes</span>           <span class="n">yes</span>
+<span class="n">vagrant</span><span class="o">-</span><span class="n">libvirt</span>      <span class="n">active</span>     <span class="n">yes</span>           <span class="n">yes</span>
+</pre></div>
+</div>
+<p>ตรวจค่าของxml ของ network ชื่อ default ด้วยคำสั่ง virsh</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">virsh</span> <span class="n">net</span><span class="o">-</span><span class="n">dumpxml</span> <span class="n">default</span>
+<span class="o">&lt;</span><span class="n">network</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">default</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">uuid</span><span class="o">&gt;</span><span class="mi">88</span><span class="n">ec8022</span><span class="o">-</span><span class="mi">2026</span><span class="o">-</span><span class="mi">461</span><span class="n">b</span><span class="o">-</span><span class="n">bf66</span><span class="o">-</span><span class="mi">7</span><span class="n">daaf33c8fc5</span><span class="o">&lt;/</span><span class="n">uuid</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">forward</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;nat&#39;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">nat</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="n">port</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;1024&#39;</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;65535&#39;</span><span class="o">/&gt;</span>
+        <span class="o">&lt;/</span><span class="n">nat</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">forward</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="n">bridge</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;virbr0&#39;</span> <span class="n">stp</span><span class="o">=</span><span class="s1">&#39;on&#39;</span> <span class="n">delay</span><span class="o">=</span><span class="s1">&#39;0&#39;</span><span class="o">/&gt;</span>
+  <span class="o">&lt;</span><span class="n">mac</span> <span class="n">address</span><span class="o">=</span><span class="s1">&#39;52:54:00:c1:9f:ed&#39;</span><span class="o">/&gt;</span>
+  <span class="o">&lt;</span><span class="n">ip</span> <span class="n">address</span><span class="o">=</span><span class="s1">&#39;192.168.122.1&#39;</span> <span class="n">netmask</span><span class="o">=</span><span class="s1">&#39;255.255.255.0&#39;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">dhcp</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nb">range</span> <span class="n">start</span><span class="o">=</span><span class="s1">&#39;192.168.122.2&#39;</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;192.168.122.254&#39;</span><span class="o">/&gt;</span>
+        <span class="o">&lt;/</span><span class="n">dhcp</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="n">ip</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">network</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>การแก้ไข ใช้คำสั่ง  virsh net-edit default จะส่งผลให้ เปิด xml ด้วย vi สามารถทำการแก้ไขค่า
+และเมื่อแก้ไขเสร็จแล้วก็ save เหมือน vi</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">virsh</span> <span class="n">net</span><span class="o">-</span><span class="n">edit</span> <span class="n">default</span>
+</pre></div>
+</div>
+<p>ตรวจสอบ package bridg-utils ว่าติดตั้งหรือไม่</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rpm</span> <span class="o">-</span><span class="n">qa</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">bridge</span><span class="o">-</span><span class="n">utils</span>
+<span class="n">bridge</span><span class="o">-</span><span class="n">utils</span><span class="o">-</span><span class="mf">1.5</span><span class="o">-</span><span class="mf">13.</span><span class="n">fc24</span><span class="o">.</span><span class="n">x86_64</span>
+</pre></div>
+</div>
+<div class="section" id="brctl-command">
+<h4>brctl command<a class="headerlink" href="#brctl-command" title="Permalink to this headline">¶</a></h4>
+<p>linux bridge command</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">brctl</span> <span class="n">show</span>
+<span class="n">bridge</span> <span class="n">name</span>     <span class="n">bridge</span> <span class="nb">id</span>               <span class="n">STP</span> <span class="n">enabled</span>     <span class="n">interfaces</span>
+<span class="n">virbr0</span>          <span class="mf">8000.000000000000</span>       <span class="n">yes</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="create-bridge-network">
+<h3>Create Bridge network<a class="headerlink" href="#create-bridge-network" title="Permalink to this headline">¶</a></h3>
+<p>1 สร้าง  bridge network</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>      <span class="n">brctl</span> <span class="n">addbr</span> <span class="n">mybridge</span>
+      <span class="n">brctl</span> <span class="n">show</span>
+
+      <span class="o">//</span><span class="n">ผลที่ได้</span>
+      <span class="n">bridge</span> <span class="n">name</span>     <span class="n">bridge</span> <span class="nb">id</span>               <span class="n">STP</span> <span class="n">enabled</span>     <span class="n">interfaces</span>
+<span class="o">...</span>
+      <span class="n">mybridge</span>                <span class="mf">8000.000000000000</span>       <span class="n">no</span>
+      <span class="n">virbr0</span>          <span class="mf">8000.000000000000</span>       <span class="n">yes</span>
+      <span class="n">virbr1</span>          <span class="mf">8000.525400</span><span class="n">ef43c5</span>       <span class="n">yes</span>             <span class="n">virbr1</span><span class="o">-</span><span class="n">nic</span>
+</pre></div>
+</div>
+<p>2 เพิ่ม interface (ตรวจสอบด้วย ip link) enp3s0 ให้แก่ brige</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>      <span class="n">brctl</span> <span class="n">addif</span> <span class="n">mybridge</span> <span class="n">enp3s0</span>
+      <span class="n">brctl</span> <span class="n">show</span>
+<span class="o">...</span>
+      <span class="n">bridge</span> <span class="n">name</span>     <span class="n">bridge</span> <span class="nb">id</span>               <span class="n">STP</span> <span class="n">enabled</span>     <span class="n">interfaces</span>
+<span class="n">mybridge</span>              <span class="mf">8000.54</span><span class="n">ee758a8609</span>       <span class="n">no</span>              <span class="n">enp3s0</span>
+</pre></div>
+</div>
+<p>3. ลบ ip enp3s0</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>      <span class="n">ip</span> <span class="n">addr</span> <span class="k">del</span>  <span class="n">flush</span> <span class="n">dev</span> <span class="n">enp3s0</span>
+<span class="n">ip</span> <span class="n">addr</span> <span class="n">add</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.69</span><span class="o">/</span><span class="mi">24</span> <span class="n">dev</span> <span class="n">mybridge</span>
+
+      <span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">enp3s0</span> <span class="n">down</span>
+      <span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">enp3s0</span> <span class="n">up</span>
+
+      <span class="n">ip</span> <span class="n">link</span> <span class="nb">set</span> <span class="n">dev</span> <span class="n">mybridge</span> <span class="n">up</span>
+
+<span class="n">ping</span> <span class="n">google</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>4 verify gateway</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">r</span>
+<span class="n">default</span> <span class="n">via</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span> <span class="n">dev</span> <span class="n">enp3s0</span>  <span class="n">proto</span> <span class="n">static</span>  <span class="n">metric</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>การใช้งานคำสั่ง NetworkManager Command Line Tool (nmcli) เพื่อสร้าง bridge br0</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nmcli</span> <span class="n">con</span> <span class="n">add</span> <span class="nb">type</span> <span class="n">bridge</span> <span class="n">ifname</span> <span class="n">br0</span>
+<span class="n">Connection</span> <span class="s1">&#39;bridge-br0&#39;</span> <span class="p">(</span><span class="n">d50d5fc4</span><span class="o">-</span><span class="n">ca17</span><span class="o">-</span><span class="mi">4</span><span class="n">e98</span><span class="o">-</span><span class="n">b9b3</span><span class="o">-</span><span class="n">b9fdcae2e248</span><span class="p">)</span> <span class="n">successfully</span> <span class="n">added</span><span class="o">.</span>
+
+<span class="n">NAME</span>               <span class="n">UUID</span>                                  <span class="n">TYPE</span>             <span class="n">DEVICE</span>
+<span class="n">bridge</span><span class="o">-</span><span class="n">br0</span>         <span class="n">d50d5fc4</span><span class="o">-</span><span class="n">ca17</span><span class="o">-</span><span class="mi">4</span><span class="n">e98</span><span class="o">-</span><span class="n">b9b3</span><span class="o">-</span><span class="n">b9fdcae2e248</span>  <span class="n">bridge</span>           <span class="n">br0</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">nmcli con add type bridge ifname br0 con-name bridge-br0</p>
+</div>
+<p>enable  Spanning tree protocol(STP) เปลี่ยนค่า defalut  priority จากค่า default
+32768 เป็น 28672</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nmcli</span> <span class="n">con</span> <span class="n">modify</span> <span class="n">bridge</span><span class="o">-</span><span class="n">br0</span> <span class="n">bridge</span><span class="o">.</span><span class="n">stp</span> <span class="n">yes</span>
+<span class="n">nmcli</span> <span class="n">con</span> <span class="n">modify</span> <span class="n">bridge</span><span class="o">-</span><span class="n">br0</span> <span class="n">bridge</span><span class="o">.</span><span class="n">priority</span> <span class="mi">28672</span>
+</pre></div>
+</div>
+<p>ตรวจสอบค่าของ bridge</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nmcli</span> <span class="o">-</span><span class="n">f</span> <span class="n">bridge</span> <span class="n">con</span> <span class="n">show</span> <span class="n">bridge</span><span class="o">-</span><span class="n">br0</span>
+<span class="o">//</span>
+<span class="n">bridge</span><span class="o">.</span><span class="n">mac</span><span class="o">-</span><span class="n">address</span><span class="p">:</span>                     <span class="o">--</span>
+<span class="n">bridge</span><span class="o">.</span><span class="n">stp</span><span class="p">:</span>                             <span class="n">yes</span>
+<span class="n">bridge</span><span class="o">.</span><span class="n">priority</span><span class="p">:</span>                        <span class="mi">28672</span>
+<span class="n">bridge</span><span class="o">.</span><span class="n">forward</span><span class="o">-</span><span class="n">delay</span><span class="p">:</span>                   <span class="mi">15</span>
+<span class="n">bridge</span><span class="o">.</span><span class="n">hello</span><span class="o">-</span><span class="n">time</span><span class="p">:</span>                      <span class="mi">2</span>
+<span class="n">bridge</span><span class="o">.</span><span class="n">max</span><span class="o">-</span><span class="n">age</span><span class="p">:</span>                         <span class="mi">20</span>
+<span class="n">bridge</span><span class="o">.</span><span class="n">ageing</span><span class="o">-</span><span class="n">time</span><span class="p">:</span>                     <span class="mi">300</span>
+<span class="n">bridge</span><span class="o">.</span><span class="n">multicast</span><span class="o">-</span><span class="n">snooping</span><span class="p">:</span>              <span class="n">yes</span>
+</pre></div>
+</div>
+<p>สร้าง port บน switch (type bridge-slave con-name br0-port1) ให้เชื่อมกับ ifname enp3s0</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">nmcli</span> <span class="n">connection</span> <span class="n">add</span> <span class="nb">type</span> <span class="n">bridge</span><span class="o">-</span><span class="n">slave</span> <span class="n">con</span><span class="o">-</span><span class="n">name</span> <span class="n">br0</span><span class="o">-</span><span class="n">port1</span> <span class="n">ifname</span> <span class="n">enp3s0</span> <span class="n">master</span> <span class="n">bridge</span><span class="o">-</span><span class="n">br0</span>
+<span class="n">Connection</span> <span class="s1">&#39;br0-port1&#39;</span> <span class="p">(</span><span class="mi">702</span><span class="n">a354e</span><span class="o">-</span><span class="n">e641</span><span class="o">-</span><span class="mi">4</span><span class="n">c06</span><span class="o">-</span><span class="n">b05f</span><span class="o">-</span><span class="mi">61332</span><span class="n">cd1232b</span><span class="p">)</span> <span class="n">successfully</span> <span class="n">added</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>ตรวจสอบ</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">network</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span>
+<span class="n">ls</span>
+<span class="o">..</span>
+<span class="n">ifcfg</span><span class="o">-</span><span class="n">br0</span><span class="o">-</span><span class="n">port1</span>
+<span class="n">ifcfg</span><span class="o">-</span><span class="n">bridge</span><span class="o">-</span><span class="n">br0</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ovs.html" class="btn btn-neutral float-right" title="OpenVswitch Bridge" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vagrant.html" class="btn btn-neutral" title="Build Infrastructure" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

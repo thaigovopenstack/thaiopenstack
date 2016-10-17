@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Build Infrastructure &mdash; Sipa Linux Admin Class latest documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Sipa Linux Admin Class latest documentation" href="index.html"/>
+        <link rel="next" title="Bridge Networking KVM" href="bridgekvm.html"/>
+        <link rel="prev" title="SetupVM for Testing" href="setupvm.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Sipa Linux Admin Class
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="setuplab.html">Setup Vagrant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="systemd.html">Understand systemd</a></li>
+<li class="toctree-l1"><a class="reference internal" href="journal.html">Journalclt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configip.html">Configure IP address</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firewall.html">Understand New Linux Firewall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sshd.html">SSH Server On CentOS7</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setupvm.html">SetupVM for Testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Build Infrastructure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vagrant">Vagrant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-vagrant">Install vagrant</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#repository">repository</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vagrantfile">vagrantfile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#connect-to-vm">Connect to VM</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bridgekvm.html">Bridge Networking KVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovs.html">OpenVswitch Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Network Teaming &amp; Bridge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lvm.html">Linux LVM partition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iscsi.html">ISCSI Remote Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="virtualdev.html">Network Virtualization Device</a></li>
+<li class="toctree-l1"><a class="reference internal" href="namespace.html">Linux Network Namespce</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack-short.html">Openstack Cloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packstack.html">Openstack with Packstack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openstack-intro.html">Openstack intro Mitaka Document</a></li>
+<li class="toctree-l1"><a class="reference internal" href="environment.html">Lab Environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keystone.html">Install keystone</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Sipa Linux Admin Class</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Build Infrastructure</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/vagrant.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="build-infrastructure">
+<h1>Build Infrastructure<a class="headerlink" href="#build-infrastructure" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vagrant">
+<h2>Vagrant<a class="headerlink" href="#vagrant" title="Permalink to this headline">¶</a></h2>
+<p>การใช้งาน vagrant เพื่อสร้าง development environment</p>
+<img alt="_images/vagrant001.png" src="_images/vagrant001.png" />
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<ul class="last simple">
+<li><a class="reference external" href="https://www.vagrantup.com/">vagrant by hasicorp</a>;</li>
+<li><a class="reference external" href="https://github.com/vagrant-libvirt/vagrant-libvirt">vagrant libvirt เพื่อดู config</a>;</li>
+</ul>
+</div>
+<div class="section" id="install-vagrant">
+<h3>Install vagrant<a class="headerlink" href="#install-vagrant" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">dnf</span> <span class="n">group</span> <span class="n">install</span> <span class="s2">&quot;C Development Tools and Libraries&quot;</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span>  <span class="n">ruby</span><span class="o">-</span><span class="n">devel</span> <span class="n">zlib</span><span class="o">-</span><span class="n">devel</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span>  <span class="n">libxslt</span>  <span class="n">libxslt</span><span class="o">-</span><span class="n">devel</span>  <span class="n">libxml2</span>  <span class="n">libxml2</span><span class="o">-</span><span class="n">devel</span> <span class="n">redhat</span><span class="o">-</span><span class="n">lsb</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">libxslt</span><span class="o">-</span><span class="n">devel</span> <span class="n">libxml2</span><span class="o">-</span><span class="n">devel</span> <span class="n">libvirt</span><span class="o">-</span><span class="n">devel</span> <span class="n">libguestfs</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="n">c</span> <span class="n">ruby</span><span class="o">-</span><span class="n">devel</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">redhat</span><span class="o">-</span><span class="n">rpm</span><span class="o">-</span><span class="n">config</span> <span class="n">patch</span>
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">nokogiri</span> <span class="o">-</span><span class="n">v</span> <span class="s1">&#39;1.6.8&#39;</span>
+<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">releases</span><span class="o">.</span><span class="n">hashicorp</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">vagrant</span><span class="o">/</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">4</span><span class="o">/</span><span class="n">vagrant_1</span><span class="o">.</span><span class="mf">8.4</span><span class="n">_x86_64</span><span class="o">.</span><span class="n">rpm</span>
+<span class="n">sudo</span> <span class="n">dnf</span> <span class="n">install</span> <span class="n">vagrant_1</span><span class="o">.</span><span class="mf">8.4</span><span class="n">_x86_64</span><span class="o">.</span><span class="n">rpm</span>
+<span class="n">vagrant</span> <span class="n">plugin</span> <span class="n">install</span> <span class="n">vagrant</span><span class="o">-</span><span class="n">libvirt</span>
+<span class="n">vagrant</span> <span class="n">plugin</span> <span class="n">install</span> <span class="n">vagrant</span><span class="o">-</span><span class="n">scp</span>
+</pre></div>
+</div>
+<div class="section" id="repository">
+<h4>repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h4>
+<p>สามารถค้นหาและdownload image เพื่อเตรียมทดสอบ <a class="reference external" href="https://atlas.hashicorp.com/boxes/search">https://atlas.hashicorp.com/boxes/search</a></p>
+<img alt="_images/vagrant002.png" src="_images/vagrant002.png" />
+<p>อีกที่หนึ่ง <a class="reference external" href="http://www.vagrantbox.es/">http://www.vagrantbox.es/</a></p>
+<img alt="_images/vagrant003.png" src="_images/vagrant003.png" />
+<p>Download box</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ vagrant box add centos/7
+==&gt; box: Loading metadata for box &#39;centos/7&#39;
+        box: URL: https://atlas.hashicorp.com/centos/7
+This box can work with multiple providers! The providers that it
+can work with are listed below. Please review the list and choose
+the provider you will be working with.
+
+1) libvirt
+2) virtualbox
+
+Enter your choice:
+</pre></div>
+</div>
+</div>
+<div class="section" id="vagrantfile">
+<h4>vagrantfile<a class="headerlink" href="#vagrantfile" title="Permalink to this headline">¶</a></h4>
+<p>สร้าง project directory เพื่อการทดสอบ และ download box เพื่อ add ภายหลัง
+* download vagrant box <a class="reference external" href="https://atlas.hashicorp.com/centos/boxes/7/versions/1605.01/providers/libvirt.box">centos os 7</a></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ vagrant box add centos/7 ./libvirt.box
+$ mkdir project01
+$ cd project01
+$ vagrant init centos/7
+$ cat Vagrantfile
+(result เมื่อลบ comment ออก)
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(&quot;2&quot;) do |config|
+  config.vm.box = &quot;centos/7&quot;
+end
+
+$ vagrant up --provider libvirt
+</pre></div>
+</div>
+<p>เพิ่มเติม vagrantfile ด้านล่าง</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># -*- mode: ruby -*-</span>
+<span class="c1"># vi: set ft=ruby :</span>
+
+<span class="n">Vagrant</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="n">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">box</span> <span class="o">=</span> <span class="s2">&quot;centos/7&quot;</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">server1</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.10&quot;</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;server1.example.com&quot;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">storage</span> <span class="p">:</span><span class="n">file</span><span class="p">,</span> <span class="p">:</span><span class="n">size</span> <span class="o">=&gt;</span> <span class="s1">&#39;20G&#39;</span>
+        <span class="n">end</span>
+  <span class="n">end</span>
+  <span class="n">config</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">define</span> <span class="p">:</span><span class="n">server2</span> <span class="n">do</span> <span class="o">|</span><span class="n">node</span><span class="o">|</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">network</span> <span class="p">:</span><span class="n">private_network</span><span class="p">,</span> <span class="p">:</span><span class="n">ip</span> <span class="o">=&gt;</span> <span class="s2">&quot;10.0.0.11&quot;</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">vm</span><span class="o">.</span><span class="n">provider</span> <span class="p">:</span><span class="n">libvirt</span> <span class="n">do</span> <span class="o">|</span><span class="n">domain</span><span class="o">|</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">uri</span> <span class="o">=</span> <span class="s1">&#39;qemu+unix:///system&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="s1">&#39;kvm&#39;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;server2.example.com&quot;</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="mi">2048</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">cpus</span> <span class="o">=</span> <span class="mi">2</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">nested</span> <span class="o">=</span> <span class="n">true</span>
+          <span class="n">domain</span><span class="o">.</span><span class="n">volume_cache</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+        <span class="n">end</span>
+  <span class="n">end</span>
+
+<span class="n">end</span>
+</pre></div>
+</div>
+<img alt="_images/vagrant004.png" src="_images/vagrant004.png" />
+<p>กดเลือก double click lab1_server1  (lab1 ชื่อ  project directory และ server1 เป็น ชื่อ VM)</p>
+<img alt="_images/vagrant005.png" src="_images/vagrant005.png" />
+<p>กดเลือก รูปหลอดไฟเพื่อดูรายละเดียด</p>
+<img alt="_images/vagrant006.png" src="_images/vagrant006.png" />
+</div>
+<div class="section" id="connect-to-vm">
+<h4>Connect to VM<a class="headerlink" href="#connect-to-vm" title="Permalink to this headline">¶</a></h4>
+<p>สามารถเชื่อมผ่าน virsh</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[lab1]$ sudo virsh list
+ Id    Name                           State
+----------------------------------------------------
+ 1     lab1_server2                   running
+ 2     lab1_server1                   running
+
+
+[lab1]$ sudo virt-viewer lab1_server1
+</pre></div>
+</div>
+<p>ให้ใช้ username vagrant และ password vagrant แล้วจึงค่อยเปลี่ยนเป็น root ด้วยคำสั่ง  <code class="docutils literal"><span class="pre">sudo</span> <span class="pre">su</span> <span class="pre">-</span></code></p>
+<img alt="_images/vagrant008.png" src="_images/vagrant008.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="bridgekvm.html" class="btn btn-neutral float-right" title="Bridge Networking KVM" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="setupvm.html" class="btn btn-neutral" title="SetupVM for Testing" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, sawangpong muadphet &lt;sawangpong@itbakery.net&gt;.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'latest',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
