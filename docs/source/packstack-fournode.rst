@@ -11,7 +11,7 @@ Openstack Cloud
 
 Vagrantfile
 
-.. literalinclude:: lab2_vagrantfile
+.. literalinclude:: lab3_vagrantfile
 
 
 Terminal1::
@@ -84,7 +84,7 @@ Terminal1::
 
 .. note:: ค่า Stratum มีค่าเท่ากับ 2
 
-ตั้งค่า Timeserver แก่เครื่อง compute1 (สามารถเปิด อีก Terminal 2 มาทำงานได้ )::
+ตั้งค่า Timeserver แก่เครื่อง compute, storage, network (สามารถเปิด อีก Terminal 2 มาทำงานได้ )::
 
         $ sudo yum install chrony -y
         $ sudo vi  /etc/chrony.conf
@@ -115,7 +115,11 @@ puppet นำไปสร้างเป็น puppet module เพื่อต�
     hostname
     controller
 
-    packstack --install-hosts=10.10.10.10,10.10.10.11 \
+    packstack --install-hosts=10.10.10.10 \
+    --os-network-hosts=10.10.10.13 \
+    --os-compute-hosts=10.10.10.10,10.10.10.11 \
+    --os-storage-host=10.10.10.12 \
+    --os-swift-storage-size=10G \
     --nagios-install=n \
     --provision-demo=n \
     --os-neutron-ovs-bridge-mappings=extnet:br-ex,physnet1:br-eth2 \
@@ -126,7 +130,8 @@ puppet นำไปสร้างเป็น puppet module เพื่อต�
     --os-sahara-install=y --os-trove-install=y \
     --os-neutron-lbaas-install=y \
     --cinder-volumes-create=n \
-    --os-horizon-ssl=y \
+    --unsupported=y   \
+    --os-cinder-install=n \
     --keystone-admin-passwd=linux
 
 ท่านสามารถเเปลี่ยน password ได้จาก บรรทัด keystone-admin-passwd=<password ที่ต้องการ>
